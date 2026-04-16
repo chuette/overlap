@@ -17,108 +17,141 @@
             <p class="subtitle">A research translation tool</p>
         </header>
 
+
+        <div class="divider">
+            <div class="divider-line">
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+                <div class="divider-cell"></div>
+            </div>
+            <div class="divider-dot dot-blue"></div>
+
+        </div>
+
         <section class="triage">
-            <p class="tool-voice">I reviewed the content you shared. I found a few areas worth a closer look before you
-                publish or adapt it. None of these are necessarily problems — but each involves a decision worth making
-                intentionally.</p>
-            <p class="tool-voice">Where would you like to start?</p>
+            <section class="triage">
+                <p class="tool-voice">I reviewed the content you shared. I found a few areas worth a closer look before
+                    you
+                    publish or adapt it. None of these are necessarily problems — but each involves a decision worth
+                    making
+                    intentionally.</p>
+                <p class="tool-voice">Where would you like to start?</p>
 
-            <div class="flags">
+                <div class="flags">
 
-                <div class="flag high" id="flag-privacy">
-                    <div class="flag-content">
-                        <h2>A child is named and identified</h2>
-                        <p>This content includes a child's full name, her diagnosis, and personal development details.
-                        </p>
+                    <div class="flag high" id="flag-privacy">
+                        <div class="flag-content">
+                            <h2>A child is named and identified</h2>
+                            <p>This content includes a child's full name, her diagnosis, and personal development
+                                details.
+                            </p>
+                        </div>
+                        <span class="chevron">›</span>
                     </div>
-                    <span class="chevron">›</span>
+
+                    <div class="flag high" id="flag-quotes">
+                        <div class="flag-content">
+                            <h2>A parent is quoted extensively</h2>
+                            <p>The content includes detailed personal quotes from a private individual, not a public
+                                figure.
+                            </p>
+                        </div>
+                        <span class="chevron">›</span>
+                    </div>
+
+                    <div class="flag medium" id="flag-images">
+                        <div class="flag-content">
+                            <h2>Images appear without visible licensing information</h2>
+                            <p>At least one image in this content has no attribution or license information attached.
+                            </p>
+                        </div>
+                        <span class="chevron">›</span>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="deep-dive hidden" id="dive-privacy">
+                <button class="back">← Back</button>
+                <h2>A child is named and identified</h2>
+                <p>This content names a child, describes her autism diagnosis, and includes outcome details about her
+                    development. Before this content is republished or adapted, there are a few things worth
+                    considering.
+                </p>
+                <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two
+                    federal laws.</p>
+                <p><strong>FERPA</strong> protects educational records of students. If this child's information
+                    originated
+                    in any educational or early intervention context, republishing it — even in a news story — may
+                    require
+                    documented consent that covers this specific use.</p>
+                <p><strong>COPPA</strong> applies when content about children under 13 is published online. If this
+                    article
+                    is republished on a new site, the site operator takes on responsibility for that content.</p>
+                <p class="question">Before we go further — do you know whether written consent was obtained from this
+                    family, and whether that consent specifically covers republication on a new website?</p>
+
+                <div class="choices">
+                    <button class="choice" id="yes-consent">Yes, consent exists</button>
+                    <button class="choice" id="no-consent">No, or I'm not sure</button>
                 </div>
 
-                <div class="flag high" id="flag-quotes">
-                    <div class="flag-content">
-                        <h2>A parent is quoted extensively</h2>
-                        <p>The content includes detailed personal quotes from a private individual, not a public figure.
-                        </p>
-                    </div>
-                    <span class="chevron">›</span>
+                <div class="branch hidden" id="branch-yes">
+                    <p>That's an important starting point. Written consent is necessary — but the scope of that consent
+                        matters just as much as its existence.</p>
+                    <p>A few things worth checking:</p>
+                    <p>Does the consent specifically name this website or this type of public-facing content? Consent
+                        obtained for a news story or grant report may not automatically extend to a dissemination
+                        website
+                        with a different audience and purpose.</p>
+                    <p>Does the consent cover the child's diagnosis being named alongside her full name? General media
+                        consent forms often don't address this level of specificity.</p>
+                    <p>Was consent obtained from both parents or legal guardians if applicable?</p>
+                    <p>If you can confirm the consent covers all three — you're in good shape. If any are uncertain,
+                        it's
+                        worth checking with your IRB office or institutional legal counsel before republishing.</p>
+                    <button class="resources-link" id="resources-yes">See relevant legal guidance →</button>
                 </div>
 
-                <div class="flag medium" id="flag-images">
-                    <div class="flag-content">
-                        <h2>Images appear without visible licensing information</h2>
-                        <p>At least one image in this content has no attribution or license information attached.</p>
-                    </div>
-                    <span class="chevron">›</span>
+                <div class="branch hidden" id="branch-no">
+                    <p>That's worth pausing on before this content moves to a new public context.</p>
+                    <p>At minimum, responsible republication would require written consent from the child's parent or
+                        legal
+                        guardian that specifically covers this website and audience, language in that consent that
+                        addresses
+                        the child's diagnosis being publicly identified, and a clear understanding of whether FERPA
+                        applies
+                        given the intervention context.</p>
+                    <p>In the meantime, there are ways to adapt this content responsibly — for example, describing the
+                        family's experience without using identifying details, or asking the family to review and
+                        approve
+                        the specific language used.</p>
+                    <button class="resources-link" id="resources-no">See relevant legal guidance →</button>
                 </div>
 
-            </div>
-        </section>
+            </section>
 
-        <section class="deep-dive hidden" id="dive-privacy">
-            <button class="back">← Back</button>
-            <h2>A child is named and identified</h2>
-            <p>This content names a child, describes her autism diagnosis, and includes outcome details about her
-                development. Before this content is republished or adapted, there are a few things worth considering.
-            </p>
-            <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two
-                federal laws.</p>
-            <p><strong>FERPA</strong> protects educational records of students. If this child's information originated
-                in any educational or early intervention context, republishing it — even in a news story — may require
-                documented consent that covers this specific use.</p>
-            <p><strong>COPPA</strong> applies when content about children under 13 is published online. If this article
-                is republished on a new site, the site operator takes on responsibility for that content.</p>
-            <p class="question">Before we go further — do you know whether written consent was obtained from this
-                family, and whether that consent specifically covers republication on a new website?</p>
+            <section class="deep-dive hidden" id="dive-quotes">
+                <button class="back">← Back</button>
+                <h2>A parent is quoted extensively</h2>
+                <p>This area is under development. It will cover considerations around republishing personal quotes from
+                    private individuals, including scope of consent and context of original publication.</p>
+                <p class="question">Check back soon — this deep dive is coming.</p>
+            </section>
 
-            <div class="choices">
-                <button class="choice" id="yes-consent">Yes, consent exists</button>
-                <button class="choice" id="no-consent">No, or I'm not sure</button>
-            </div>
-
-            <div class="branch hidden" id="branch-yes">
-                <p>That's an important starting point. Written consent is necessary — but the scope of that consent
-                    matters just as much as its existence.</p>
-                <p>A few things worth checking:</p>
-                <p>Does the consent specifically name this website or this type of public-facing content? Consent
-                    obtained for a news story or grant report may not automatically extend to a dissemination website
-                    with a different audience and purpose.</p>
-                <p>Does the consent cover the child's diagnosis being named alongside her full name? General media
-                    consent forms often don't address this level of specificity.</p>
-                <p>Was consent obtained from both parents or legal guardians if applicable?</p>
-                <p>If you can confirm the consent covers all three — you're in good shape. If any are uncertain, it's
-                    worth checking with your IRB office or institutional legal counsel before republishing.</p>
-                <button class="resources-link" id="resources-yes">See relevant legal guidance →</button>
-            </div>
-
-            <div class="branch hidden" id="branch-no">
-                <p>That's worth pausing on before this content moves to a new public context.</p>
-                <p>At minimum, responsible republication would require written consent from the child's parent or legal
-                    guardian that specifically covers this website and audience, language in that consent that addresses
-                    the child's diagnosis being publicly identified, and a clear understanding of whether FERPA applies
-                    given the intervention context.</p>
-                <p>In the meantime, there are ways to adapt this content responsibly — for example, describing the
-                    family's experience without using identifying details, or asking the family to review and approve
-                    the specific language used.</p>
-                <button class="resources-link" id="resources-no">See relevant legal guidance →</button>
-            </div>
-
-        </section>
-
-        <section class="deep-dive hidden" id="dive-quotes">
-            <button class="back">← Back</button>
-            <h2>A parent is quoted extensively</h2>
-            <p>This area is under development. It will cover considerations around republishing personal quotes from
-                private individuals, including scope of consent and context of original publication.</p>
-            <p class="question">Check back soon — this deep dive is coming.</p>
-        </section>
-
-        <section class="deep-dive hidden" id="dive-images">
-            <button class="back">← Back</button>
-            <h2>Images appear without visible licensing information</h2>
-            <p>This area is under development. It will cover image copyright, Creative Commons licensing, stock photo
-                license terms, and what to do when licensing information is absent or unclear.</p>
-            <p class="question">Check back soon — this deep dive is coming.</p>
-        </section>
+            <section class="deep-dive hidden" id="dive-images">
+                <button class="back">← Back</button>
+                <h2>Images appear without visible licensing information</h2>
+                <p>This area is under development. It will cover image copyright, Creative Commons licensing, stock
+                    photo
+                    license terms, and what to do when licensing information is absent or unclear.</p>
+                <p class="question">Check back soon — this deep dive is coming.</p>
+            </section>
 
     </div>
 

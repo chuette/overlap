@@ -1,3 +1,6 @@
+/* Import */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap');
+
 /* Base */
 *,
 *::before,
@@ -8,9 +11,9 @@
 }
 
 body {
-    background-color: #f9f7f4;
-    color: #2c2c2c;
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #e1eef9;
+    color: #000000;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 17px;
     line-height: 1.7;
     padding: 60px 20px;
@@ -24,27 +27,73 @@ body {
 /* Header */
 header {
     margin-bottom: 48px;
-    border-bottom: 1px solid #e0ddd8;
     padding-bottom: 24px;
 }
 
 h1 {
-    font-family: Georgia, serif;
-    font-size: 2.4rem;
-    font-weight: normal;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 500;
     letter-spacing: -0.5px;
-    color: #1a1a1a;
+    color: #000000;
 }
 
 .subtitle {
-    color: #888;
+    color: #949ca1;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.95rem;
     margin-top: 4px;
 }
 
+/* Graph line divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0 32px 0;
+    gap: 0;
+}
+
+.divider-line {
+    display: flex;
+    flex: 1;
+    gap: 4px;
+}
+
+.divider-cell {
+    height: 20px;
+    flex: 1;
+    border: 1px solid #0051ba;
+    border-radius: 1px;
+}
+
+.divider-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.dot-blue {
+    background-color: #0051ba;
+}
+
+.dot-sky {
+    background-color: #69caf0;
+}
+
+.dot-wheat {
+    background-color: #fab317;
+}
+
+.dot-crimson {
+    background-color: #ff3042;
+}
+
 /* Triage */
 .tool-voice {
-    color: #3a3a3a;
+    font-family: Georgia, serif;
+    color: #1a1a1a;
     margin-bottom: 16px;
 }
 
@@ -60,41 +109,42 @@ h1 {
     align-items: center;
     justify-content: space-between;
     padding: 20px 24px;
-    border-radius: 4px;
+    border-radius: 2px;
     background: #fff;
-    border-left: 4px solid transparent;
+    border-left: 5px solid transparent;
     cursor: pointer;
     transition: box-shadow 0.2s ease;
 }
 
 .flag:hover {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 81, 186, 0.12);
 }
 
 .flag.high {
-    border-left-color: #c0622f;
+    border-left-color: #ff3042;
 }
 
 .flag.medium {
-    border-left-color: #d4a017;
+    border-left-color: #fab317;
 }
 
 .flag h2 {
-    font-family: Georgia, serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 1.05rem;
-    font-weight: normal;
-    color: #1a1a1a;
+    font-weight: 500;
+    color: #000000;
     margin-bottom: 4px;
 }
 
 .flag p {
+    font-family: Georgia, serif;
     font-size: 0.9rem;
-    color: #666;
+    color: #949ca1;
 }
 
 .chevron {
     font-size: 1.5rem;
-    color: #bbb;
+    color: #0051ba;
     margin-left: 16px;
     flex-shrink: 0;
 }
@@ -105,22 +155,23 @@ h1 {
 }
 
 .deep-dive h2 {
-    font-family: Georgia, serif;
-    font-size: 1.4rem;
-    font-weight: normal;
-    color: #1a1a1a;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000000;
     margin-bottom: 24px;
 }
 
 .deep-dive p {
+    font-family: Georgia, serif;
     margin-bottom: 16px;
-    color: #3a3a3a;
+    color: #1a1a1a;
 }
 
 .question {
     font-style: italic;
-    color: #555;
-    border-left: 3px solid #e0ddd8;
+    color: #0051ba;
+    border-left: 3px solid #69caf0;
     padding-left: 16px;
     margin: 28px 0;
 }
@@ -128,7 +179,8 @@ h1 {
 .back {
     background: none;
     border: none;
-    color: #888;
+    color: #949ca1;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0;
@@ -137,7 +189,7 @@ h1 {
 }
 
 .back:hover {
-    color: #2c2c2c;
+    color: #000000;
 }
 
 /* Choices */
@@ -149,19 +201,19 @@ h1 {
 
 .choice {
     padding: 12px 24px;
-    border-radius: 4px;
-    border: 1px solid #d0cdc8;
+    border-radius: 2px;
+    border: 1px solid #0051ba;
     background: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.95rem;
-    color: #2c2c2c;
+    color: #0051ba;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .choice:hover {
-    background: #2c2c2c;
+    background: #0051ba;
     color: #fff;
-    border-color: #2c2c2c;
 }
 
 /* Branch */
@@ -169,20 +221,23 @@ h1 {
     margin-top: 24px;
     padding: 24px;
     background: #fff;
-    border-radius: 4px;
-    border: 1px solid #e0ddd8;
+    border-radius: 2px;
+    border: 1px solid #e1eef9;
+    border-left: 3px solid #0051ba;
 }
 
 .branch p {
+    font-family: Georgia, serif;
     margin-bottom: 16px;
-    color: #3a3a3a;
+    color: #1a1a1a;
 }
 
 /* Resources link */
 .resources-link {
     background: none;
     border: none;
-    color: #4a7c8e;
+    color: #0051ba;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0;
@@ -192,14 +247,14 @@ h1 {
 }
 
 .resources-link:hover {
-    color: #2c2c2c;
+    color: #ff3042;
 }
 
 /* Lightbox */
 .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 81, 186, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -209,25 +264,26 @@ h1 {
 
 .lightbox-card {
     background: #fff;
-    border-radius: 6px;
+    border-radius: 2px;
     padding: 40px;
     max-width: 520px;
     width: 100%;
     position: relative;
+    border-top: 4px solid #0051ba;
 }
 
 .lightbox-card h3 {
-    font-family: Georgia, serif;
-    font-size: 1.2rem;
-    font-weight: normal;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
     margin-bottom: 24px;
-    color: #1a1a1a;
+    color: #000000;
 }
 
 .resource {
     margin-bottom: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #e0ddd8;
+    border-bottom: 1px solid #e1eef9;
 }
 
 .resource:last-child {
@@ -237,15 +293,17 @@ h1 {
 }
 
 .resource a {
-    color: #4a7c8e;
+    color: #0051ba;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.95rem;
     display: block;
     margin-bottom: 4px;
 }
 
 .resource p {
+    font-family: Georgia, serif;
     font-size: 0.85rem;
-    color: #888;
+    color: #949ca1;
 }
 
 .close-lightbox {
@@ -255,12 +313,12 @@ h1 {
     background: none;
     border: none;
     font-size: 1rem;
-    color: #888;
+    color: #949ca1;
     cursor: pointer;
 }
 
 .close-lightbox:hover {
-    color: #2c2c2c;
+    color: #ff3042;
 }
 
 /* Utility */
