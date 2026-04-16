@@ -165,4 +165,105 @@ h1 {
 }
 
 /* Branch */
-.branch
+.branch {
+    margin-top: 24px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #e0ddd8;
+}
+
+.branch p {
+    margin-bottom: 16px;
+    color: #3a3a3a;
+}
+
+/* Resources link */
+.resources-link {
+    background: none;
+    border: none;
+    color: #4a7c8e;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 8px;
+    text-decoration: underline;
+    display: block;
+}
+
+.resources-link:hover {
+    color: #2c2c2c;
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.lightbox-card {
+    background: #fff;
+    border-radius: 6px;
+    padding: 40px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+}
+
+.lightbox-card h3 {
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin-bottom: 24px;
+    color: #1a1a1a;
+}
+
+.resource {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0ddd8;
+}
+
+.resource:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.resource a {
+    color: #4a7c8e;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.resource p {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.close-lightbox:hover {
+    color: #2c2c2c;
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}
