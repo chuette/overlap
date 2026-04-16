@@ -7,9 +7,16 @@ document.querySelectorAll('.flag').forEach(flag => {
         if (id === 'flag-privacy') {
             document.getElementById('dive-privacy').classList.remove('hidden');
         }
+        if (id === 'flag-quotes') {
+            document.getElementById('dive-quotes').classList.remove('hidden');
+        }
+        if (id === 'flag-images') {
+            document.getElementById('dive-images').classList.remove('hidden');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
-
 // Back button
 document.querySelectorAll('.back').forEach(btn => {
     btn.addEventListener('click', () => {
