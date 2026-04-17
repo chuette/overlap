@@ -382,6 +382,70 @@ h1 {
     color: #1a1a1a;
 }
 
+/* Content input */
+.content-input {
+    padding-top: 8px;
+}
+
+.content-input h2 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 24px;
+}
+
+.content-input p {
+    font-family: Georgia, serif;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
+textarea {
+    width: 100%;
+    padding: 16px;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid #0051ba;
+    border-radius: 2px;
+    resize: vertical;
+    margin-bottom: 16px;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #0051ba;
+    box-shadow: 0 0 0 3px rgba(0, 81, 186, 0.1);
+}
+
+.submit-content {
+    display: block;
+    padding: 12px 28px;
+    background: #0051ba;
+    color: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-bottom: 16px;
+}
+
+.submit-content:hover {
+    background: #003d8f;
+}
+
+.input-note {
+    font-family: Georgia, serif;
+    font-size: 0.82rem;
+    color: #949ca1;
+    font-style: italic;
+}
+
 /* Utility */
 .hidden {
     display: none;
