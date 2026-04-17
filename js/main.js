@@ -74,6 +74,19 @@ document.getElementById('no-consent').addEventListener('click', () => {
     document.querySelector('.choices').style.opacity = '0.4';
 });
 
+// Quotes choices
+document.getElementById('yes-quotes').addEventListener('click', () => {
+    document.getElementById('branch-quotes-yes').classList.remove('hidden');
+    document.getElementById('branch-quotes-no').classList.add('hidden');
+    document.getElementById('choices-quotes').style.opacity = '0.4';
+});
+
+document.getElementById('no-quotes').addEventListener('click', () => {
+    document.getElementById('branch-quotes-no').classList.remove('hidden');
+    document.getElementById('branch-quotes-yes').classList.add('hidden');
+    document.getElementById('choices-quotes').style.opacity = '0.4';
+});
+
 // Lightbox
 document.querySelectorAll('.resources-link').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -85,6 +98,30 @@ document.querySelector('.close-lightbox').addEventListener('click', () => {
     document.getElementById('lightbox').classList.add('hidden');
 });
 
+document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('lightbox')) {
+        document.getElementById('lightbox').classList.add('hidden');
+    }
+});
+
+// Lightbox trigger
+document.querySelectorAll('.resources-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.id;
+        let content = lightboxContent.privacy;
+        if (id.includes('quotes')) content = lightboxContent.quotes;
+        document.querySelector('.lightbox-card').innerHTML = `
+            <button class="close-lightbox">✕</button>
+            ${content}
+        `;
+        document.getElementById('lightbox').classList.remove('hidden');
+        document.querySelector('.close-lightbox').addEventListener('click', () => {
+            document.getElementById('lightbox').classList.add('hidden');
+        });
+    });
+});
+
+// Close lightbox by clicking outside
 document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target === document.getElementById('lightbox')) {
         document.getElementById('lightbox').classList.add('hidden');
