@@ -1,3 +1,29 @@
+// Content type selection
+document.getElementById('type-web').addEventListener('click', () => {
+    document.getElementById('content-type').classList.add('hidden');
+    document.getElementById('triage').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById('type-social').addEventListener('click', () => {
+    document.getElementById('content-type').classList.add('hidden');
+    document.getElementById('coming-soon').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById('type-both').addEventListener('click', () => {
+    document.getElementById('content-type').classList.add('hidden');
+    document.getElementById('triage').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Back from coming soon
+document.getElementById('back-from-soon').addEventListener('click', () => {
+    document.getElementById('coming-soon').classList.add('hidden');
+    document.getElementById('content-type').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 // Flag selection
 document.querySelectorAll('.flag').forEach(flag => {
     flag.addEventListener('click', () => {
