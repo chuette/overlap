@@ -88,19 +88,27 @@ document.getElementById('no-quotes').addEventListener('click', () => {
 });
 
 // Lightbox
-document.querySelectorAll('.resources-link').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.getElementById('lightbox').classList.remove('hidden');
-    });
-});
+function openLightbox(type) {
+    document.getElementById('lightbox-privacy').classList.add('hidden');
+    document.getElementById('lightbox-quotes').classList.add('hidden');
+    document.getElementById('lightbox-' + type).classList.remove('hidden');
+    document.getElementById('lightbox').classList.remove('hidden');
+}
 
-document.querySelector('.close-lightbox').addEventListener('click', () => {
+function closeLightbox() {
     document.getElementById('lightbox').classList.add('hidden');
-});
+}
+
+document.getElementById('resources-yes').addEventListener('click', () => openLightbox('privacy'));
+document.getElementById('resources-no').addEventListener('click', () => openLightbox('privacy'));
+document.getElementById('resources-quotes-yes').addEventListener('click', () => openLightbox('quotes'));
+document.getElementById('resources-quotes-no').addEventListener('click', () => openLightbox('quotes'));
+
+document.querySelector('.close-lightbox').addEventListener('click', closeLightbox);
 
 document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target === document.getElementById('lightbox')) {
-        document.getElementById('lightbox').classList.add('hidden');
+        closeLightbox();
     }
 });
 
