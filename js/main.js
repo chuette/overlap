@@ -51,11 +51,13 @@ document.querySelectorAll('.flag').forEach(flag => {
     });
 });
 // Back button
-document.querySelectorAll('.back').forEach(btn => {
+// Back button — deep dives only
+document.querySelectorAll('.deep-dive .back').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
         document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
-        document.querySelector('.triage').classList.remove('hidden');
+        document.getElementById('triage').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
 
