@@ -281,3 +281,17 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
         document.getElementById('lightbox').classList.add('hidden');
     }
 });
+
+// Home link — reset to initial state
+document.getElementById('home-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    // Hide everything
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
+    document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
+    // Reset choices opacity
+    document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
+    // Show content type
+    document.getElementById('content-type').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
