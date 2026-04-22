@@ -66,10 +66,31 @@
 
             <textarea id="content-paste" placeholder="Paste your content here..." rows="12"></textarea>
 
+            <p class="input-question">Does this content include images, photos, or other visual media?</p>
+
+            <div class="image-options">
+                <button class="image-option selected" id="images-yes">Yes, ready to review</button>
+                <button class="image-option" id="images-no">No</button>
+                <button class="image-option" id="images-later">Not yet — I'll come back to this</button>
+            </div>
+
             <button class="submit-content" id="submit-content">Review this content →</button>
 
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
+        </section>
+
+        <section class="images-later hidden" id="images-later-note">
+            <button class="back" id="back-from-later">← Back</button>
+            <h2>Image licensing — pending</h2>
+            <p>No problem. When your visuals are finalized, return to this content and run it through Overlap again
+                to review image licensing before you publish.</p>
+            <p class="question">In the meantime, a few things worth keeping in mind as you select images:</p>
+            <p>The absence of copyright information on an image does not mean it is free to use. In the U.S.,
+                copyright attaches automatically at the moment of creation — no notice required.</p>
+            <p>When you're ready, look for images with a clear Creative Commons license, or use a stock photo
+                service and read the license terms carefully before downloading.</p>
+            <button class="submit-content" id="continue-without-images">Continue to content review →</button>
         </section>
 
         <section class="triage hidden" id="triage">
@@ -86,7 +107,7 @@
                         <p>This content includes a child's full name, her diagnosis, and personal development
                             details.</p>
                     </div>
-                    <span class="chevron">›</span>
+                    <span class="chevron">></span>
                 </div>
 
                 <div class="flag high" id="flag-quotes">
@@ -95,7 +116,7 @@
                         <p>The content includes detailed personal quotes from a private individual, not a public
                             figure.</p>
                     </div>
-                    <span class="chevron">›</span>
+                    <span class="chevron">></span>
                 </div>
 
                 <div class="flag medium" id="flag-images">
@@ -103,7 +124,7 @@
                         <h2>Images appear without visible licensing information</h2>
                         <p>At least one image in this content has no attribution or license information attached.</p>
                     </div>
-                    <span class="chevron">›</span>
+                    <span class="chevron">></span>
                 </div>
 
             </div>

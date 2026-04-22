@@ -446,6 +446,63 @@ textarea:focus {
     font-style: italic;
 }
 
+/* Image options */
+.input-question {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    margin-top: 24px;
+}
+
+.image-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.image-option {
+    padding: 10px 20px;
+    border-radius: 2px;
+    border: 1px solid #0051ba;
+    background: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: #0051ba;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.image-option:hover {
+    background: #0051ba;
+    color: #fff;
+}
+
+.image-option.selected {
+    background: #0051ba;
+    color: #fff;
+}
+
+/* Images later */
+.images-later {
+    padding-top: 8px;
+}
+
+.images-later h2 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 24px;
+}
+
+.images-later p {
+    font-family: Georgia, serif;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
 /* Utility */
 .hidden {
     display: none;
