@@ -66,31 +66,10 @@
 
             <textarea id="content-paste" placeholder="Paste your content here..." rows="12"></textarea>
 
-            <p class="input-question">Does this content include images, photos, or other visual media?</p>
-
-            <div class="image-options">
-                <button class="image-option selected" id="images-yes">Yes, ready to review</button>
-                <button class="image-option" id="images-no">No</button>
-                <button class="image-option" id="images-later">Not yet — I'll come back to this</button>
-            </div>
-
             <button class="submit-content" id="submit-content">Review this content →</button>
 
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
-        </section>
-
-        <section class="images-later hidden" id="images-later-note">
-            <button class="back" id="back-from-later">← Back</button>
-            <h2>Image licensing — pending</h2>
-            <p>No problem. When your visuals are finalized, return to this content and run it through Overlap again
-                to review image licensing before you publish.</p>
-            <p class="question">In the meantime, a few things worth keeping in mind as you select images:</p>
-            <p>The absence of copyright information on an image does not mean it is free to use. In the U.S.,
-                copyright attaches automatically at the moment of creation — no notice required.</p>
-            <p>When you're ready, look for images with a clear Creative Commons license, or use a stock photo
-                service and read the license terms carefully before downloading.</p>
-            <button class="submit-content" id="continue-without-images">Continue to content review →</button>
         </section>
 
         <section class="triage hidden" id="triage">
@@ -107,7 +86,7 @@
                         <p>This content includes a child's full name, her diagnosis, and personal development
                             details.</p>
                     </div>
-                    <span class="chevron">></span>
+                    <span class="chevron">›</span>
                 </div>
 
                 <div class="flag high" id="flag-quotes">
@@ -116,15 +95,25 @@
                         <p>The content includes detailed personal quotes from a private individual, not a public
                             figure.</p>
                     </div>
-                    <span class="chevron">></span>
+                    <span class="chevron">›</span>
                 </div>
 
                 <div class="flag medium" id="flag-images">
                     <div class="flag-content">
-                        <h2>Images appear without visible licensing information</h2>
-                        <p>At least one image in this content has no attribution or license information attached.</p>
+                        <h2>This content may include images or visual media</h2>
+                        <p>I can't see images from pasted text — but most web content includes visuals. If yours
+                            does, licensing is worth a look before you publish.</p>
                     </div>
-                    <span class="chevron">></span>
+                    <span class="chevron">›</span>
+                </div>
+
+                <div class="flag ada" id="flag-ada">
+                    <div class="flag-content">
+                        <h2>Accessibility</h2>
+                        <p>Let me check your content for readability, link text, and other accessibility considerations.
+                        </p>
+                    </div>
+                    <span class="chevron">›</span>
                 </div>
 
             </div>
@@ -244,50 +233,114 @@
 
         </section>
 
+        <section class="deep-dive hidden" id="dive-images">
+            <button class="back">← Back</button>
+            <h2>Images and visual media</h2>
+            <p>I can't see images from pasted text — but if your content includes photos, illustrations,
+                charts, or other visuals, licensing is one of the most commonly overlooked compliance
+                questions in web publishing.</p>
+            <p>The most important thing to understand: <strong>the absence of copyright information on an
+                    image does not mean it is free to use.</strong> In the U.S., copyright attaches automatically
+                at the moment of creation. No copyright notice is required. An image without visible
+                attribution is not an unprotected one.</p>
+
+            <p class="question">Does this content include images, photos, charts, or other visual media?</p>
+
+            <div class="choices" id="choices-images">
+                <button class="choice" id="yes-images">Yes</button>
+                <button class="choice" id="no-images">No</button>
+                <button class="choice" id="later-images">Not finalized yet</button>
+            </div>
+
+            <div class="branch hidden" id="branch-images-yes">
+                <p>For each image in your content, you need to be able to answer three questions: who owns
+                    it, what license covers it, and does that license permit this specific use.</p>
+                <p><strong>Stock photography</strong> — images from services like Adobe Stock, Getty, or
+                    Shutterstock are licensed, not purchased. That license specifies exactly what you can
+                    do with the image. Editorial licenses permit use in news and commentary contexts but
+                    not in promotional or commercial ones. A license obtained for one publication does not
+                    automatically extend to a new site with a different audience and purpose.</p>
+                <p><strong>Creative Commons images</strong> — images with a CC license are free to use
+                    under specific conditions. But the conditions vary significantly by license type. CC BY
+                    requires attribution. CC BY-NC prohibits commercial use. CC BY-ND prohibits
+                    modification. CC BY-NC-ND prohibits both. Reading the specific license before using
+                    the image is not optional.</p>
+                <p><strong>Images found via Google</strong> — appearing in search results does not indicate
+                    licensing status. Use Google's image search filter — Tools → Usage Rights — to find
+                    images with Creative Commons licenses. Better still, use a dedicated source like
+                    Unsplash, Pexels, or Wikimedia Commons where license information is explicit.</p>
+                <p><strong>Images from published research</strong> — figures, charts, and diagrams from
+                    journal articles are copyrighted by the publisher unless published under an open access
+                    or Creative Commons license. Reproducing them without permission is infringement even
+                    if the research itself is publicly available.</p>
+                <button class="resources-link" id="resources-images-yes">See relevant legal guidance →</button>
+            </div>
+
+            <div class="branch hidden" id="branch-images-no">
+                <p>No images means no image licensing questions for this content. You're clear on this
+                    one.</p>
+                <p>If visuals are added later before publication, return to this section before you go
+                    live.</p>
+            </div>
+
+            <div class="branch hidden" id="branch-images-later">
+                <p>No problem — image licensing is worth a careful look once your visuals are finalized.
+                    Return to this content in Overlap before you publish.</p>
+                <p>In the meantime, a few things worth keeping in mind as you select images:</p>
+                <p>Look for images with a clear Creative Commons license, or use a stock photo service
+                    and read the license terms carefully before downloading. When in doubt, Unsplash,
+                    Pexels, and Wikimedia Commons are good starting points — license information is
+                    explicit on all three.</p>
+            </div>
+
+        </section>
+
+        <section class="ada-debrief hidden" id="ada-debrief">
+            <button class="back" id="back-from-ada">← Back</button>
+            <h2>Accessibility</h2>
+            <p class="tool-voice">Here's what I can see from your text.</p>
+
+            <div class="ada-finding" id="ada-readability">
+                <h3>Readability</h3>
+                <p id="readability-result">Analyzing your content...</p>
+            </div>
+
+            <div class="ada-finding" id="ada-links">
+                <h3>Link text</h3>
+                <p id="links-result">Analyzing your content...</p>
+            </div>
+
+            <p class="tool-voice beyond">Beyond your text — a few things I can't see:</p>
+
+            <div class="ada-question">
+                <p class="question">Does this content include images, charts, or figures?</p>
+                <p>Each one needs descriptive alt text — not a label, but a description of what the image
+                    communicates. A screen reader user should get the same information from the alt text
+                    that a sighted user gets from the image.</p>
+            </div>
+
+            <div class="ada-question">
+                <p class="question">Does this content include video or audio?</p>
+                <p>Video needs captions. Audio needs a transcript. These are not optional enhancements —
+                    they are the primary way deaf and hard-of-hearing users access this content.</p>
+            </div>
+
+            <div class="ada-question">
+                <p class="question">Does this content use color to convey information?</p>
+                <p>Color alone cannot be the only way information is communicated. Charts, graphs, and
+                    callouts that rely solely on color are inaccessible to colorblind users.</p>
+            </div>
+
+            <button class="resources-link" id="resources-ada">See relevant guidance →</button>
+
+        </section>
+
     </div>
 
     <div class="lightbox hidden" id="lightbox">
         <div class="lightbox-card">
             <button class="close-lightbox">✕</button>
-
-            <div id="lightbox-privacy">
-                <h3>Relevant legal guidance</h3>
-                <div class="resource">
-                    <a href="https://studentprivacy.ed.gov/" target="_blank">U.S. Department of Education — FERPA
-                        guidance</a>
-                    <p>Authoritative plain-language guidance on consent requirements for educational records.</p>
-                </div>
-                <div class="resource">
-                    <a href="https://www.hhs.gov/ohrp/regulations-and-policy/informed-consent/index.html"
-                        target="_blank">HHS Office for Human Research Protections</a>
-                    <p>Covers informed consent requirements in research contexts specifically.</p>
-                </div>
-                <div class="resource">
-                    <a href="https://fpf.org/issue/education/" target="_blank">Future of Privacy Forum — Education
-                        Privacy</a>
-                    <p>Practitioner-facing interpretation of student privacy law.</p>
-                </div>
-            </div>
-
-            <div id="lightbox-quotes" class="hidden">
-                <h3>Relevant legal guidance</h3>
-                <div class="resource">
-                    <a href="https://www.rcfp.org/journals/news-media-and-law-summer-2015/hidden-dangers-republication/"
-                        target="_blank">Reporters Committee — Republication and consent</a>
-                    <p>Covers the legal distinctions between original publication rights and republication rights.</p>
-                </div>
-                <div class="resource">
-                    <a href="https://www.ftc.gov/business-guidance/privacy-security" target="_blank">FTC — Privacy and
-                        security guidance</a>
-                    <p>Federal guidance on privacy obligations when publishing content about private individuals.</p>
-                </div>
-                <div class="resource">
-                    <a href="https://medialaw.org/resources/" target="_blank">Reporters Committee for Freedom of the
-                        Press</a>
-                    <p>Practical legal resources on consent, privacy, and publication rights.</p>
-                </div>
-            </div>
-
+            <div id="lightbox-content"></div>
         </div>
     </div>
 
