@@ -17,40 +17,61 @@
             <p class="subtitle">A research translation tool</p>
         </header>
 
+        <!-- Content type selection — now cards with icons -->
         <section class="content-type" id="content-type">
             <p class="tool-voice">Before we begin — what kind of content are you preparing to publish?</p>
 
             <div class="type-options">
 
-                <div class="type-option" id="type-web">
-                    <div class="type-content">
-                        <h2>Web article or page</h2>
-                        <p>A blog post, news article, resource page, or other content destined for a website.</p>
+                <div class="type-card" id="type-web">
+                    <div class="type-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="6" width="26" height="20" rx="2" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <line x1="3" y1="11" x2="29" y2="11" stroke="#0051ba" stroke-width="2"/>
+                            <circle cx="7" cy="8.5" r="1" fill="#0051ba"/>
+                            <circle cx="11" cy="8.5" r="1" fill="#0051ba"/>
+                            <circle cx="15" cy="8.5" r="1" fill="#0051ba"/>
+                            <line x1="8" y1="16" x2="24" y2="16" stroke="#0051ba" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="8" y1="20" x2="24" y2="20" stroke="#0051ba" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="8" y1="24" x2="18" y2="24" stroke="#0051ba" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                    <span class="chevron">›</span>
+                    <h2>Web article or page</h2>
+                    <p>A blog post, news article, resource page, or other content destined for a website.</p>
                 </div>
 
-                <div class="type-option" id="type-social">
-                    <div class="type-content">
-                        <h2>Social media post</h2>
-                        <p>Content prepared for Instagram, Facebook, LinkedIn, X, or similar platforms.</p>
+                <div class="type-card" id="type-social">
+                    <div class="type-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="16" r="3.5" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <circle cx="24" cy="8" r="3.5" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <circle cx="24" cy="24" r="3.5" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <line x1="11.5" y1="14.2" x2="20.5" y2="9.8" stroke="#0051ba" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="11.5" y1="17.8" x2="20.5" y2="22.2" stroke="#0051ba" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                    <span class="chevron">›</span>
+                    <h2>Social media post</h2>
+                    <p>Content prepared for Instagram, Facebook, LinkedIn, X, or similar platforms.</p>
                 </div>
 
-                <div class="type-option" id="type-both">
-                    <div class="type-content">
-                        <h2>Both</h2>
-                        <p>Content that will appear on a website and be shared or adapted for social media.</p>
+                <div class="type-card" id="type-both">
+                    <div class="type-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="16" r="8" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <circle cx="21" cy="16" r="8" stroke="#0051ba" stroke-width="2" fill="none"/>
+                            <path d="M16 9.5 C18.5 11.5 18.5 20.5 16 22.5 C13.5 20.5 13.5 11.5 16 9.5Z" fill="#0051ba" opacity="0.2"/>
+                            <path d="M16 9.5 C18.5 11.5 18.5 20.5 16 22.5 C13.5 20.5 13.5 11.5 16 9.5Z" stroke="#0051ba" stroke-width="1.5" fill="none"/>
+                        </svg>
                     </div>
-                    <span class="chevron">›</span>
+                    <h2>Both</h2>
+                    <p>Content that will appear on a website and be shared or adapted for social media.</p>
                 </div>
 
             </div>
         </section>
 
+        <!-- Coming soon -->
         <section class="coming-soon hidden" id="coming-soon">
-            <button class="back" id="back-from-soon">← Back</button>
             <h2>Social media content</h2>
             <p>This area is under active development. Overlap's social media compliance layer will surface
                 platform-specific risks including unlicensed audio and music, context collapse, platform terms of
@@ -59,8 +80,8 @@
             <button class="back" id="back-from-soon">← Back</button>
         </section>
 
+        <!-- Content input — pink back button -->
         <section class="content-input hidden" id="content-input">
-            <button class="back" id="back-from-input">← Back</button>
             <h2>Paste your content</h2>
             <p>Paste the text of the article, post, or page you're preparing to publish. Overlap will review it and
                 surface any areas worth a closer look before you go live.</p>
@@ -71,9 +92,11 @@
 
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
-            <button class="back" id="back-from-soon">← Back</button>
+
+            <button class="back-pink" id="back-from-input">← Back</button>
         </section>
 
+        <!-- Triage -->
         <section class="triage hidden" id="triage">
             <p class="tool-voice">I reviewed the content you shared. I found a few areas worth a closer look before
                 you publish or adapt it. None of these are necessarily problems — but each involves a decision worth
@@ -85,8 +108,7 @@
                 <div class="flag high" id="flag-privacy">
                     <div class="flag-content">
                         <h2>A child is named and identified</h2>
-                        <p>This content includes a child's full name, her diagnosis, and personal development
-                            details.</p>
+                        <p>This content includes a child's full name, her diagnosis, and personal development details.</p>
                     </div>
                     <span class="chevron">›</span>
                 </div>
@@ -94,8 +116,7 @@
                 <div class="flag high" id="flag-quotes">
                     <div class="flag-content">
                         <h2>A parent is quoted extensively</h2>
-                        <p>The content includes detailed personal quotes from a private individual, not a public
-                            figure.</p>
+                        <p>The content includes detailed personal quotes from a private individual, not a public figure.</p>
                     </div>
                     <span class="chevron">›</span>
                 </div>
@@ -112,19 +133,17 @@
                 <div class="flag ada" id="flag-ada">
                     <div class="flag-content">
                         <h2>Accessibility</h2>
-                        <p>Let me check your content for readability, link text, and other accessibility considerations.
-                        </p>
+                        <p>Let me check your content for link text and other accessibility considerations.</p>
                     </div>
                     <span class="chevron">›</span>
                 </div>
 
             </div>
-            <button class="back" id="back-from-soon">← Back</button>
-
+            <button class="back" id="back-from-triage">← Back</button>
         </section>
 
+        <!-- Deep dive: Privacy -->
         <section class="deep-dive hidden" id="dive-privacy">
-            <button class="back">← Back</button>
             <h2>A child is named and identified</h2>
             <p>This content names a child, describes her autism diagnosis, and includes outcome details about her
                 development. Before this content is republished or adapted, there are a few things worth
@@ -135,48 +154,21 @@
                 originated in any educational or early intervention context, republishing it — even in a news
                 story — may require documented consent that covers this specific use.</p>
             <p><strong>COPPA</strong> applies when content about children under 13 is published online. If this
-                article is republished on a new site, the site operator takes on responsibility for that
-                content.</p>
+                article is republished on a new site, the site operator takes on responsibility for that content.</p>
             <p class="question">Before we go further — do you know whether written consent was obtained from this
                 family, and whether that consent specifically covers republication on a new website?</p>
 
-            <div class="choices">
+            <div class="choices" id="choices-privacy">
                 <button class="choice" id="yes-consent">Yes, consent exists</button>
-                <button class="choice" id="no-consent">No, or I'm not sure</button>
+                <button class="choice" id="no-consent">No</button>
+                <button class="choice" id="unsure-consent">I don't know</button>
             </div>
 
-            <div class="branch hidden" id="branch-yes">
-                <p>That's an important starting point. Written consent is necessary — but the scope of that
-                    consent matters just as much as its existence.</p>
-                <p>A few things worth checking:</p>
-                <p>Does the consent specifically name this website or this type of public-facing content? Consent
-                    obtained for a news story or grant report may not automatically extend to a dissemination
-                    website with a different audience and purpose.</p>
-                <p>Does the consent cover the child's diagnosis being named alongside her full name? General
-                    media consent forms often don't address this level of specificity.</p>
-                <p>Was consent obtained from both parents or legal guardians if applicable?</p>
-                <p>If you can confirm the consent covers all three — you're in good shape. If any are uncertain,
-                    it's worth checking with your IRB office or institutional legal counsel before
-                    republishing.</p>
-                <button class="resources-link" id="resources-yes">See relevant legal guidance →</button>
-            </div>
-
-            <div class="branch hidden" id="branch-no">
-                <p>That's worth pausing on before this content moves to a new public context.</p>
-                <p>At minimum, responsible republication would require written consent from the child's parent
-                    or legal guardian that specifically covers this website and audience, language in that
-                    consent that addresses the child's diagnosis being publicly identified, and a clear
-                    understanding of whether FERPA applies given the intervention context.</p>
-                <p>In the meantime, there are ways to adapt this content responsibly — for example, describing
-                    the family's experience without using identifying details, or asking the family to review
-                    and approve the specific language used.</p>
-                <button class="resources-link" id="resources-no">See relevant legal guidance →</button>
-            </div>
-            <button class="back" id="back-from-whatever">← Back</button>
+            <button class="back" id="back-from-privacy">← Back</button>
         </section>
 
+        <!-- Deep dive: Quotes -->
         <section class="deep-dive hidden" id="dive-quotes">
-            <button class="back">← Back</button>
             <h2>A parent is quoted extensively</h2>
             <p>This content includes detailed personal quotes from a private individual — a parent describing her
                 family's experience with a research program. The original article was produced by an institutional
@@ -190,55 +182,20 @@
             <p>This matters because Veronica Fernandez is a private individual, not a public figure. Private
                 individuals have stronger legal protections around how their words and image are used — and
                 those protections don't disappear because the content was already published somewhere else.</p>
-
             <p class="question">Do you know whether the original consent specifically covers republication on
                 a new website or in a new context?</p>
 
             <div class="choices" id="choices-quotes">
                 <button class="choice" id="yes-quotes">Yes, it does</button>
-                <button class="choice" id="no-quotes">No, or I'm not sure</button>
+                <button class="choice" id="no-quotes">No</button>
+                <button class="choice" id="unsure-quotes">I don't know</button>
             </div>
 
-            <div class="branch hidden" id="branch-quotes-yes">
-                <p>That's the right foundation. If the consent explicitly covers republication in new contexts,
-                    you're in good shape for this specific use.</p>
-                <p>A few things still worth confirming:</p>
-                <p>Does the consent cover the specific platform or site where this content will appear? Consent
-                    for a university news site may not extend to a practitioner-facing dissemination site with
-                    a different audience and purpose.</p>
-                <p>Does the consent cover adaptation — for example, excerpting quotes, paraphrasing, or using
-                    them in a different format like a social post or newsletter?</p>
-                <p>Is the consent documented in a form you can locate if needed? Verbal or implied consent
-                    is not sufficient for this kind of republication.</p>
-                <p>If all three are confirmed, proceed with confidence. If any are uncertain, reach out to
-                    the original publisher — KU's Life Span Institute communications team — before
-                    republishing.</p>
-                <button class="resources-link" id="resources-quotes-yes">See relevant legal guidance →</button>
-            </div>
-
-            <div class="branch hidden" id="branch-quotes-no">
-                <p>That's worth pausing on — and it's more common than you might think. Institutional
-                    communications teams obtain consent for specific publications, not for all future uses
-                    of that content.</p>
-                <p>You have a few responsible paths forward:</p>
-                <p><strong>Contact the original publisher.</strong> KU's Life Span Institute communications
-                    team produced this article. They will have the original consent documentation and can
-                    tell you what it covers. This is the most direct route.</p>
-                <p><strong>Obtain fresh consent.</strong> If you have a relationship with the family, you
-                    can ask them directly whether they're comfortable with this new use. Document that
-                    consent in writing.</p>
-                <p><strong>Adapt rather than quote.</strong> You can describe the family's experience in
-                    general terms without using their direct quotes or identifying details. This approach
-                    eliminates the consent question while preserving the narrative value of the story.</p>
-                <p>The third option is often the most practical — and it may actually produce more useful
-                    content for a practitioner audience than a direct quote would.</p>
-                <button class="resources-link" id="resources-quotes-no">See relevant legal guidance →</button>
-            </div>
-            <button class="back" id="back-from-whatever">← Back</button>
+            <button class="back" id="back-from-quotes">← Back</button>
         </section>
 
+        <!-- Deep dive: Images -->
         <section class="deep-dive hidden" id="dive-images">
-            <button class="back">← Back</button>
             <h2>Images and visual media</h2>
             <p>I can't see images from pasted text — but if your content includes photos, illustrations,
                 charts, or other visuals, licensing is one of the most commonly overlooked compliance
@@ -247,7 +204,6 @@
                     image does not mean it is free to use.</strong> In the U.S., copyright attaches automatically
                 at the moment of creation. No copyright notice is required. An image without visible
                 attribution is not an unprotected one.</p>
-
             <p class="question">Does this content include images, photos, charts, or other visual media?</p>
 
             <div class="choices" id="choices-images">
@@ -256,51 +212,11 @@
                 <button class="choice" id="later-images">Not finalized yet</button>
             </div>
 
-            <div class="branch hidden" id="branch-images-yes">
-                <p>For each image in your content, you need to be able to answer three questions: who owns
-                    it, what license covers it, and does that license permit this specific use.</p>
-                <p><strong>Stock photography</strong> — images from services like Adobe Stock, Getty, or
-                    Shutterstock are licensed, not purchased. That license specifies exactly what you can
-                    do with the image. Editorial licenses permit use in news and commentary contexts but
-                    not in promotional or commercial ones. A license obtained for one publication does not
-                    automatically extend to a new site with a different audience and purpose.</p>
-                <p><strong>Creative Commons images</strong> — images with a CC license are free to use
-                    under specific conditions. But the conditions vary significantly by license type. CC BY
-                    requires attribution. CC BY-NC prohibits commercial use. CC BY-ND prohibits
-                    modification. CC BY-NC-ND prohibits both. Reading the specific license before using
-                    the image is not optional.</p>
-                <p><strong>Images found via Google</strong> — appearing in search results does not indicate
-                    licensing status. Use Google's image search filter — Tools → Usage Rights — to find
-                    images with Creative Commons licenses. Better still, use a dedicated source like
-                    Unsplash, Pexels, or Wikimedia Commons where license information is explicit.</p>
-                <p><strong>Images from published research</strong> — figures, charts, and diagrams from
-                    journal articles are copyrighted by the publisher unless published under an open access
-                    or Creative Commons license. Reproducing them without permission is infringement even
-                    if the research itself is publicly available.</p>
-                <button class="resources-link" id="resources-images-yes">See relevant legal guidance →</button>
-            </div>
-
-            <div class="branch hidden" id="branch-images-no">
-                <p>No images means no image licensing questions for this content. You're clear on this
-                    one.</p>
-                <p>If visuals are added later before publication, return to this section before you go
-                    live.</p>
-            </div>
-
-            <div class="branch hidden" id="branch-images-later">
-                <p>No problem — image licensing is worth a careful look once your visuals are finalized.
-                    Return to this content in Overlap before you publish.</p>
-                <p>In the meantime, a few things worth keeping in mind as you select images:</p>
-                <p>Look for images with a clear Creative Commons license, or use a stock photo service
-                    and read the license terms carefully before downloading. When in doubt, Unsplash,
-                    Pexels, and Wikimedia Commons are good starting points — license information is
-                    explicit on all three.</p>
-            </div>
-            <button class="back" id="back-from-whatever">← Back</button>
+            <button class="back" id="back-from-images">← Back</button>
         </section>
 
+        <!-- ADA debrief -->
         <section class="ada-debrief hidden" id="ada-debrief">
-            <button class="back" id="back-from-ada">← Back</button>
             <h2>Accessibility</h2>
             <p class="tool-voice">Here's what I can see from your text.</p>
 
@@ -330,12 +246,23 @@
                     callouts that rely solely on color are inaccessible to colorblind users.</p>
             </div>
 
-            <button class="resources-link" id="resources-ada">See relevant guidance →</button>
-            <button class="back" id="back-from-whatever">← Back</button>
+            <button class="back" id="back-from-ada">← Back</button>
         </section>
 
     </div>
 
+    <!-- Branch lightbox — shows when user makes a choice -->
+    <div class="branch-lightbox hidden" id="branch-lightbox">
+        <div class="branch-lightbox-card">
+            <div id="branch-lightbox-content"></div>
+            <div class="branch-lightbox-actions">
+                <button class="resources-link" id="branch-resources-link">See relevant legal guidance →</button>
+                <button class="return-to-flags" id="return-to-flags">Return to flags</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource lightbox -->
     <div class="lightbox hidden" id="lightbox">
         <div class="lightbox-card">
             <button class="close-lightbox">✕</button>
@@ -344,14 +271,6 @@
     </div>
 
     <script src="js/main.js"></script>
-
-    <!-- Completion lightbox -->
-    <div id="completion-lightbox" class="completion-lightbox hidden">
-        <div class="completion-card">
-            <p id="completion-text"></p>
-            <button class="close-completion" id="close-completion">Return to flags →</button>
-        </div>
-    </div>
 </body>
 
 </html>

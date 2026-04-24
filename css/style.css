@@ -54,57 +54,64 @@ h1 {
     margin-top: 4px;
 }
 
-/* Graph line divider */
-.divider {
-    display: flex;
-    align-items: center;
-    margin: 24px 0 32px 0;
-    gap: 0;
-}
-
-.divider-line {
-    display: flex;
-    flex: 1;
-    gap: 4px;
-}
-
-.divider-cell {
-    height: 20px;
-    flex: 1;
-    border: 1px solid #0051ba;
-    border-radius: 1px;
-}
-
-.divider-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-left: 4px;
-}
-
-.dot-blue {
-    background-color: #0051ba;
-}
-
-.dot-sky {
-    background-color: #69caf0;
-}
-
-.dot-wheat {
-    background-color: #fab317;
-}
-
-.dot-crimson {
-    background-color: #ff3042;
-}
-
-/* Triage */
+/* Tool voice */
 .tool-voice {
     font-family: Georgia, serif;
     color: #1a1a1a;
     margin-bottom: 16px;
 }
+
+/* ─── Content type cards ──────────────────────────────────────────────────── */
+
+.content-type {
+    padding-top: 8px;
+}
+
+.type-options {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px 28px;
+    border-radius: 4px;
+    background: #fff;
+    border-top: 4px solid #0051ba;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.type-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 81, 186, 0.14);
+    transform: translateY(-1px);
+}
+
+.type-icon {
+    margin-bottom: 16px;
+}
+
+.type-card h2 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 6px;
+}
+
+.type-card p {
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    color: #949ca1;
+    max-width: 400px;
+}
+
+/* ─── Triage flags ────────────────────────────────────────────────────────── */
 
 .flags {
     margin-top: 32px;
@@ -137,6 +144,10 @@ h1 {
     border-left-color: #fab317;
 }
 
+.flag.ada {
+    border-left-color: #0051ba;
+}
+
 .flag h2 {
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 1.05rem;
@@ -158,7 +169,8 @@ h1 {
     flex-shrink: 0;
 }
 
-/* Deep dive */
+/* ─── Deep dive ───────────────────────────────────────────────────────────── */
+
 .deep-dive {
     padding-top: 8px;
 }
@@ -185,25 +197,11 @@ h1 {
     margin: 28px 0;
 }
 
-.back {
-    background: none;
-    border: none;
-    color: #949ca1;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 0;
-    margin-top: 48px;
-    display: block;
-}
+/* ─── Choices ─────────────────────────────────────────────────────────────── */
 
-.back:hover {
-    color: #000000;
-}
-
-/* Choices */
 .choices {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin: 24px 0;
 }
@@ -225,42 +223,46 @@ h1 {
     color: #fff;
 }
 
-/* Branch */
-.branch {
-    margin-top: 24px;
-    padding: 24px;
-    background: #fff;
-    border-radius: 2px;
-    border: 1px solid #e1eef9;
-    border-left: 3px solid #0051ba;
-}
+/* ─── Back buttons ────────────────────────────────────────────────────────── */
 
-.branch p {
-    font-family: Georgia, serif;
-    margin-bottom: 16px;
-    color: #1a1a1a;
-}
-
-/* Resources link */
-.resources-link {
+.back {
     background: none;
     border: none;
-    color: #0051ba;
+    color: #949ca1;
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0;
-    margin-top: 8px;
-    text-decoration: underline;
+    margin-top: 48px;
     display: block;
 }
 
-.resources-link:hover {
-    color: #ff3042;
+.back:hover {
+    color: #000000;
 }
 
-/* Lightbox */
-.lightbox {
+/* Pink back button — paste screen only */
+.back-pink {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 10px 22px;
+    background: #ffe4e8;
+    color: #c0002a;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.back-pink:hover {
+    background: #ffd0d6;
+}
+
+/* ─── Branch lightbox ─────────────────────────────────────────────────────── */
+
+.branch-lightbox {
     position: fixed;
     inset: 0;
     background: rgba(0, 81, 186, 0.15);
@@ -268,6 +270,97 @@ h1 {
     align-items: center;
     justify-content: center;
     z-index: 100;
+    padding: 20px;
+}
+
+.branch-lightbox-card {
+    background: #fff;
+    border-radius: 2px;
+    padding: 40px;
+    max-width: 580px;
+    width: 100%;
+    position: relative;
+    border-top: 4px solid #0051ba;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.branch-lightbox-card h3 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.branch-lightbox-card p {
+    font-family: Georgia, serif;
+    font-size: 0.97rem;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+    line-height: 1.7;
+}
+
+.branch-lightbox-card p:last-of-type {
+    margin-bottom: 0;
+}
+
+.branch-lightbox-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e1eef9;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Resources link inside branch lightbox */
+.branch-lightbox-actions .resources-link {
+    background: none;
+    border: none;
+    color: #0051ba;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.branch-lightbox-actions .resources-link:hover {
+    color: #ff3042;
+}
+
+/* Return to flags button */
+.return-to-flags {
+    display: block;
+    margin-left: auto;
+    padding: 10px 22px;
+    background: #ff3042;
+    color: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.return-to-flags:hover {
+    background: #cc0020;
+}
+
+/* ─── Resource lightbox ───────────────────────────────────────────────────── */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 81, 186, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
     padding: 20px;
 }
 
@@ -330,49 +423,8 @@ h1 {
     color: #ff3042;
 }
 
-/* Content type selection */
-.content-type {
-    padding-top: 8px;
-}
+/* ─── Coming soon ─────────────────────────────────────────────────────────── */
 
-.type-options {
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.type-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 24px;
-    border-radius: 2px;
-    background: #fff;
-    border-left: 5px solid #0051ba;
-    cursor: pointer;
-    transition: box-shadow 0.2s ease;
-}
-
-.type-option:hover {
-    box-shadow: 0 2px 12px rgba(0, 81, 186, 0.12);
-}
-
-.type-option h2 {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: #000000;
-    margin-bottom: 4px;
-}
-
-.type-option p {
-    font-family: Georgia, serif;
-    font-size: 0.9rem;
-    color: #949ca1;
-}
-
-/* Coming soon */
 .coming-soon {
     padding-top: 8px;
 }
@@ -391,7 +443,8 @@ h1 {
     color: #1a1a1a;
 }
 
-/* Content input */
+/* ─── Content input ───────────────────────────────────────────────────────── */
+
 .content-input {
     padding-top: 8px;
 }
@@ -455,64 +508,8 @@ textarea:focus {
     font-style: italic;
 }
 
-/* Image options */
-.input-question {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.95rem;
-    color: #1a1a1a;
-    margin-bottom: 12px;
-    margin-top: 24px;
-}
+/* ─── ADA debrief ─────────────────────────────────────────────────────────── */
 
-.image-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 24px;
-}
-
-.image-option {
-    padding: 10px 20px;
-    border-radius: 2px;
-    border: 1px solid #0051ba;
-    background: #fff;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.9rem;
-    color: #0051ba;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.image-option:hover {
-    background: #0051ba;
-    color: #fff;
-}
-
-.image-option.selected {
-    background: #0051ba;
-    color: #fff;
-}
-
-/* Images later */
-.images-later {
-    padding-top: 8px;
-}
-
-.images-later h2 {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #000000;
-    margin-bottom: 24px;
-}
-
-.images-later p {
-    font-family: Georgia, serif;
-    margin-bottom: 16px;
-    color: #1a1a1a;
-}
-
-/* ADA debrief */
 .ada-debrief {
     padding-top: 8px;
 }
@@ -577,59 +574,8 @@ textarea:focus {
     margin-bottom: 0;
 }
 
-.flag.ada {
-    border-left-color: #0051ba;
-}
+/* ─── Utility ─────────────────────────────────────────────────────────────── */
 
-/* Completion lightbox */
-.completion-lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 81, 186, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 20px;
-}
-
-.completion-card {
-    background: #fff;
-    border-radius: 2px;
-    padding: 40px;
-    max-width: 520px;
-    width: 100%;
-    position: relative;
-    border-top: 4px solid #0051ba;
-}
-
-.completion-card p {
-    font-family: Georgia, serif;
-    font-size: 1rem;
-    color: #1a1a1a;
-    line-height: 1.7;
-    margin-bottom: 32px;
-}
-
-.close-completion {
-    display: block;
-    margin-left: auto;
-    padding: 10px 22px;
-    background: #ff3042;
-    color: #fff;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 6%;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.close-completion:hover {
-    background: #cc0020;
-}
-
-/* Utility */
 .hidden {
     display: none;
 }

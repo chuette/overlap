@@ -1,188 +1,259 @@
 // Stored content for ADA analysis
 let pastedContent = '';
+let currentFlag = ''; // tracks which flag is active for resource lightbox
 
-// Content type selection
+// ─── Content type selection ───────────────────────────────────────────────────
+
 document.getElementById('type-web').addEventListener('click', () => {
-    document.getElementById('content-type').classList.add('hidden');
-    document.getElementById('content-input').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    show('content-input');
+    hide('content-type');
 });
 
 document.getElementById('type-social').addEventListener('click', () => {
-    document.getElementById('content-type').classList.add('hidden');
-    document.getElementById('coming-soon').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    show('coming-soon');
+    hide('content-type');
 });
 
 document.getElementById('type-both').addEventListener('click', () => {
-    document.getElementById('content-type').classList.add('hidden');
-    document.getElementById('content-input').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    show('content-input');
+    hide('content-type');
 });
 
-// Back from coming soon
+// ─── Back buttons ─────────────────────────────────────────────────────────────
+
 document.getElementById('back-from-soon').addEventListener('click', () => {
-    document.getElementById('coming-soon').classList.add('hidden');
-    document.getElementById('content-type').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    hide('coming-soon');
+    show('content-type');
 });
 
-// Back from input
 document.getElementById('back-from-input').addEventListener('click', () => {
-    document.getElementById('content-input').classList.add('hidden');
-    document.getElementById('content-type').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    hide('content-input');
+    show('content-type');
 });
 
-// Submit content
+document.getElementById('back-from-triage').addEventListener('click', () => {
+    hide('triage');
+    show('content-input');
+});
+
+document.getElementById('back-from-privacy').addEventListener('click', () => {
+    hide('dive-privacy');
+    resetChoices('choices-privacy');
+    show('triage');
+});
+
+document.getElementById('back-from-quotes').addEventListener('click', () => {
+    hide('dive-quotes');
+    resetChoices('choices-quotes');
+    show('triage');
+});
+
+document.getElementById('back-from-images').addEventListener('click', () => {
+    hide('dive-images');
+    resetChoices('choices-images');
+    show('triage');
+});
+
+document.getElementById('back-from-ada').addEventListener('click', () => {
+    hide('ada-debrief');
+    show('triage');
+});
+
+// ─── Submit content ───────────────────────────────────────────────────────────
+
 document.getElementById('submit-content').addEventListener('click', () => {
     pastedContent = document.getElementById('content-paste').value;
-    document.getElementById('content-input').classList.add('hidden');
-    document.getElementById('triage').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    hide('content-input');
+    show('triage');
+    scroll();
 });
 
-// Flag selection
+// ─── Flag selection ───────────────────────────────────────────────────────────
+
 document.querySelectorAll('.flag').forEach(flag => {
     flag.addEventListener('click', () => {
         const id = flag.id;
-        document.getElementById('triage').classList.add('hidden');
-        if (id === 'flag-privacy') {
-            document.getElementById('dive-privacy').classList.remove('hidden');
-        }
-        if (id === 'flag-quotes') {
-            document.getElementById('dive-quotes').classList.remove('hidden');
-        }
-        if (id === 'flag-images') {
-            document.getElementById('dive-images').classList.remove('hidden');
-        }
+        hide('triage');
+        if (id === 'flag-privacy') show('dive-privacy');
+        if (id === 'flag-quotes')  show('dive-quotes');
+        if (id === 'flag-images')  show('dive-images');
         if (id === 'flag-ada') {
             runAdaAnalysis();
-            document.getElementById('ada-debrief').classList.remove('hidden');
+            show('ada-debrief');
         }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scroll();
     });
 });
 
-// Back button — deep dives only
-document.querySelectorAll('.deep-dive .back').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
-        document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
-        document.getElementById('triage').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-});
+// ─── Branch content definitions ───────────────────────────────────────────────
 
-// Consent choices — privacy flag
+const branchContent = {
+
+    'privacy-yes': `
+        <h3>Consent exists — scope is what matters now</h3>
+        <p>Written consent is necessary — but the scope of that consent matters just as much as its existence.</p>
+        <p>A few things worth checking:</p>
+        <p>Does the consent specifically name this website or this type of public-facing content? Consent obtained for a news story or grant report may not automatically extend to a dissemination website with a different audience and purpose.</p>
+        <p>Does the consent cover the child's diagnosis being named alongside her full name? General media consent forms often don't address this level of specificity.</p>
+        <p>Was consent obtained from both parents or legal guardians if applicable?</p>
+        <p>If you can confirm the consent covers all three — you're in good shape. If any are uncertain, it's worth checking with your IRB office or institutional legal counsel before republishing.</p>
+    `,
+
+    'privacy-no': `
+        <h3>No consent — pause before publishing</h3>
+        <p>Responsible republication would require written consent from the child's parent or legal guardian that specifically covers this website and audience, language in that consent that addresses the child's diagnosis being publicly identified, and a clear understanding of whether FERPA applies given the intervention context.</p>
+        <p>In the meantime, there are ways to adapt this content responsibly — for example, describing the family's experience without using identifying details, or asking the family to review and approve the specific language used.</p>
+    `,
+
+    'privacy-unsure': `
+        <h3>Uncertainty is worth resolving before this goes live</h3>
+        <p>Not knowing whether consent exists is functionally the same as not having it — at least until you can confirm. The practical path forward is the same either way.</p>
+        <p>Responsible republication would require written consent from the child's parent or legal guardian that specifically covers this website and audience, language in that consent that addresses the child's diagnosis being publicly identified, and a clear understanding of whether FERPA applies given the intervention context.</p>
+        <p>The most direct next step is checking with whoever managed the original publication — they will have the consent documentation, or will know who does.</p>
+    `,
+
+    'quotes-yes': `
+        <h3>Consent exists — a few things still worth confirming</h3>
+        <p>If the consent explicitly covers republication in new contexts, you're in good shape for this specific use.</p>
+        <p>Does the consent cover the specific platform or site where this content will appear? Consent for a university news site may not extend to a practitioner-facing dissemination site with a different audience and purpose.</p>
+        <p>Does the consent cover adaptation — for example, excerpting quotes, paraphrasing, or using them in a different format like a social post or newsletter?</p>
+        <p>Is the consent documented in a form you can locate if needed? Verbal or implied consent is not sufficient for this kind of republication.</p>
+        <p>If all three are confirmed, proceed with confidence. If any are uncertain, reach out to the original publisher — KU's Life Span Institute communications team — before republishing.</p>
+    `,
+
+    'quotes-no': `
+        <h3>No consent for this context — a few responsible paths forward</h3>
+        <p>Institutional communications teams obtain consent for specific publications, not for all future uses of that content. This is more common than you might think.</p>
+        <p><strong>Contact the original publisher.</strong> KU's Life Span Institute communications team produced this article. They will have the original consent documentation and can tell you what it covers. This is the most direct route.</p>
+        <p><strong>Obtain fresh consent.</strong> If you have a relationship with the family, you can ask them directly whether they're comfortable with this new use. Document that consent in writing.</p>
+        <p><strong>Adapt rather than quote.</strong> You can describe the family's experience in general terms without using their direct quotes or identifying details. This approach eliminates the consent question while preserving the narrative value of the story.</p>
+        <p>The third option is often the most practical — and it may actually produce more useful content for a practitioner audience than a direct quote would.</p>
+    `,
+
+    'quotes-unsure': `
+        <h3>Uncertainty is worth resolving before republishing</h3>
+        <p>Not knowing whether the original consent covers this new use is functionally the same as not having that coverage confirmed. The practical options are the same either way.</p>
+        <p><strong>Contact the original publisher.</strong> KU's Life Span Institute communications team will have the consent documentation. This is the fastest way to get a definitive answer.</p>
+        <p><strong>Obtain fresh consent.</strong> If you have a relationship with the family, a direct conversation — followed by written documentation — resolves the question entirely.</p>
+        <p><strong>Adapt rather than quote.</strong> Describing the family's experience without their direct quotes eliminates the consent question while preserving the story's value for a practitioner audience.</p>
+    `,
+
+    'images-yes': `
+        <h3>Images require a licensing answer for each one</h3>
+        <p>For each image in your content, you need to be able to answer three questions: who owns it, what license covers it, and does that license permit this specific use.</p>
+        <p><strong>Stock photography</strong> — images from services like Adobe Stock, Getty, or Shutterstock are licensed, not purchased. Editorial licenses permit use in news and commentary contexts but not in promotional or commercial ones. A license obtained for one publication does not automatically extend to a new site with a different audience and purpose.</p>
+        <p><strong>Creative Commons images</strong> — CC licenses are free to use under specific conditions that vary significantly by type. CC BY requires attribution. CC BY-NC prohibits commercial use. CC BY-ND prohibits modification. Reading the specific license before using the image is not optional.</p>
+        <p><strong>Images found via Google</strong> — appearing in search results does not indicate licensing status. Use Google's image search filter — Tools → Usage Rights — to find images with Creative Commons licenses. Better still, use Unsplash, Pexels, or Wikimedia Commons where license information is explicit.</p>
+        <p><strong>Images from published research</strong> — figures, charts, and diagrams from journal articles are copyrighted by the publisher unless published under an open access or Creative Commons license. Reproducing them without permission is infringement even if the research itself is publicly available.</p>
+    `,
+
+    'images-later': `
+        <h3>Come back to this before you publish</h3>
+        <p>Image licensing is worth a careful look once your visuals are finalized. Return to this section in Overlap before you go live.</p>
+        <p>In the meantime: look for images with a clear Creative Commons license, or use a stock photo service and read the license terms carefully. When in doubt, Unsplash, Pexels, and Wikimedia Commons are good starting points — license information is explicit on all three.</p>
+    `
+};
+
+// Resource lightbox key per branch
+const branchResourceKey = {
+    'privacy-yes':    'privacy',
+    'privacy-no':     'privacy',
+    'privacy-unsure': 'privacy',
+    'quotes-yes':     'quotes',
+    'quotes-no':      'quotes',
+    'quotes-unsure':  'quotes',
+    'images-yes':     'images',
+    'images-later':   'images'
+};
+
+// ─── Open branch lightbox ─────────────────────────────────────────────────────
+
+function openBranchLightbox(key) {
+    const content = branchContent[key];
+    if (!content) return;
+    currentFlag = branchResourceKey[key] || '';
+    document.getElementById('branch-lightbox-content').innerHTML = content;
+
+    // Show or hide the legal guidance link depending on flag
+    const resourcesLink = document.getElementById('branch-resources-link');
+    if (currentFlag) {
+        resourcesLink.classList.remove('hidden');
+    } else {
+        resourcesLink.classList.add('hidden');
+    }
+
+    document.getElementById('branch-lightbox').classList.remove('hidden');
+}
+
+// ─── Privacy choices ──────────────────────────────────────────────────────────
+
 document.getElementById('yes-consent').addEventListener('click', () => {
-    document.getElementById('branch-yes').classList.remove('hidden');
-    document.getElementById('branch-no').classList.add('hidden');
-    document.querySelector('.choices').style.opacity = '0.4';
-    showCompletion('privacy-yes');
+    dimChoices('choices-privacy');
+    openBranchLightbox('privacy-yes');
 });
 
 document.getElementById('no-consent').addEventListener('click', () => {
-    document.getElementById('branch-no').classList.remove('hidden');
-    document.getElementById('branch-yes').classList.add('hidden');
-    document.querySelector('.choices').style.opacity = '0.4';
-    showCompletion('privacy-no');
+    dimChoices('choices-privacy');
+    openBranchLightbox('privacy-no');
 });
 
-// Quotes choices
+document.getElementById('unsure-consent').addEventListener('click', () => {
+    dimChoices('choices-privacy');
+    openBranchLightbox('privacy-unsure');
+});
+
+// ─── Quotes choices ───────────────────────────────────────────────────────────
+
 document.getElementById('yes-quotes').addEventListener('click', () => {
-    document.getElementById('branch-quotes-yes').classList.remove('hidden');
-    document.getElementById('branch-quotes-no').classList.add('hidden');
-    document.getElementById('choices-quotes').style.opacity = '0.4';
-    showCompletion('quotes-yes');
+    dimChoices('choices-quotes');
+    openBranchLightbox('quotes-yes');
 });
 
 document.getElementById('no-quotes').addEventListener('click', () => {
-    document.getElementById('branch-quotes-no').classList.remove('hidden');
-    document.getElementById('branch-quotes-yes').classList.add('hidden');
-    document.getElementById('choices-quotes').style.opacity = '0.4';
-    showCompletion('quotes-no');
+    dimChoices('choices-quotes');
+    openBranchLightbox('quotes-no');
 });
 
-// Images choices
+document.getElementById('unsure-quotes').addEventListener('click', () => {
+    dimChoices('choices-quotes');
+    openBranchLightbox('quotes-unsure');
+});
+
+// ─── Images choices ───────────────────────────────────────────────────────────
+
 document.getElementById('yes-images').addEventListener('click', () => {
-    document.getElementById('branch-images-yes').classList.remove('hidden');
-    document.getElementById('branch-images-no').classList.add('hidden');
-    document.getElementById('branch-images-later').classList.add('hidden');
-    document.getElementById('choices-images').style.opacity = '0.4';
-    showCompletion('images-yes');
+    dimChoices('choices-images');
+    openBranchLightbox('images-yes');
 });
 
 document.getElementById('no-images').addEventListener('click', () => {
-    document.getElementById('branch-images-no').classList.remove('hidden');
-    document.getElementById('branch-images-yes').classList.add('hidden');
-    document.getElementById('branch-images-later').classList.add('hidden');
-    document.getElementById('choices-images').style.opacity = '0.4';
-    showCompletion('images-yes');
+    dimChoices('choices-images');
+    // No images = nothing substantive to show; just return to triage
+    returnToTriage();
 });
 
 document.getElementById('later-images').addEventListener('click', () => {
-    document.getElementById('branch-images-later').classList.remove('hidden');
-    document.getElementById('branch-images-yes').classList.add('hidden');
-    document.getElementById('branch-images-no').classList.add('hidden');
-    document.getElementById('choices-images').style.opacity = '0.4';
-    showCompletion('images-later');
+    dimChoices('choices-images');
+    openBranchLightbox('images-later');
 });
 
-// ADA analysis functions
+// ─── Branch lightbox actions ──────────────────────────────────────────────────
 
-function analyzeReadability(text) {
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const words = text.split(/\s+/).filter(w => w.trim().length > 0);
-    if (sentences.length === 0 || words.length === 0) return null;
-    const syllables = words.reduce((total, word) => total + countSyllables(word), 0);
-    const avgWordsPerSentence = words.length / sentences.length;
-    const avgSyllablesPerWord = syllables / words.length;
-    const fleschKincaid = 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
-    return Math.round(fleschKincaid);
-}
-
-function checkLinkText(text) {
-    const badPhrases = ['click here', 'read more', 'learn more', 'here', 'this link', 'more info'];
-    const found = [];
-    badPhrases.forEach(phrase => {
-        const regex = new RegExp('\\b' + phrase + '\\b', 'gi');
-        if (regex.test(text)) found.push(phrase);
-    });
-    return found;
-}
-
-// Run ADA analysis
-function runAdaAnalysis() {
-    const text = pastedContent;
-    if (!text || text.trim().length === 0) {
-        document.getElementById('readability-result').textContent =
-            'No content was detected. Paste your content on the previous screen to get a readability analysis.';
-        document.getElementById('links-result').textContent =
-            'No content was detected.';
-        return;
-    }
-
-    // Readability
-
-    // Link text
-    const badLinks = checkLinkText(text);
-    const linksEl = document.getElementById('links-result');
-    if (badLinks.length === 0) {
-        linksEl.textContent = 'No obviously non-descriptive link text detected.';
-    } else {
-        linksEl.innerHTML = `The following non-descriptive link phrases were found: <strong>${badLinks.join(', ')}</strong>. Each link should describe its destination — not the action of clicking.`;
-    }
-}
-
-// ADA debrief — back button
-document.getElementById('back-from-ada').addEventListener('click', () => {
-    document.getElementById('ada-debrief').classList.add('hidden');
-    document.getElementById('triage').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// "See relevant legal guidance" — opens resource lightbox on top
+document.getElementById('branch-resources-link').addEventListener('click', () => {
+    if (!currentFlag) return;
+    const content = lightboxContent[currentFlag];
+    document.getElementById('lightbox-content').innerHTML = content;
+    document.getElementById('lightbox').classList.remove('hidden');
 });
 
-// Lightbox content by flag
+// "Return to flags" — closes branch lightbox and goes back to triage
+document.getElementById('return-to-flags').addEventListener('click', () => {
+    returnToTriage();
+});
+
+// ─── Resource lightbox ────────────────────────────────────────────────────────
+
 const lightboxContent = {
     privacy: `
         <h3>Relevant legal guidance</h3>
@@ -246,69 +317,91 @@ const lightboxContent = {
     `
 };
 
-// Lightbox trigger
-document.querySelectorAll('.resources-link').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const id = btn.id;
-        let content = lightboxContent.privacy;
-        if (id.includes('quotes')) content = lightboxContent.quotes;
-        if (id.includes('images')) content = lightboxContent.images;
-        if (id.includes('ada')) content = lightboxContent.ada;
-        document.getElementById('lightbox-content').innerHTML = content;
-        document.getElementById('lightbox').classList.remove('hidden');
-    });
-});
-
-// Close lightbox
 document.querySelector('.close-lightbox').addEventListener('click', () => {
-    document.getElementById('lightbox').classList.add('hidden');
+    hide('lightbox');
 });
 
 document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target === document.getElementById('lightbox')) {
-        document.getElementById('lightbox').classList.add('hidden');
+        hide('lightbox');
     }
 });
 
-// Home link — reset to initial state
-document.getElementById('home-link').addEventListener('click', (e) => {
-    e.preventDefault();
-    // Hide everything
-    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-    document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
-    document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
-    // Reset choices opacity
-    document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
-    // Show content type
-    document.getElementById('content-type').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+// ─── ADA ─────────────────────────────────────────────────────────────────────
 
-// Completion moment content by flag and branch
-const completionContent = {
-    'privacy-yes': 'When a story involves a named child, make consent scope the first question, not an afterthought after the content is written.',
-    'privacy-no': 'When a story involves a named child, make consent scope the first question, not an afterthought after the content is written.',
-    'quotes-yes': 'Institutional consent covers specific publications, not all future uses. Every time content moves to a new site or audience, the consent question resets.',
-    'quotes-no': 'Institutional consent covers specific publications, not all future uses. Every time content moves to a new site or audience, the consent question resets.',
-    'images-yes': 'Treat image sourcing as a licensing decision, not a search task. Where you find the image determines what you\'re allowed to do with it.',
-    'images-later': 'Treat image sourcing as a licensing decision, not a search task. Where you find the image determines what you\'re allowed to do with it.',
-    'ada': 'Accessible content and findable content are usually the same content. The habits that serve screen reader users tend to serve search engines too.'
-};
-
-function showCompletion(key) {
-    const text = completionContent[key];
-    if (!text) return;
-    document.getElementById('completion-text').textContent = text;
-    document.getElementById('completion-lightbox').classList.remove('hidden');
+function checkLinkText(text) {
+    const badPhrases = ['click here', 'read more', 'learn more', 'here', 'this link', 'more info'];
+    const found = [];
+    badPhrases.forEach(phrase => {
+        const regex = new RegExp('\\b' + phrase + '\\b', 'gi');
+        if (regex.test(text)) found.push(phrase);
+    });
+    return found;
 }
 
-// Close completion lightbox — return to triage
-document.getElementById('close-completion').addEventListener('click', () => {
-    document.getElementById('completion-lightbox').classList.add('hidden');
-    document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
-    document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
-    document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
-    document.getElementById('ada-debrief').classList.add('hidden');
-    document.getElementById('triage').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function runAdaAnalysis() {
+    const text = pastedContent;
+    const linksEl = document.getElementById('links-result');
+
+    if (!text || text.trim().length === 0) {
+        linksEl.textContent = 'No content was detected. Paste your content on the previous screen to get an analysis.';
+        return;
+    }
+
+    const badLinks = checkLinkText(text);
+    if (badLinks.length === 0) {
+        linksEl.textContent = 'No obviously non-descriptive link text detected.';
+    } else {
+        linksEl.innerHTML = `The following non-descriptive link phrases were found: <strong>${badLinks.join(', ')}</strong>. Each link should describe its destination — not the action of clicking.`;
+    }
+}
+
+// ─── Home link ────────────────────────────────────────────────────────────────
+
+document.getElementById('home-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    hide('branch-lightbox');
+    hide('lightbox');
+    resetAllChoices();
+    show('content-type');
+    scroll();
 });
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function show(id) {
+    document.getElementById(id).classList.remove('hidden');
+    scroll();
+}
+
+function hide(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+
+function scroll() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function dimChoices(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.opacity = '0.4';
+}
+
+function resetChoices(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.opacity = '1';
+}
+
+function resetAllChoices() {
+    document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
+}
+
+function returnToTriage() {
+    hide('branch-lightbox');
+    hide('lightbox');
+    document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
+    hide('ada-debrief');
+    resetAllChoices();
+    show('triage');
+}
