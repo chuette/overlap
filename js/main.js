@@ -98,9 +98,9 @@ document.querySelectorAll('.flag').forEach(flag => {
         const id = flag.id;
         hide('triage');
         if (id === 'flag-privacy') show('dive-privacy');
-        if (id === 'flag-quotes')  show('dive-quotes');
-        if (id === 'flag-images')  show('dive-images');
-        if (id === 'flag-ada')     { resetAdaSelection(); show('ada-selection'); }
+        if (id === 'flag-quotes') show('dive-quotes');
+        if (id === 'flag-images') show('dive-images');
+        if (id === 'flag-ada') { resetAdaSelection(); show('ada-selection'); }
     });
 });
 
@@ -228,15 +228,16 @@ function resetAdaSelection() {
         btn.classList.remove('active');
     });
     hide('ada-lets-go');
+    hide('ada-conclusion');
 }
 
 document.querySelectorAll('.ada-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
         const cardKey = btn.dataset.card;
-        const choice  = btn.dataset.choice;
+        const choice = btn.dataset.choice;
         adaSelections[cardKey] = choice;
 
-        // Update card visual state
+        // Update card visual state — no scroll
         const card = document.getElementById('ada-card-' + cardKey.replace('images-ada', 'images'));
         if (card) {
             card.classList.remove('selected-work', 'selected-skip');
@@ -247,9 +248,11 @@ document.querySelectorAll('.ada-toggle').forEach(btn => {
         btn.closest('.ada-card-toggles').querySelectorAll('.ada-toggle').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Show Let's go if at least one "work" selection exists
+        // Show Let's go if at least one "work" selection exists — no scroll
         const hasWork = Object.values(adaSelections).some(v => v === 'work');
-        hasWork ? show('ada-lets-go') : hide('ada-lets-go');
+        const letsGo = document.getElementById('ada-lets-go');
+        if (hasWork) letsGo.classList.remove('hidden');
+        else letsGo.classList.add('hidden');
     });
 });
 
@@ -374,6 +377,11 @@ function openAdaLightbox(key) {
     const toggle = document.getElementById('why-matters-toggle');
     toggle.textContent = 'Why this matters ↓';
 
+    // Update continue button label
+    const continueBtn = document.getElementById('ada-continue');
+    const isLast = (adaQueueIndex === adaQueue.length - 1);
+    continueBtn.textContent = isLast ? 'Done →' : 'Continue →';
+
     show('ada-branch-lightbox');
 }
 
@@ -397,6 +405,20 @@ document.getElementById('ada-branch-resources-link').addEventListener('click', (
     if (!content) return;
     document.getElementById('lightbox-content').innerHTML = content;
     show('lightbox');
+});
+
+// Continue to next ADA card
+document.getElementById('ada-continue').addEventListener('click', () => {
+    adaQueueIndex++;
+    if (adaQueueIndex < adaQueue.length) {
+        openAdaLightbox(adaQueue[adaQueueIndex]);
+    } else {
+        // Last card — "Done" was clicked
+        hide('ada-branch-lightbox');
+        hide('lightbox');
+        document.getElementById('ada-conclusion').classList.remove('hidden');
+        show('ada-selection');
+    }
 });
 
 // Return to accessibility checklist
@@ -448,10 +470,10 @@ function runHeadingAnalysis() {
         findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate for all readers.</p>';
     } else {
         if (h1s.length === 0) findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
-        if (h1s.length > 1)  findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
+        if (h1s.length > 1) findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
         if (h1s.length === 1) findings += '<p>One H1 detected — good.</p>';
-        if (h2s.length > 0)  findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
-        if (h3s.length > 0)  findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h2s.length > 0) findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h3s.length > 0) findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
         // Check for H3 without H2 (skipped level)
         if (h3s.length > 0 && h2s.length === 0) findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level.</p>';
     }
@@ -475,7 +497,7 @@ function runReadabilityAnalysis() {
     // Long sentences (over 40 words)
     const longSentences = sentences.filter(s => s.split(/\s+/).length > 40);
     if (longSentences.length > 0) {
-        findings += `<p><strong>Long sentences:</strong> ${longSentences.length} sentence${longSentences.length > 1 ? 's' : ''} over 40 words. Longest: <em>"${longSentences.sort((a,b) => b.split(/\s+/).length - a.split(/\s+/).length)[0].substring(0,120)}..."</em></p>`;
+        findings += `<p><strong>Long sentences:</strong> ${longSentences.length} sentence${longSentences.length > 1 ? 's' : ''} over 40 words. Longest: <em>"${longSentences.sort((a, b) => b.split(/\s+/).length - a.split(/\s+/).length)[0].substring(0, 120)}..."</em></p>`;
     }
 
     // Dense paragraphs (over 6 lines, approximated as >100 words)
