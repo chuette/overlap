@@ -604,6 +604,15 @@ textarea:focus {
     background: #003d8f;
 }
 
+.ada-btn-sky {
+    background: #e1eef9;
+    color: #0051ba;
+}
+
+.ada-btn-sky:hover {
+    background: #c8dff5;
+}
+
 .ada-btn-green {
     background: #e8f5e9;
     color: #2e7d32;
