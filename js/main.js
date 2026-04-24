@@ -2,10 +2,10 @@
 
 let pastedContent = '';
 let currentFlag = '';
-let adaSelections = {};       // { headings: 'work'|'skip', links: 'work'|'skip', ... }
-let adaQueue = [];            // ordered list of keys where choice === 'work'
-let adaQueueIndex = 0;        // current position in queue
-let currentAdaKey = '';       // which ADA card is showing in the lightbox
+let adaSelections = {};
+let adaQueue = [];
+let adaQueueIndex = 0;
+let currentAdaKey = '';
 
 const ADA_ORDER = ['headings', 'links', 'readability', 'images-ada', 'video', 'tables'];
 
@@ -98,9 +98,9 @@ document.querySelectorAll('.flag').forEach(flag => {
         const id = flag.id;
         hide('triage');
         if (id === 'flag-privacy') show('dive-privacy');
-        if (id === 'flag-quotes') show('dive-quotes');
-        if (id === 'flag-images') show('dive-images');
-        if (id === 'flag-ada') { resetAdaSelection(); show('ada-selection'); }
+        if (id === 'flag-quotes')  show('dive-quotes');
+        if (id === 'flag-images')  show('dive-images');
+        if (id === 'flag-ada')     { resetAdaSelection(); show('ada-selection'); }
     });
 });
 
@@ -140,7 +140,7 @@ document.getElementById('later-images').addEventListener('click', () => {
     dimChoices('choices-images'); openBranchLightbox('images-later');
 });
 
-// ─── Branch lightbox (non-ADA flags) ─────────────────────────────────────────
+// ─── Branch lightbox content ──────────────────────────────────────────────────
 
 const branchContent = {
     'privacy-yes': `
@@ -234,7 +234,7 @@ function resetAdaSelection() {
 document.querySelectorAll('.ada-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
         const cardKey = btn.dataset.card;
-        const choice = btn.dataset.choice;
+        const choice  = btn.dataset.choice;
         adaSelections[cardKey] = choice;
 
         // Update card visual state — no scroll
@@ -261,6 +261,46 @@ document.getElementById('ada-lets-go').addEventListener('click', () => {
     adaQueueIndex = 0;
     if (adaQueue.length === 0) return;
     openAdaLightbox(adaQueue[0]);
+});
+
+// ─── ADA lightbox button listeners ───────────────────────────────────────────
+
+document.getElementById('why-matters-toggle').addEventListener('click', () => {
+    const reg = document.getElementById('ada-second-register');
+    const toggle = document.getElementById('why-matters-toggle');
+    if (reg.classList.contains('hidden')) {
+        reg.classList.remove('hidden');
+        toggle.textContent = 'Why this matters ↑';
+    } else {
+        reg.classList.add('hidden');
+        toggle.textContent = 'Why this matters ↓';
+    }
+});
+
+document.getElementById('ada-branch-resources-link').addEventListener('click', () => {
+    const key = adaResourceKey[currentAdaKey];
+    const content = lightboxContent[key];
+    if (!content) return;
+    document.getElementById('lightbox-content').innerHTML = content;
+    show('lightbox');
+});
+
+document.getElementById('ada-continue').addEventListener('click', () => {
+    adaQueueIndex++;
+    if (adaQueueIndex < adaQueue.length) {
+        openAdaLightbox(adaQueue[adaQueueIndex]);
+    } else {
+        hide('ada-branch-lightbox');
+        hide('lightbox');
+        document.getElementById('ada-conclusion').classList.remove('hidden');
+        show('ada-selection');
+    }
+});
+
+document.getElementById('return-to-ada-selection').addEventListener('click', () => {
+    hide('ada-branch-lightbox');
+    hide('lightbox');
+    show('ada-selection');
 });
 
 // ─── ADA branch lightbox ──────────────────────────────────────────────────────
@@ -354,173 +394,124 @@ const adaResourceKey = {
     tables: 'ada-tables'
 };
 
+const nextLabels = {
+    'headings': 'Heading structure',
+    'links': 'Link text',
+    'readability': 'Readability',
+    'images-ada': 'Images',
+    'video': 'Video and audio',
+    'tables': 'Tables'
+};
+
 function openAdaLightbox(key) {
     currentAdaKey = key;
     const first = adaFirstRegister[key];
     if (!first) return;
 
-    // Build first register HTML with live analysis where relevant
-    let firstHtml = `<h3>${first.title}</h3>${first.html}`;
-    document.getElementById('ada-branch-content').innerHTML = firstHtml;
+    document.getElementById('ada-branch-content').innerHTML = `<h3>${first.title}</h3>${first.html}`;
 
-    // Run live analysis for detectable cards
-    if (key === 'links') runLinkAnalysis();
-    if (key === 'headings') runHeadingAnalysis();
-    if (key === 'readability') runReadabilityAnalysis();
+    if (key === 'links')        runLinkAnalysis();
+    if (key === 'headings')     runHeadingAnalysis();
+    if (key === 'readability')  runReadabilityAnalysis();
 
     // Reset second register
-    const secondReg = document.getElementById('ada-second-register');
-    secondReg.classList.add('hidden');
+    document.getElementById('ada-second-register').classList.add('hidden');
     document.getElementById('ada-second-register-content').innerHTML = adaSecondRegister[key] || '';
+    document.getElementById('why-matters-toggle').textContent = 'Why this matters ↓';
 
-    // Reset Why this matters toggle
-    const toggle = document.getElementById('why-matters-toggle');
-    toggle.textContent = 'Why this matters ↓';
+    // Update continue button label
+    const continueBtn = document.getElementById('ada-continue');
+    const isLast = (adaQueueIndex === adaQueue.length - 1);
     if (isLast) {
         continueBtn.textContent = 'Done →';
     } else {
         const nextKey = adaQueue[adaQueueIndex + 1];
-        const nextLabels = {
-            'headings': 'Heading structure',
-            'links': 'Link text',
-            'readability': 'Readability',
-            'images-ada': 'Images',
-            'video': 'Video and audio',
-            'tables': 'Tables'
-        };
         continueBtn.textContent = 'Continue: ' + (nextLabels[nextKey] || 'Next') + ' →';
     }
-    // Why this matters toggle
-    document.getElementById('why-matters-toggle').addEventListener('click', () => {
-        const reg = document.getElementById('ada-second-register');
-        const toggle = document.getElementById('why-matters-toggle');
-        if (reg.classList.contains('hidden')) {
-            reg.classList.remove('hidden');
-            toggle.textContent = 'Why this matters ↑';
-        } else {
-            reg.classList.add('hidden');
-            toggle.textContent = 'Why this matters ↓';
-        }
-    });
 
-    // ADA resources link
-    document.getElementById('ada-branch-resources-link').addEventListener('click', () => {
-        const key = adaResourceKey[currentAdaKey];
-        const content = lightboxContent[key];
-        if (!content) return;
-        document.getElementById('lightbox-content').innerHTML = content;
-        show('lightbox');
-    });
+    show('ada-branch-lightbox');
+}
 
-    // Continue to next ADA card
-    document.getElementById('ada-continue').addEventListener('click', () => {
-        adaQueueIndex++;
-        if (adaQueueIndex < adaQueue.length) {
-            openAdaLightbox(adaQueue[adaQueueIndex]);
-        } else {
-            // Last card — "Done" was clicked
-            hide('ada-branch-lightbox');
-            hide('lightbox');
-            document.getElementById('ada-conclusion').classList.remove('hidden');
-            show('ada-selection');
-        }
-    });
+// ─── Live text analysis ───────────────────────────────────────────────────────
 
-    // Return to accessibility checklist
-    document.getElementById('return-to-ada-selection').addEventListener('click', () => {
-        hide('ada-branch-lightbox');
-        hide('lightbox');
-        show('ada-selection');
-    });
-
-    // ─── Live text analysis ───────────────────────────────────────────────────────
-
-    function runLinkAnalysis() {
-        const text = pastedContent;
-        const el = document.getElementById('links-findings');
-        if (!el) return;
-        if (!text || !text.trim()) {
-            el.innerHTML = '<p><em>No content detected — paste your content on the previous screen to get an analysis.</em></p>';
-            return;
-        }
-        const badPhrases = ['click here', 'read more', 'learn more', 'here', 'this link', 'more info'];
-        const found = [];
-        badPhrases.forEach(phrase => {
-            if (new RegExp('\\b' + phrase + '\\b', 'gi').test(text)) found.push(phrase);
-        });
-        if (found.length === 0) {
-            el.innerHTML = '<p>No obviously non-descriptive link text detected.</p>';
-        } else {
-            el.innerHTML = `<p>The following non-descriptive link phrases were found: <strong>${found.join(', ')}</strong>.</p>`;
-        }
+function runLinkAnalysis() {
+    const text = pastedContent;
+    const el = document.getElementById('links-findings');
+    if (!el) return;
+    if (!text || !text.trim()) {
+        el.innerHTML = '<p><em>No content detected — paste your content on the previous screen to get an analysis.</em></p>';
+        return;
     }
-
-    function runHeadingAnalysis() {
-        const text = pastedContent;
-        const el = document.getElementById('headings-findings');
-        if (!el) return;
-        if (!text || !text.trim()) {
-            el.innerHTML = '<p><em>No content detected.</em></p>';
-            return;
-        }
-        const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-        // Detect markdown-style headings (#, ##, ###) and short lines in title case
-        const h1s = lines.filter(l => /^#\s/.test(l));
-        const h2s = lines.filter(l => /^##\s/.test(l));
-        const h3s = lines.filter(l => /^###\s/.test(l));
-        const hasAnyHeadings = h1s.length + h2s.length + h3s.length > 0;
-
-        let findings = '';
-        if (!hasAnyHeadings) {
-            findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate for all readers.</p>';
-        } else {
-            if (h1s.length === 0) findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
-            if (h1s.length > 1) findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
-            if (h1s.length === 1) findings += '<p>One H1 detected — good.</p>';
-            if (h2s.length > 0) findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
-            if (h3s.length > 0) findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
-            // Check for H3 without H2 (skipped level)
-            if (h3s.length > 0 && h2s.length === 0) findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level.</p>';
-        }
-        el.innerHTML = findings || '<p>Heading structure looks reasonable based on what I can detect from pasted text.</p>';
+    const badPhrases = ['click here', 'read more', 'learn more', 'here', 'this link', 'more info'];
+    const found = [];
+    badPhrases.forEach(phrase => {
+        if (new RegExp('\\b' + phrase + '\\b', 'gi').test(text)) found.push(phrase);
+    });
+    if (found.length === 0) {
+        el.innerHTML = '<p>No obviously non-descriptive link text detected.</p>';
+    } else {
+        el.innerHTML = `<p>The following non-descriptive link phrases were found: <strong>${found.join(', ')}</strong>.</p>`;
     }
+}
 
-    function runReadabilityAnalysis() {
-        const text = pastedContent;
-        const el = document.getElementById('readability-findings');
-        if (!el) return;
-        if (!text || !text.trim()) {
-            el.innerHTML = '<p><em>No content detected.</em></p>';
-            return;
-        }
-        const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
-        const words = text.split(/\s+/).filter(Boolean);
-        const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
-
-        let findings = '';
-
-        // Long sentences (over 40 words)
-        const longSentences = sentences.filter(s => s.split(/\s+/).length > 40);
-        if (longSentences.length > 0) {
-            findings += `<p><strong>Long sentences:</strong> ${longSentences.length} sentence${longSentences.length > 1 ? 's' : ''} over 40 words. Longest: <em>"${longSentences.sort((a, b) => b.split(/\s+/).length - a.split(/\s+/).length)[0].substring(0, 120)}..."</em></p>`;
-        }
-
-        // Dense paragraphs (over 6 lines, approximated as >100 words)
-        const denseParagraphs = paragraphs.filter(p => p.split(/\s+/).length > 100);
-        if (denseParagraphs.length > 0) {
-            findings += `<p><strong>Dense paragraphs:</strong> ${denseParagraphs.length} paragraph${denseParagraphs.length > 1 ? 's' : ''} that may run long for a screen-reading audience.</p>`;
-        }
-
-        if (!findings) {
-            findings = '<p>No obvious readability issues detected based on sentence length and paragraph density.</p>';
-        }
-
-        el.innerHTML = findings;
+function runHeadingAnalysis() {
+    const text = pastedContent;
+    const el = document.getElementById('headings-findings');
+    if (!el) return;
+    if (!text || !text.trim()) {
+        el.innerHTML = '<p><em>No content detected.</em></p>';
+        return;
     }
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const h1s = lines.filter(l => /^#\s/.test(l));
+    const h2s = lines.filter(l => /^##\s/.test(l));
+    const h3s = lines.filter(l => /^###\s/.test(l));
+    const hasAnyHeadings = h1s.length + h2s.length + h3s.length > 0;
 
-    // ─── Resource lightbox content ────────────────────────────────────────────────
+    let findings = '';
+    if (!hasAnyHeadings) {
+        findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate for all readers.</p>';
+    } else {
+        if (h1s.length === 0)  findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
+        if (h1s.length > 1)    findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
+        if (h1s.length === 1)  findings += '<p>One H1 detected — good.</p>';
+        if (h2s.length > 0)    findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h3s.length > 0)    findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h3s.length > 0 && h2s.length === 0) findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level.</p>';
+    }
+    el.innerHTML = findings || '<p>Heading structure looks reasonable based on what I can detect from pasted text.</p>';
+}
 
-    const adaFoundational = `
+function runReadabilityAnalysis() {
+    const text = pastedContent;
+    const el = document.getElementById('readability-findings');
+    if (!el) return;
+    if (!text || !text.trim()) {
+        el.innerHTML = '<p><em>No content detected.</em></p>';
+        return;
+    }
+    const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+
+    let findings = '';
+    const longSentences = sentences.filter(s => s.split(/\s+/).length > 40);
+    if (longSentences.length > 0) {
+        const longest = longSentences.sort((a, b) => b.split(/\s+/).length - a.split(/\s+/).length)[0];
+        findings += `<p><strong>Long sentences:</strong> ${longSentences.length} sentence${longSentences.length > 1 ? 's' : ''} over 40 words. Longest: <em>"${longest.substring(0, 120)}..."</em></p>`;
+    }
+    const denseParagraphs = paragraphs.filter(p => p.split(/\s+/).length > 100);
+    if (denseParagraphs.length > 0) {
+        findings += `<p><strong>Dense paragraphs:</strong> ${denseParagraphs.length} paragraph${denseParagraphs.length > 1 ? 's' : ''} that may run long for a screen-reading audience.</p>`;
+    }
+    if (!findings) {
+        findings = '<p>No obvious readability issues detected based on sentence length and paragraph density.</p>';
+    }
+    el.innerHTML = findings;
+}
+
+// ─── Resource lightbox content ────────────────────────────────────────────────
+
+const adaFoundational = `
     <div class="resource">
         <a href="https://www.ada.gov/law-and-regs/ada/" target="_blank">Americans with Disabilities Act, Title II (42 U.S.C. § 12132)</a>
         <p>The foundational federal statute requiring accessibility in public university digital content.</p>
@@ -542,8 +533,8 @@ function openAdaLightbox(key) {
         <p>KU's specific guidance on content-level accessibility responsibilities.</p>
     </div>`;
 
-    const lightboxContent = {
-        privacy: `
+const lightboxContent = {
+    privacy: `
         <h3>Relevant legal guidance</h3>
         <div class="resource">
             <a href="https://studentprivacy.ed.gov/" target="_blank">U.S. Department of Education — FERPA guidance</a>
@@ -557,7 +548,7 @@ function openAdaLightbox(key) {
             <a href="https://fpf.org/issue/education/" target="_blank">Future of Privacy Forum — Education Privacy</a>
             <p>Practitioner-facing interpretation of student privacy law.</p>
         </div>`,
-        quotes: `
+    quotes: `
         <h3>Relevant legal guidance</h3>
         <div class="resource">
             <a href="https://www.rcfp.org/journals/news-media-and-law-summer-2015/hidden-dangers-republication/" target="_blank">Reporters Committee — Republication and consent</a>
@@ -571,7 +562,7 @@ function openAdaLightbox(key) {
             <a href="https://www.rcfp.org/resources/" target="_blank">Reporters Committee for Freedom of the Press</a>
             <p>Practical legal resources on consent, privacy, and publication rights.</p>
         </div>`,
-        images: `
+    images: `
         <h3>Relevant legal guidance</h3>
         <div class="resource">
             <a href="https://fairuse.stanford.edu/overview/fair-use/" target="_blank">Stanford Copyright and Fair Use Center</a>
@@ -585,7 +576,7 @@ function openAdaLightbox(key) {
             <a href="https://www.copyright.gov/help/faq/faq-general.html" target="_blank">U.S. Copyright Office — FAQ</a>
             <p>Authoritative answers to common copyright questions including ownership and registration.</p>
         </div>`,
-        'ada-headings': `
+    'ada-headings': `
         <h3>Relevant guidance — heading structure</h3>
         ${adaFoundational}
         <div class="resource">
@@ -596,7 +587,7 @@ function openAdaLightbox(key) {
             <a href="https://www.w3.org/WAI/WCAG21/Understanding/headings-and-labels" target="_blank">WCAG 2.1, SC 2.4.6 — Headings and Labels (Level AA)</a>
             <p>Requires that headings and labels describe topic or purpose.</p>
         </div>`,
-        'ada-links': `
+    'ada-links': `
         <h3>Relevant guidance — link text</h3>
         ${adaFoundational}
         <div class="resource">
@@ -607,7 +598,7 @@ function openAdaLightbox(key) {
             <a href="https://webaim.org/projects/screenreadersurvey10/" target="_blank">WebAIM Screen Reader User Survey</a>
             <p>Research on how screen reader users navigate the web, including link navigation patterns.</p>
         </div>`,
-        'ada-readability': `
+    'ada-readability': `
         <h3>Relevant guidance — readability</h3>
         ${adaFoundational}
         <div class="resource">
@@ -622,7 +613,7 @@ function openAdaLightbox(key) {
             <a href="https://www.nih.gov/institutes-nih/nih-office-director/office-communications-public-liaison/clear-communication/plain-language" target="_blank">NIH Plain Language guidelines</a>
             <p>Science communication best practices from a major federal research funder.</p>
         </div>`,
-        'ada-images': `
+    'ada-images': `
         <h3>Relevant guidance — images</h3>
         ${adaFoundational}
         <div class="resource">
@@ -633,14 +624,14 @@ function openAdaLightbox(key) {
             <a href="https://webaim.org/projects/million/" target="_blank">WebAIM Million Report</a>
             <p>Annual audit of accessibility issues across one million web pages — missing alt text is consistently among the most common.</p>
         </div>`,
-        'ada-video': `
+    'ada-video': `
         <h3>Relevant guidance — video and audio</h3>
         ${adaFoundational}
         <div class="resource">
             <a href="https://www.w3.org/WAI/WCAG21/Understanding/captions-prerecorded" target="_blank">WCAG 2.1, SC 1.2.2 — Captions (Level AA)</a>
             <p>Requires synchronized captions for all prerecorded video content.</p>
         </div>`,
-        'ada-tables': `
+    'ada-tables': `
         <h3>Relevant guidance — tables</h3>
         ${adaFoundational}
         <div class="resource">
@@ -651,24 +642,24 @@ function openAdaLightbox(key) {
             <a href="https://www.w3.org/WAI/WCAG21/Understanding/meaningful-sequence" target="_blank">WCAG 2.1, SC 1.3.2 — Meaningful Sequence (Level A)</a>
             <p>Requires that content order be preserved when structure is stripped away.</p>
         </div>`
-    };
+};
 
-    // ─── Resource lightbox close ──────────────────────────────────────────────────
+// ─── Resource lightbox close ──────────────────────────────────────────────────
 
-    document.querySelector('.close-lightbox').addEventListener('click', () => { hide('lightbox'); });
-    document.getElementById('lightbox').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('lightbox')) hide('lightbox');
-    });
+document.querySelector('.close-lightbox').addEventListener('click', () => { hide('lightbox'); });
+document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('lightbox')) hide('lightbox');
+});
 
-    // ─── Home link ────────────────────────────────────────────────────────────────
+// ─── Home link ────────────────────────────────────────────────────────────────
 
-    document.getElementById('home-link').addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-        hide('branch-lightbox');
-        hide('ada-branch-lightbox');
-        hide('lightbox');
-        resetAllChoices();
-        resetAdaSelection();
-        show('content-type');
-    });
+document.getElementById('home-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    hide('branch-lightbox');
+    hide('ada-branch-lightbox');
+    hide('lightbox');
+    resetAllChoices();
+    resetAdaSelection();
+    show('content-type');
+});
