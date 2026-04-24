@@ -581,6 +581,54 @@ textarea:focus {
     border-left-color: #0051ba;
 }
 
+/* Completion lightbox */
+.completion-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 81, 186, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.completion-card {
+    background: #fff;
+    border-radius: 2px;
+    padding: 40px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    border-top: 4px solid #0051ba;
+}
+
+.completion-card p {
+    font-family: Georgia, serif;
+    font-size: 1rem;
+    color: #1a1a1a;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.close-completion {
+    display: block;
+    margin-left: auto;
+    padding: 10px 22px;
+    background: #ff3042;
+    color: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6%;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.close-completion:hover {
+    background: #cc0020;
+}
+
 /* Utility */
 .hidden {
     display: none;

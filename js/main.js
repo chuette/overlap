@@ -79,12 +79,14 @@ document.getElementById('yes-consent').addEventListener('click', () => {
     document.getElementById('branch-yes').classList.remove('hidden');
     document.getElementById('branch-no').classList.add('hidden');
     document.querySelector('.choices').style.opacity = '0.4';
+    showCompletion('privacy-yes');
 });
 
 document.getElementById('no-consent').addEventListener('click', () => {
     document.getElementById('branch-no').classList.remove('hidden');
     document.getElementById('branch-yes').classList.add('hidden');
     document.querySelector('.choices').style.opacity = '0.4';
+    showCompletion('privacy-no');
 });
 
 // Quotes choices
@@ -92,12 +94,14 @@ document.getElementById('yes-quotes').addEventListener('click', () => {
     document.getElementById('branch-quotes-yes').classList.remove('hidden');
     document.getElementById('branch-quotes-no').classList.add('hidden');
     document.getElementById('choices-quotes').style.opacity = '0.4';
+    showCompletion('quotes-yes');
 });
 
 document.getElementById('no-quotes').addEventListener('click', () => {
     document.getElementById('branch-quotes-no').classList.remove('hidden');
     document.getElementById('branch-quotes-yes').classList.add('hidden');
     document.getElementById('choices-quotes').style.opacity = '0.4';
+    showCompletion('quotes-no');
 });
 
 // Images choices
@@ -106,6 +110,7 @@ document.getElementById('yes-images').addEventListener('click', () => {
     document.getElementById('branch-images-no').classList.add('hidden');
     document.getElementById('branch-images-later').classList.add('hidden');
     document.getElementById('choices-images').style.opacity = '0.4';
+    showCompletion('images-yes');
 });
 
 document.getElementById('no-images').addEventListener('click', () => {
@@ -113,6 +118,7 @@ document.getElementById('no-images').addEventListener('click', () => {
     document.getElementById('branch-images-yes').classList.add('hidden');
     document.getElementById('branch-images-later').classList.add('hidden');
     document.getElementById('choices-images').style.opacity = '0.4';
+    showCompletion('images-yes');
 });
 
 document.getElementById('later-images').addEventListener('click', () => {
@@ -120,17 +126,10 @@ document.getElementById('later-images').addEventListener('click', () => {
     document.getElementById('branch-images-yes').classList.add('hidden');
     document.getElementById('branch-images-no').classList.add('hidden');
     document.getElementById('choices-images').style.opacity = '0.4';
+    showCompletion('images-later');
 });
 
 // ADA analysis functions
-function countSyllables(word) {
-    word = word.toLowerCase().replace(/[^a-z]/g, '');
-    if (word.length <= 3) return 1;
-    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
-    word = word.replace(/^y/, '');
-    const matches = word.match(/[aeiouy]{1,2}/g);
-    return matches ? matches.length : 1;
-}
 
 function analyzeReadability(text) {
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
@@ -165,17 +164,6 @@ function runAdaAnalysis() {
     }
 
     // Readability
-    const grade = analyzeReadability(text);
-    const readabilityEl = document.getElementById('readability-result');
-    if (grade === null) {
-        readabilityEl.textContent = 'Not enough content to analyze.';
-    } else if (grade <= 8) {
-        readabilityEl.innerHTML = `This content reads at approximately a <strong>grade ${grade} level</strong> — well suited for a general practitioner audience.`;
-    } else if (grade <= 12) {
-        readabilityEl.innerHTML = `This content reads at approximately a <strong>grade ${grade} level</strong>. For a practitioner audience, consider simplifying sentence structure and reducing jargon where possible.`;
-    } else {
-        readabilityEl.innerHTML = `This content reads at approximately a <strong>grade ${grade} level</strong>. For a public-facing practitioner audience, a grade 6–8 target is generally recommended. Consider shorter sentences and plainer language.`;
-    }
 
     // Link text
     const badLinks = checkLinkText(text);
@@ -293,5 +281,34 @@ document.getElementById('home-link').addEventListener('click', (e) => {
     document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
     // Show content type
     document.getElementById('content-type').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Completion moment content by flag and branch
+const completionContent = {
+    'privacy-yes': 'When a story involves a named child, make consent scope the first question, not an afterthought after the content is written.',
+    'privacy-no': 'When a story involves a named child, make consent scope the first question, not an afterthought after the content is written.',
+    'quotes-yes': 'Institutional consent covers specific publications, not all future uses. Every time content moves to a new site or audience, the consent question resets.',
+    'quotes-no': 'Institutional consent covers specific publications, not all future uses. Every time content moves to a new site or audience, the consent question resets.',
+    'images-yes': 'Treat image sourcing as a licensing decision, not a search task. Where you find the image determines what you\'re allowed to do with it.',
+    'images-later': 'Treat image sourcing as a licensing decision, not a search task. Where you find the image determines what you\'re allowed to do with it.',
+    'ada': 'Accessible content and findable content are usually the same content. The habits that serve screen reader users tend to serve search engines too.'
+};
+
+function showCompletion(key) {
+    const text = completionContent[key];
+    if (!text) return;
+    document.getElementById('completion-text').textContent = text;
+    document.getElementById('completion-lightbox').classList.remove('hidden');
+}
+
+// Close completion lightbox — return to triage
+document.getElementById('close-completion').addEventListener('click', () => {
+    document.getElementById('completion-lightbox').classList.add('hidden');
+    document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
+    document.querySelectorAll('.branch').forEach(b => b.classList.add('hidden'));
+    document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
+    document.getElementById('ada-debrief').classList.add('hidden');
+    document.getElementById('triage').classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });

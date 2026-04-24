@@ -304,11 +304,6 @@
             <h2>Accessibility</h2>
             <p class="tool-voice">Here's what I can see from your text.</p>
 
-            <div class="ada-finding" id="ada-readability">
-                <h3>Readability</h3>
-                <p id="readability-result">Analyzing your content...</p>
-            </div>
-
             <div class="ada-finding" id="ada-links">
                 <h3>Link text</h3>
                 <p id="links-result">Analyzing your content...</p>
@@ -350,6 +345,13 @@
 
     <script src="js/main.js"></script>
 
+    <!-- Completion lightbox -->
+    <div id="completion-lightbox" class="completion-lightbox hidden">
+        <div class="completion-card">
+            <p id="completion-text"></p>
+            <button class="close-completion" id="close-completion">Return to flags →</button>
+        </div>
+    </div>
 </body>
 
 </html>
