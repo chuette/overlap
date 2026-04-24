@@ -17,10 +17,9 @@
             <p class="subtitle">A research translation tool</p>
         </header>
 
-        <!-- Content type selection — now cards with icons -->
+        <!-- Content type selection -->
         <section class="content-type" id="content-type">
             <p class="tool-voice">Before we begin — what kind of content are you preparing to publish?</p>
-
             <div class="type-options">
 
                 <div class="type-card" id="type-web">
@@ -80,19 +79,15 @@
             <button class="back" id="back-from-soon">← Back</button>
         </section>
 
-        <!-- Content input — pink back button -->
+        <!-- Content input -->
         <section class="content-input hidden" id="content-input">
             <h2>Paste your content</h2>
             <p>Paste the text of the article, post, or page you're preparing to publish. Overlap will review it and
                 surface any areas worth a closer look before you go live.</p>
-
             <textarea id="content-paste" placeholder="Paste your content here..." rows="12"></textarea>
-
             <button class="submit-content" id="submit-content">Review this content →</button>
-
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
-
             <button class="back-pink" id="back-from-input">← Back</button>
         </section>
 
@@ -102,7 +97,6 @@
                 you publish or adapt it. None of these are necessarily problems — but each involves a decision worth
                 making intentionally.</p>
             <p class="tool-voice">Where would you like to start?</p>
-
             <div class="flags">
 
                 <div class="flag high" id="flag-privacy">
@@ -133,7 +127,7 @@
                 <div class="flag ada" id="flag-ada">
                     <div class="flag-content">
                         <h2>Accessibility</h2>
-                        <p>Let me check your content for link text and other accessibility considerations.</p>
+                        <p>Check your content for heading structure, link text, readability, images, media, and tables.</p>
                     </div>
                     <span class="chevron">›</span>
                 </div>
@@ -146,10 +140,8 @@
         <section class="deep-dive hidden" id="dive-privacy">
             <h2>A child is named and identified</h2>
             <p>This content names a child, describes her autism diagnosis, and includes outcome details about her
-                development. Before this content is republished or adapted, there are a few things worth
-                considering.</p>
-            <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two
-                federal laws.</p>
+                development. Before this content is republished or adapted, there are a few things worth considering.</p>
+            <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two federal laws.</p>
             <p><strong>FERPA</strong> protects educational records of students. If this child's information
                 originated in any educational or early intervention context, republishing it — even in a news
                 story — may require documented consent that covers this specific use.</p>
@@ -157,13 +149,11 @@
                 article is republished on a new site, the site operator takes on responsibility for that content.</p>
             <p class="question">Before we go further — do you know whether written consent was obtained from this
                 family, and whether that consent specifically covers republication on a new website?</p>
-
             <div class="choices" id="choices-privacy">
                 <button class="choice" id="yes-consent">Yes, consent exists</button>
                 <button class="choice" id="no-consent">No</button>
                 <button class="choice" id="unsure-consent">I don't know</button>
             </div>
-
             <button class="back" id="back-from-privacy">← Back</button>
         </section>
 
@@ -177,24 +167,21 @@
             <p>But that's not the question worth asking here.</p>
             <p>The more useful question is: <strong>does the consent obtained for the original publication extend
                     to this new context?</strong> When content is republished on a different site, adapted into a new
-                format, or shared with a different audience, the original consent may not automatically cover
-                that new use.</p>
+                format, or shared with a different audience, the original consent may not automatically cover that new use.</p>
             <p>This matters because Veronica Fernandez is a private individual, not a public figure. Private
                 individuals have stronger legal protections around how their words and image are used — and
                 those protections don't disappear because the content was already published somewhere else.</p>
             <p class="question">Do you know whether the original consent specifically covers republication on
                 a new website or in a new context?</p>
-
             <div class="choices" id="choices-quotes">
                 <button class="choice" id="yes-quotes">Yes, it does</button>
                 <button class="choice" id="no-quotes">No</button>
                 <button class="choice" id="unsure-quotes">I don't know</button>
             </div>
-
             <button class="back" id="back-from-quotes">← Back</button>
         </section>
 
-        <!-- Deep dive: Images -->
+        <!-- Deep dive: Images (licensing) -->
         <section class="deep-dive hidden" id="dive-images">
             <h2>Images and visual media</h2>
             <p>I can't see images from pasted text — but if your content includes photos, illustrations,
@@ -205,59 +192,142 @@
                 at the moment of creation. No copyright notice is required. An image without visible
                 attribution is not an unprotected one.</p>
             <p class="question">Does this content include images, photos, charts, or other visual media?</p>
-
             <div class="choices" id="choices-images">
                 <button class="choice" id="yes-images">Yes</button>
                 <button class="choice" id="no-images">No</button>
                 <button class="choice" id="later-images">Not finalized yet</button>
             </div>
-
             <button class="back" id="back-from-images">← Back</button>
         </section>
 
-        <!-- ADA debrief -->
-        <section class="ada-debrief hidden" id="ada-debrief">
+        <!-- ADA: Selection screen -->
+        <section class="ada-selection hidden" id="ada-selection">
             <h2>Accessibility</h2>
-            <p class="tool-voice">Here's what I can see from your text.</p>
+            <p class="ada-orienting">When you write for real readers, including readers using assistive technology,
+                you also tend to write in ways that search engines can understand. Accessible content and findable
+                content are usually the same content.</p>
+            <p class="tool-voice">Select the areas you want to work through, then continue.</p>
 
-            <div class="ada-finding" id="ada-links">
-                <h3>Link text</h3>
-                <p id="links-result">Analyzing your content...</p>
+            <p class="ada-group-label">Based on your text</p>
+
+            <div class="ada-card" id="ada-card-headings" data-key="headings">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Heading structure</h3>
+                        <p>Whether your content uses headings in a logical hierarchy that screen readers and search
+                            engines can follow.</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="headings" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="headings" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
             </div>
 
-            <p class="tool-voice beyond">Beyond your text — a few things I can't see:</p>
-
-            <div class="ada-question">
-                <p class="question">Does this content include images, charts, or figures?</p>
-                <p>Each one needs descriptive alt text — not a label, but a description of what the image
-                    communicates. A screen reader user should get the same information from the alt text
-                    that a sighted user gets from the image.</p>
+            <div class="ada-card" id="ada-card-links" data-key="links">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Link text</h3>
+                        <p>Whether links in your content describe where they go, rather than using phrases like
+                            "click here" or "read more."</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="links" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="links" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="ada-question">
-                <p class="question">Does this content include video or audio?</p>
-                <p>Video needs captions. Audio needs a transcript. These are not optional enhancements —
-                    they are the primary way deaf and hard-of-hearing users access this content.</p>
+            <div class="ada-card" id="ada-card-readability" data-key="readability">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Readability</h3>
+                        <p>Whether sentence length, paragraph density, and technical vocabulary may create friction
+                            for readers outside your field.</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="readability" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="readability" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="ada-question">
-                <p class="question">Does this content use color to convey information?</p>
-                <p>Color alone cannot be the only way information is communicated. Charts, graphs, and
-                    callouts that rely solely on color are inaccessible to colorblind users.</p>
+            <p class="ada-group-label">Beyond your text</p>
+
+            <div class="ada-card" id="ada-card-images" data-key="images-ada">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Images</h3>
+                        <p>Alt text, informational images, and identifiable people — things I can't see from pasted
+                            text but worth checking before you publish.</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="images-ada" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="images-ada" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
             </div>
 
-            <button class="back" id="back-from-ada">← Back</button>
+            <div class="ada-card" id="ada-card-video" data-key="video">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Video and audio</h3>
+                        <p>Captions and transcripts — the accessibility standard for media that I can't hear or
+                            watch from pasted text.</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="video" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="video" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ada-card" id="ada-card-tables" data-key="tables">
+                <div class="ada-card-main">
+                    <div class="ada-card-text">
+                        <h3>Tables</h3>
+                        <p>Whether tables in your content have clear headers and are used for data rather than layout.</p>
+                    </div>
+                    <div class="ada-card-toggles">
+                        <button class="ada-toggle work" data-card="tables" data-choice="work">Work on this</button>
+                        <button class="ada-toggle skip" data-card="tables" data-choice="skip">Skip for now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ada-footer">
+                <button class="back-pink" id="back-from-ada-selection">← Back</button>
+                <button class="lets-go hidden" id="ada-lets-go">Let's go →</button>
+            </div>
+
         </section>
 
     </div>
 
-    <!-- Branch lightbox — shows when user makes a choice -->
+    <!-- Branch lightbox — other flags -->
     <div class="branch-lightbox hidden" id="branch-lightbox">
         <div class="branch-lightbox-card">
             <div id="branch-lightbox-content"></div>
             <div class="branch-lightbox-actions">
                 <button class="resources-link" id="branch-resources-link">See relevant legal guidance →</button>
                 <button class="return-to-flags" id="return-to-flags">Return to flags</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADA branch lightbox — sequential cards with two registers -->
+    <div class="branch-lightbox hidden" id="ada-branch-lightbox">
+        <div class="branch-lightbox-card">
+            <div id="ada-branch-content"></div>
+            <div class="ada-second-register hidden" id="ada-second-register">
+                <div id="ada-second-register-content"></div>
+            </div>
+            <div class="branch-lightbox-actions ada-lightbox-actions">
+                <button class="why-matters-toggle" id="why-matters-toggle">Why this matters ↓</button>
+                <div class="ada-branch-right">
+                    <button class="resources-link" id="ada-branch-resources-link">See relevant guidance →</button>
+                    <button class="return-to-flags ada-return" id="return-to-ada-selection">Return to accessibility checklist</button>
+                </div>
             </div>
         </div>
     </div>
