@@ -104,6 +104,13 @@ h1 {
     max-width: 400px;
 }
 
+.type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
 /* ─── Triage flags ──────────────────────────────────────────────────────────── */
 
 .flags {
@@ -415,9 +422,17 @@ h1 {
 /* ─── Quill heading button labels ───────────────────────────────────────────── */
 
 /* Quill renders .ql-header[value="1"] etc. — we label them via CSS */
-#quill-toolbar button.ql-header[value="1"]::before { content: "H1"; }
-#quill-toolbar button.ql-header[value="2"]::before { content: "H2"; }
-#quill-toolbar button.ql-header[value="3"]::before { content: "H3"; }
+#quill-toolbar button.ql-header[value="1"]::before {
+    content: "H1";
+}
+
+#quill-toolbar button.ql-header[value="2"]::before {
+    content: "H2";
+}
+
+#quill-toolbar button.ql-header[value="3"]::before {
+    content: "H3";
+}
 
 /* Bold / italic / link use Quill's built-in SVG icons — just size them */
 #quill-toolbar button.ql-bold svg,
