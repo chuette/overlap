@@ -394,6 +394,8 @@ textarea:focus {
     transition: border-left-color 0.2s ease, box-shadow 0.2s ease;
     flex: 1 1 calc(33% - 12px);
     min-width: 180px;
+    display: flex;
+    flex-direction: column;
 }
 
 .ada-card.selected-work {
@@ -412,10 +414,12 @@ textarea:focus {
     align-items: flex-start;
     padding: 18px 20px;
     gap: 12px;
+    height: 100%;
 }
 
 .ada-card-text {
     flex: 1;
+    width: 100%;
 }
 
 .ada-card-text h3 {
