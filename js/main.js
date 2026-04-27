@@ -98,9 +98,9 @@ document.querySelectorAll('.flag').forEach(flag => {
         const id = flag.id;
         hide('triage');
         if (id === 'flag-privacy') show('dive-privacy');
-        if (id === 'flag-quotes')  show('dive-quotes');
-        if (id === 'flag-images')  show('dive-images');
-        if (id === 'flag-ada')     { resetAdaSelection(); show('ada-selection'); }
+        if (id === 'flag-quotes') show('dive-quotes');
+        if (id === 'flag-images') show('dive-images');
+        if (id === 'flag-ada') { resetAdaSelection(); show('ada-selection'); }
     });
 });
 
@@ -234,7 +234,7 @@ function resetAdaSelection() {
 document.querySelectorAll('.ada-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
         const cardKey = btn.dataset.card;
-        const choice  = btn.dataset.choice;
+        const choice = btn.dataset.choice;
         adaSelections[cardKey] = choice;
 
         // Update card visual state — no scroll
@@ -266,15 +266,10 @@ document.getElementById('ada-lets-go').addEventListener('click', () => {
 // ─── ADA lightbox button listeners ───────────────────────────────────────────
 
 document.getElementById('why-matters-toggle').addEventListener('click', () => {
-    const reg = document.getElementById('ada-second-register');
-    const toggle = document.getElementById('why-matters-toggle');
-    if (reg.classList.contains('hidden')) {
-        reg.classList.remove('hidden');
-        toggle.textContent = 'Why this matters ↑';
-    } else {
-        reg.classList.add('hidden');
-        toggle.textContent = 'Why this matters ↓';
-    }
+    const content = document.getElementById('ada-second-register-content').innerHTML;
+    if (!content) return;
+    document.getElementById('lightbox-content').innerHTML = content;
+    show('lightbox');
 });
 
 document.getElementById('ada-branch-resources-link').addEventListener('click', () => {
@@ -410,9 +405,9 @@ function openAdaLightbox(key) {
 
     document.getElementById('ada-branch-content').innerHTML = `<h3>${first.title}</h3>${first.html}`;
 
-    if (key === 'links')        runLinkAnalysis();
-    if (key === 'headings')     runHeadingAnalysis();
-    if (key === 'readability')  runReadabilityAnalysis();
+    if (key === 'links') runLinkAnalysis();
+    if (key === 'headings') runHeadingAnalysis();
+    if (key === 'readability') runReadabilityAnalysis();
 
     // Reset second register
     document.getElementById('ada-second-register').classList.add('hidden');
@@ -472,11 +467,11 @@ function runHeadingAnalysis() {
     if (!hasAnyHeadings) {
         findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate for all readers.</p>';
     } else {
-        if (h1s.length === 0)  findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
-        if (h1s.length > 1)    findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
-        if (h1s.length === 1)  findings += '<p>One H1 detected — good.</p>';
-        if (h2s.length > 0)    findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
-        if (h3s.length > 0)    findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h1s.length === 0) findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
+        if (h1s.length > 1) findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
+        if (h1s.length === 1) findings += '<p>One H1 detected — good.</p>';
+        if (h2s.length > 0) findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
+        if (h3s.length > 0) findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
         if (h3s.length > 0 && h2s.length === 0) findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level.</p>';
     }
     el.innerHTML = findings || '<p>Heading structure looks reasonable based on what I can detect from pasted text.</p>';

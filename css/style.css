@@ -592,18 +592,28 @@ textarea:focus {
 /* ─── ADA lightbox extras ───────────────────────────────────────────────────── */
 
 .ada-lightbox-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     margin-top: 32px;
     padding-top: 24px;
     border-top: 1px solid #e1eef9;
 }
 
+.ada-btn-row-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.ada-btn-row-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
 .ada-btn {
-    padding: 10px 16px;
     font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.88rem;
     border-radius: 6px;
     cursor: pointer;
     border: none;
@@ -611,13 +621,15 @@ textarea:focus {
     text-align: center;
 }
 
-.ada-btn-blue {
-    background: #0051ba;
-    color: #fff;
+.ada-btn-top {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
-.ada-btn-blue:hover {
-    background: #003d8f;
+.ada-btn-bottom {
+    padding: 9px 14px;
+    font-size: 0.82rem;
 }
 
 .ada-btn-sky {
@@ -629,6 +641,15 @@ textarea:focus {
     background: #c8dff5;
 }
 
+.ada-btn-blue {
+    background: #0051ba;
+    color: #fff;
+}
+
+.ada-btn-blue:hover {
+    background: #003d8f;
+}
+
 .ada-btn-green {
     background: #e8f5e9;
     color: #2e7d32;
@@ -638,63 +659,13 @@ textarea:focus {
     background: #c8e6c9;
 }
 
-.ada-btn-return {
-    background: #ff3042;
-    color: #fff;
+.ada-btn-gray {
+    background: #e8e9ea;
+    color: #444;
 }
 
-.ada-btn-return:hover {
-    background: #cc0020;
-}
-
-.why-matters-toggle {
-    background: none;
-    border: none;
-    color: #0051ba;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 0;
-    text-decoration: underline;
-}
-
-.why-matters-toggle:hover {
-    color: #003d8f;
-}
-
-/* Second register */
-.ada-second-register {
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid #e1eef9;
-}
-
-.ada-second-register h4 {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #000000;
-    margin-bottom: 16px;
-}
-
-.ada-second-register p {
-    font-family: Georgia, serif;
-    font-size: 0.93rem;
-    color: #3a3a3a;
-    margin-bottom: 14px;
-    line-height: 1.7;
-}
-
-/* Findings blocks inside lightbox */
-#headings-findings p,
-#links-findings p,
-#readability-findings p {
-    background: #f4f8fd;
-    border-left: 3px solid #69caf0;
-    padding: 10px 14px;
-    margin-bottom: 10px;
-    border-radius: 1px;
-    font-size: 0.93rem;
+.ada-btn-gray:hover {
+    background: #d5d6d7;
 }
 
 /* ─── Resource lightbox ─────────────────────────────────────────────────────── */
