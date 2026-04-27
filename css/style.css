@@ -67,12 +67,6 @@ h1 {
     padding-top: 8px;
 }
 
-.ada-group {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-}
 
 .type-card {
     display: flex;
@@ -621,6 +615,7 @@ textarea:focus {
     border: none;
     transition: background 0.2s ease;
     text-align: center;
+    width: 100%;
 }
 
 .ada-btn-top {
