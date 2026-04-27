@@ -1,6 +1,7 @@
 // ─── State ────────────────────────────────────────────────────────────────────
 
-let pastedContent = '';
+let pastedContent = '';   // plain text — used by link + readability analysis
+let pastedHTML = '';      // HTML from Quill — used by heading analysis
 let currentFlag = '';
 let adaSelections = {};
 let adaQueue = [];
@@ -8,6 +9,71 @@ let adaQueueIndex = 0;
 let currentAdaKey = '';
 
 const ADA_ORDER = ['headings', 'links', 'readability', 'images-ada', 'video', 'tables'];
+
+// ─── OASIS sample article (pre-fill) ─────────────────────────────────────────
+// Remove the initQuill() pre-fill call below to revert to blank editor.
+
+const OASIS_ARTICLE = `Parents of autistic children find training, support through online OASIS program
+
+LAWRENCE — When her 2-year-old daughter was diagnosed with autism spectrum disorder, Wyandotte County resident Veronica Fernandez tried to take in the information and project normalcy. But on the inside, she said, she was scared and overwhelmed with questions about her daughter, Valeria Hinojosa.
+
+Fernandez wondered if there was more she could have done. Would her daughter ever speak, or say more than just "mom"? How would Hinojosa live after her mother was gone?
+
+Thinking back to the day her daughter was diagnosed, Fernandez said, "As a parent, when you go out of that room with that hard feeling of the diagnosis, you don't know what to do, but you're trying to help your child much as you can."
+
+The need to help her daughter led Fernandez to a University of Kansas research and training program that she credits with her daughter's growth: Online and Applied System for Intervention Skills, or OASIS. OASIS aims to help families and caregivers learn evidence-based strategies founded on behavioral science, such as applied behavior analysis. With limited training options available to those caring for autistic children, OASIS is a bridge between diagnosis and intervention.
+
+Jay Buzhardt, research professor at the KU Life Span Institute's Juniper Gardens Children's Project, and Linda Heitzman-Powell, professor of pediatrics at KU Medical Center, lead OASIS. Buzhardt said the gap between a child's diagnosis and access to intervention services can last months or even years.
+
+"Since we know that early intervention is key to improving language and social-communication outcomes, OASIS is one way to help fill that gap," Buzhardt said.
+
+Now with new support from a three-year, $750,000 grant from the National Institute on Disability, Independent Living, and Rehabilitation Research, OASIS will develop resources to expand the program's reach to more parents and caregivers like Fernandez, who may struggle to know where to start when they see differences in how their child is developing compared to others.
+
+The funding builds on several years of federal support for development and testing that began in 2007, which has allowed the program to expand to serve a national audience. Additionally, the state of Kansas has contributed to the project's impact on Kansans, particularly those in rural areas. In 2022, for example, through a $500,000 grant from the Kansas Department for Families and Children, the Kansas Family Support Center based at KU adopted OASIS as an evidence-based practice for parents seeking services for children with intellectual development disabilities.
+
+Fernandez said she spent the months between diagnosis and starting OASIS fraught with worry for her child.
+
+"But that was before I got to know these strategies and that there was this program," Fernandez said. "They really give you hope."
+
+Importantly for Fernandez, the program provides materials and training in Spanish and English, and she worked with a bilingual, Latino coach. That made the program more accessible and culturally relevant for Fernandez, for whom English is a second language.
+
+"After the training, Valeria was seeing me more, at my eyes," Fernandez said. "She was more aware of her surroundings. Today, she's doing great."
+
+Heitzman-Powell said that the program empowers families.
+
+"OASIS was built upon the adage 'give a man a fish, you feed him for a day; teach a man to fish, and you feed him for life,'" said Heitzman-Powell. "That is what OASIS does for these families: It teaches them these fundamental strategies for behavior change that they can take with them anywhere, enabling them to continue to foster learning in their child over time."
+
+While geographic constraints can decrease access to treatment and effective parent and caregiver training services, virtual OASIS sessions can connect to families wherever they are — even internationally. The training includes a set of modules, each of which has online tutorials followed by telehealth sessions with a certified OASIS coach. Caregivers receive one-on-one feedback about the use of the strategies they learned in the tutorials. The training lasts about 16-24 weeks, depending on families' schedules and whether they need additional training in a specific area.
+
+Since its start, OASIS has been delivered to 517 families with 177 certified trainers across the country.
+
+Fernandez said she recommends OASIS to every parent of a child with autism.
+
+"Now we have this 10-year-old girl (who is) very fluent," Fernandez said. "She can speak. She can do a lot of things that she wasn't able to. This program opened my mind about what really ABA is about. Having that training, you will be able to help your own child."
+
+View additional information regarding OASIS Parent Training for caregivers of children with autism spectrum disorder (ASD) and/or intellectual and/or developmental disabilities (I/DD).`;
+
+// ─── Quill init ───────────────────────────────────────────────────────────────
+
+let quill;
+
+function initQuill() {
+    quill = new Quill('#quill-editor', {
+        modules: {
+            toolbar: '#quill-toolbar'
+        },
+        theme: 'snow',
+        placeholder: 'Paste your content here...'
+    });
+
+    // Pre-fill with OASIS article as plain text
+    // To revert to blank editor, delete the next two lines.
+    quill.setText(OASIS_ARTICLE);
+    quill.setSelection(0, 0);
+}
+
+// Init Quill after DOM is ready
+document.addEventListener('DOMContentLoaded', initQuill);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -85,10 +151,14 @@ document.getElementById('back-from-ada-selection').addEventListener('click', () 
 });
 
 // ─── Submit content ───────────────────────────────────────────────────────────
+// Extracts both plain text (for link/readability) and HTML (for heading detection)
 
 document.getElementById('submit-content').addEventListener('click', () => {
-    pastedContent = document.getElementById('content-paste').value;
-    hide('content-input'); show('triage');
+    if (!quill) return;
+    pastedContent = quill.getText();          // plain text — link + readability
+    pastedHTML = quill.root.innerHTML;        // HTML — heading detection
+    hide('content-input');
+    show('triage');
 });
 
 // ─── Flag selection ───────────────────────────────────────────────────────────
@@ -237,18 +307,15 @@ document.querySelectorAll('.ada-toggle').forEach(btn => {
         const choice = btn.dataset.choice;
         adaSelections[cardKey] = choice;
 
-        // Update card visual state — no scroll
         const card = document.getElementById('ada-card-' + cardKey.replace('images-ada', 'images'));
         if (card) {
             card.classList.remove('selected-work', 'selected-skip');
             card.classList.add(choice === 'work' ? 'selected-work' : 'selected-skip');
         }
 
-        // Update button active states within this card
         btn.closest('.ada-card-toggles').querySelectorAll('.ada-toggle').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Show Let's go if at least one "work" selection exists — no scroll
         const hasWork = Object.values(adaSelections).some(v => v === 'work');
         const letsGo = document.getElementById('ada-lets-go');
         if (hasWork) letsGo.classList.remove('hidden');
@@ -303,7 +370,7 @@ document.getElementById('return-to-ada-selection').addEventListener('click', () 
 const adaFirstRegister = {
     headings: {
         title: 'Heading structure',
-        html: `<p>Here's what I can detect from your pasted text about heading structure.</p>
+        html: `<p>Here's what I can detect from your content about heading structure.</p>
                <div id="headings-findings"></div>
                <p>Fix the hierarchy before publishing. Use "Why this matters" for the accessibility and discoverability implications.</p>`
     },
@@ -409,12 +476,10 @@ function openAdaLightbox(key) {
     if (key === 'headings') runHeadingAnalysis();
     if (key === 'readability') runReadabilityAnalysis();
 
-    // Reset second register
     document.getElementById('ada-second-register').classList.add('hidden');
     document.getElementById('ada-second-register-content').innerHTML = adaSecondRegister[key] || '';
     document.getElementById('why-matters-toggle').textContent = 'Why this matters ↓';
 
-    // Update continue button label
     const continueBtn = document.getElementById('ada-continue');
     const isLast = (adaQueueIndex === adaQueue.length - 1);
     if (isLast) {
@@ -430,6 +495,7 @@ function openAdaLightbox(key) {
 // ─── Live text analysis ───────────────────────────────────────────────────────
 
 function runLinkAnalysis() {
+    // Uses plain text — link phrase detection doesn't need HTML
     const text = pastedContent;
     const el = document.getElementById('links-findings');
     if (!el) return;
@@ -450,34 +516,56 @@ function runLinkAnalysis() {
 }
 
 function runHeadingAnalysis() {
-    const text = pastedContent;
+    // Uses pastedHTML from Quill — detects real <h1>, <h2>, <h3> tags
     const el = document.getElementById('headings-findings');
     if (!el) return;
-    if (!text || !text.trim()) {
-        el.innerHTML = '<p><em>No content detected.</em></p>';
+
+    const html = pastedHTML || '';
+    if (!html || html === '<p><br></p>' || !html.trim()) {
+        el.innerHTML = '<p><em>No content detected — paste your content on the previous screen to get an analysis.</em></p>';
         return;
     }
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-    const h1s = lines.filter(l => /^#\s/.test(l));
-    const h2s = lines.filter(l => /^##\s/.test(l));
-    const h3s = lines.filter(l => /^###\s/.test(l));
+
+    // Parse the HTML string into a temporary DOM element
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    const h1s = doc.querySelectorAll('h1');
+    const h2s = doc.querySelectorAll('h2');
+    const h3s = doc.querySelectorAll('h3');
+
     const hasAnyHeadings = h1s.length + h2s.length + h3s.length > 0;
 
     let findings = '';
+
     if (!hasAnyHeadings) {
-        findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate for all readers.</p>';
+        findings = '<p>No headings detected in this content. If you used the H1, H2, or H3 buttons in the toolbar to mark up headings, they will appear here. For content longer than a few paragraphs, named sections make it easier to navigate for all readers — and give search engines a clearer picture of the page's structure.</p>';
     } else {
-        if (h1s.length === 0) findings += '<p>No H1 detected. Every piece of content should have exactly one H1.</p>';
-        if (h1s.length > 1) findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1.</p>`;
-        if (h1s.length === 1) findings += '<p>One H1 detected — good.</p>';
-        if (h2s.length > 0) findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
-        if (h3s.length > 0) findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
-        if (h3s.length > 0 && h2s.length === 0) findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level.</p>';
+        if (h1s.length === 0) {
+            findings += '<p>No H1 detected. Every piece of content should have exactly one H1 — the main title or subject of the page.</p>';
+        } else if (h1s.length === 1) {
+            findings += `<p>One H1 detected — good. "<em>${h1s[0].textContent.trim()}</em>"</p>`;
+        } else {
+            findings += `<p>${h1s.length} H1 headings detected. Every page should have exactly one H1. Having multiple H1s weakens the signal to both screen readers and search engines about what the page is primarily about.</p>`;
+        }
+
+        if (h2s.length > 0) {
+            findings += `<p>${h2s.length} H2 heading${h2s.length > 1 ? 's' : ''} detected.</p>`;
+        }
+
+        if (h3s.length > 0) {
+            findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
+            if (h2s.length === 0) {
+                findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level — H3 implies it lives inside an H2 section. Screen readers and search engines expect levels to be nested, not skipped.</p>';
+            }
+        }
     }
-    el.innerHTML = findings || '<p>Heading structure looks reasonable based on what I can detect from pasted text.</p>';
+
+    el.innerHTML = findings || '<p>Heading structure looks reasonable based on what I can detect.</p>';
 }
 
 function runReadabilityAnalysis() {
+    // Uses plain text — sentence/paragraph analysis doesn't need HTML
     const text = pastedContent;
     const el = document.getElementById('readability-findings');
     if (!el) return;

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overlap</title>
+    <!-- Quill CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -92,7 +94,35 @@
             <h2>Paste your content</h2>
             <p>Paste the text of the article, post, or page you're preparing to publish. Overlap will review it and
                 surface any areas worth a closer look before you go live.</p>
-            <textarea id="content-paste" placeholder="Paste your content here..." rows="12"></textarea>
+            <p>Use the heading buttons in the toolbar to mark up any headings in your content before submitting — this
+                lets Overlap give you a more accurate accessibility analysis.</p>
+
+            <!-- Quill toolbar -->
+            <div id="quill-toolbar">
+                <span class="ql-formats">
+                    <span class="quill-tooltip-wrap">
+                        <button class="ql-header" value="1"></button>
+                        <span class="quill-tooltip">H1 — The main title of your content. Use only once per page.</span>
+                    </span>
+                    <span class="quill-tooltip-wrap">
+                        <button class="ql-header" value="2"></button>
+                        <span class="quill-tooltip">H2 — A major section heading. Use to divide your content into named sections.</span>
+                    </span>
+                    <span class="quill-tooltip-wrap">
+                        <button class="ql-header" value="3"></button>
+                        <span class="quill-tooltip">H3 — A subsection heading. Use inside an H2 section for finer divisions.</span>
+                    </span>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-link"></button>
+                </span>
+            </div>
+
+            <!-- Quill editor container -->
+            <div id="quill-editor"></div>
+
             <button class="submit-content" id="submit-content">Review this content →</button>
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
@@ -379,6 +409,8 @@
         </div>
     </div>
 
+    <!-- Quill JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 

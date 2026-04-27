@@ -67,7 +67,6 @@ h1 {
     padding-top: 8px;
 }
 
-
 .type-card {
     display: flex;
     flex-direction: column;
@@ -292,25 +291,187 @@ h1 {
     color: #1a1a1a;
 }
 
-textarea {
-    width: 100%;
-    padding: 16px;
-    font-family: Georgia, serif;
+/* ─── Quill editor ──────────────────────────────────────────────────────────── */
+
+/* Toolbar container */
+#quill-toolbar {
+    background: #fff;
+    border: 1px solid #0051ba;
+    border-bottom: 1px solid #d0e0f0;
+    border-radius: 2px 2px 0 0;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Override Quill snow theme border on the editor itself */
+#quill-editor {
+    background: #fff;
+    border: 1px solid #0051ba;
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+    margin-bottom: 16px;
+}
+
+/* Quill editor content area */
+#quill-editor .ql-editor {
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 0.95rem;
     line-height: 1.6;
     color: #1a1a1a;
-    background: #fff;
-    border: 1px solid #0051ba;
-    border-radius: 2px;
-    resize: vertical;
-    margin-bottom: 16px;
+    min-height: 240px;
+    padding: 16px;
+}
+
+/* Quill focus ring */
+#quill-editor .ql-editor:focus {
     outline: none;
 }
 
-textarea:focus {
-    border-color: #0051ba;
+#quill-editor.ql-container.ql-snow {
+    border: none;
+    box-shadow: none;
+}
+
+/* Focus state on the wrapper */
+#quill-editor:focus-within {
     box-shadow: 0 0 0 3px rgba(0, 81, 186, 0.1);
 }
+
+/* Quill placeholder */
+#quill-editor .ql-editor.ql-blank::before {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #949ca1;
+}
+
+/* Quill headings in editor */
+#quill-editor .ql-editor h1 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+#quill-editor .ql-editor h2 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+#quill-editor .ql-editor h3 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+/* Suppress Quill's default snow toolbar (we use our own #quill-toolbar) */
+.ql-toolbar.ql-snow {
+    display: none !important;
+}
+
+/* Our custom toolbar button styling — match Quill's icon approach */
+#quill-toolbar .ql-formats {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-right: 8px;
+}
+
+#quill-toolbar button {
+    width: 32px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0;
+}
+
+#quill-toolbar button:hover {
+    background: #e1eef9;
+    color: #0051ba;
+}
+
+#quill-toolbar button.ql-active {
+    background: #0051ba;
+    color: #fff;
+}
+
+/* ─── Quill heading button labels ───────────────────────────────────────────── */
+
+/* Quill renders .ql-header[value="1"] etc. — we label them via CSS */
+#quill-toolbar button.ql-header[value="1"]::before { content: "H1"; }
+#quill-toolbar button.ql-header[value="2"]::before { content: "H2"; }
+#quill-toolbar button.ql-header[value="3"]::before { content: "H3"; }
+
+/* Bold / italic / link use Quill's built-in SVG icons — just size them */
+#quill-toolbar button.ql-bold svg,
+#quill-toolbar button.ql-italic svg,
+#quill-toolbar button.ql-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ─── Quill toolbar tooltips ────────────────────────────────────────────────── */
+
+.quill-tooltip-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.quill-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    color: #fff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    padding: 6px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 50;
+    max-width: 260px;
+    white-space: normal;
+    text-align: center;
+}
+
+/* Small triangle */
+.quill-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1a1a;
+}
+
+.quill-tooltip-wrap:hover .quill-tooltip {
+    opacity: 1;
+}
+
+/* ─── Submit button ─────────────────────────────────────────────────────────── */
 
 .submit-content {
     display: block;
@@ -357,7 +518,6 @@ textarea:focus {
     flex-wrap: wrap;
     gap: 12px;
 }
-
 
 .ada-orienting {
     font-family: Georgia, serif;
@@ -495,8 +655,6 @@ textarea:focus {
 .lets-go:hover {
     background: #003d8f;
 }
-
-
 
 /* ─── Branch lightbox (non-ADA) ─────────────────────────────────────────────── */
 
