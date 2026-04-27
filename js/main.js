@@ -63,26 +63,14 @@ function initQuill() {
             theme: 'snow',
             placeholder: 'Paste your content here...',
             modules: {
-                toolbar: [
-                    [{ header: '1' }, { header: '2' }, { header: '3' }],
-                    ['bold', 'italic', 'link']
-                ]
+                toolbar: {
+                    container: '#quill-toolbar'
+                }
             }
         });
 
         // Pre-fill with OASIS sample article
         quill.setText(OASIS_SAMPLE);
-
-        // Add tooltip data-attributes to heading buttons
-        const toolbar = document.querySelector('.ql-toolbar');
-        if (toolbar) {
-            const h1btn = toolbar.querySelector('.ql-header[value="1"]');
-            const h2btn = toolbar.querySelector('.ql-header[value="2"]');
-            const h3btn = toolbar.querySelector('.ql-header[value="3"]');
-            if (h1btn) h1btn.setAttribute('data-tooltip', 'The main title of your content. Use only once per page.');
-            if (h2btn) h2btn.setAttribute('data-tooltip', 'A major section heading. Use to divide your content into named sections.');
-            if (h3btn) h3btn.setAttribute('data-tooltip', 'A subsection heading. Use inside an H2 section for finer divisions.');
-        }
     } catch(e) {
         console.error('Quill init failed:', e);
     }
