@@ -1,19 +1,18 @@
 // ─── State ────────────────────────────────────────────────────────────────────
 
 let pastedContent = '';   // plain text — used by link + readability analysis
-let pastedHTML = '';      // HTML from Quill — used by heading analysis
-let currentFlag = '';
+let pastedHTML    = '';   // HTML from Quill — used by heading analysis
+let currentFlag   = '';
 let adaSelections = {};
-let adaQueue = [];
+let adaQueue      = [];
 let adaQueueIndex = 0;
 let currentAdaKey = '';
 
 const ADA_ORDER = ['headings', 'links', 'readability', 'images-ada', 'video', 'tables'];
 
 // ─── OASIS sample article (pre-fill) ─────────────────────────────────────────
-// Remove the initQuill() pre-fill call below to revert to blank editor.
 
-const OASIS_ARTICLE = `Parents of autistic children find training, support through online OASIS program
+const OASIS_SAMPLE = `Parents of autistic children find training, support through online OASIS program
 
 LAWRENCE — When her 2-year-old daughter was diagnosed with autism spectrum disorder, Wyandotte County resident Veronica Fernandez tried to take in the information and project normalcy. But on the inside, she said, she was scared and overwhelmed with questions about her daughter, Valeria Hinojosa.
 
@@ -53,27 +52,41 @@ Fernandez said she recommends OASIS to every parent of a child with autism.
 
 View additional information regarding OASIS Parent Training for caregivers of children with autism spectrum disorder (ASD) and/or intellectual and/or developmental disabilities (I/DD).`;
 
-// ─── Quill init ───────────────────────────────────────────────────────────────
+// ─── Quill setup ──────────────────────────────────────────────────────────────
 
 let quill;
 
 function initQuill() {
-    quill = new Quill('#quill-editor', {
-        modules: {
-            toolbar: '#quill-toolbar'
-        },
-        theme: 'snow',
-        placeholder: 'Paste your content here...'
-    });
+    if (quill) return; // already initialized
+    try {
+        quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Paste your content here...',
+            modules: {
+                toolbar: [
+                    [{ header: '1' }, { header: '2' }, { header: '3' }],
+                    ['bold', 'italic', 'link']
+                ]
+            }
+        });
 
-    // Pre-fill with OASIS article as plain text
-    // To revert to blank editor, delete the next two lines.
-    quill.setText(OASIS_ARTICLE);
-    quill.setSelection(0, 0);
+        // Pre-fill with OASIS sample article
+        quill.setText(OASIS_SAMPLE);
+
+        // Add tooltip data-attributes to heading buttons
+        const toolbar = document.querySelector('.ql-toolbar');
+        if (toolbar) {
+            const h1btn = toolbar.querySelector('.ql-header[value="1"]');
+            const h2btn = toolbar.querySelector('.ql-header[value="2"]');
+            const h3btn = toolbar.querySelector('.ql-header[value="3"]');
+            if (h1btn) h1btn.setAttribute('data-tooltip', 'The main title of your content. Use only once per page.');
+            if (h2btn) h2btn.setAttribute('data-tooltip', 'A major section heading. Use to divide your content into named sections.');
+            if (h3btn) h3btn.setAttribute('data-tooltip', 'A subsection heading. Use inside an H2 section for finer divisions.');
+        }
+    } catch(e) {
+        console.error('Quill init failed:', e);
+    }
 }
-
-// Init Quill after DOM is ready
-document.addEventListener('DOMContentLoaded', initQuill);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -117,13 +130,13 @@ function returnToTriage() {
 // ─── Content type ─────────────────────────────────────────────────────────────
 
 document.getElementById('type-web').addEventListener('click', () => {
-    hide('content-type'); show('content-input');
+    hide('content-type'); show('content-input'); initQuill();
 });
 document.getElementById('type-social').addEventListener('click', () => {
     hide('content-type'); show('coming-soon');
 });
 document.getElementById('type-both').addEventListener('click', () => {
-    hide('content-type'); show('content-input');
+    hide('content-type'); show('content-input'); initQuill();
 });
 
 // ─── Back buttons ─────────────────────────────────────────────────────────────
@@ -151,12 +164,13 @@ document.getElementById('back-from-ada-selection').addEventListener('click', () 
 });
 
 // ─── Submit content ───────────────────────────────────────────────────────────
-// Extracts both plain text (for link/readability) and HTML (for heading detection)
 
 document.getElementById('submit-content').addEventListener('click', () => {
     if (!quill) return;
-    pastedContent = quill.getText();          // plain text — link + readability
-    pastedHTML = quill.root.innerHTML;        // HTML — heading detection
+    // Extract plain text (for link + readability analysis)
+    pastedContent = quill.getText();
+    // Extract HTML (for heading analysis)
+    pastedHTML = quill.root.innerHTML;
     hide('content-input');
     show('triage');
 });
@@ -168,9 +182,9 @@ document.querySelectorAll('.flag').forEach(flag => {
         const id = flag.id;
         hide('triage');
         if (id === 'flag-privacy') show('dive-privacy');
-        if (id === 'flag-quotes') show('dive-quotes');
-        if (id === 'flag-images') show('dive-images');
-        if (id === 'flag-ada') { resetAdaSelection(); show('ada-selection'); }
+        if (id === 'flag-quotes')  show('dive-quotes');
+        if (id === 'flag-images')  show('dive-images');
+        if (id === 'flag-ada')     { resetAdaSelection(); show('ada-selection'); }
     });
 });
 
@@ -304,7 +318,7 @@ function resetAdaSelection() {
 document.querySelectorAll('.ada-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
         const cardKey = btn.dataset.card;
-        const choice = btn.dataset.choice;
+        const choice  = btn.dataset.choice;
         adaSelections[cardKey] = choice;
 
         const card = document.getElementById('ada-card-' + cardKey.replace('images-ada', 'images'));
@@ -340,7 +354,7 @@ document.getElementById('why-matters-toggle').addEventListener('click', () => {
 });
 
 document.getElementById('ada-branch-resources-link').addEventListener('click', () => {
-    const key = adaResourceKey[currentAdaKey];
+    const key     = adaResourceKey[currentAdaKey];
     const content = lightboxContent[key];
     if (!content) return;
     document.getElementById('lightbox-content').innerHTML = content;
@@ -448,21 +462,21 @@ const adaSecondRegister = {
 };
 
 const adaResourceKey = {
-    headings: 'ada-headings',
-    links: 'ada-links',
-    readability: 'ada-readability',
+    headings:     'ada-headings',
+    links:        'ada-links',
+    readability:  'ada-readability',
     'images-ada': 'ada-images',
-    video: 'ada-video',
-    tables: 'ada-tables'
+    video:        'ada-video',
+    tables:       'ada-tables'
 };
 
 const nextLabels = {
-    'headings': 'Heading structure',
-    'links': 'Link text',
+    'headings':    'Heading structure',
+    'links':       'Link text',
     'readability': 'Readability',
-    'images-ada': 'Images',
-    'video': 'Video and audio',
-    'tables': 'Tables'
+    'images-ada':  'Images',
+    'video':       'Video and audio',
+    'tables':      'Tables'
 };
 
 function openAdaLightbox(key) {
@@ -472,8 +486,8 @@ function openAdaLightbox(key) {
 
     document.getElementById('ada-branch-content').innerHTML = `<h3>${first.title}</h3>${first.html}`;
 
-    if (key === 'links') runLinkAnalysis();
-    if (key === 'headings') runHeadingAnalysis();
+    if (key === 'links')       runLinkAnalysis();
+    if (key === 'headings')    runHeadingAnalysis();
     if (key === 'readability') runReadabilityAnalysis();
 
     document.getElementById('ada-second-register').classList.add('hidden');
@@ -495,9 +509,9 @@ function openAdaLightbox(key) {
 // ─── Live text analysis ───────────────────────────────────────────────────────
 
 function runLinkAnalysis() {
-    // Uses plain text — link phrase detection doesn't need HTML
+    // Uses plain text — Quill.getText()
     const text = pastedContent;
-    const el = document.getElementById('links-findings');
+    const el   = document.getElementById('links-findings');
     if (!el) return;
     if (!text || !text.trim()) {
         el.innerHTML = '<p><em>No content detected — paste your content on the previous screen to get an analysis.</em></p>';
@@ -516,19 +530,19 @@ function runLinkAnalysis() {
 }
 
 function runHeadingAnalysis() {
-    // Uses pastedHTML from Quill — detects real <h1>, <h2>, <h3> tags
+    // Uses pastedHTML — Quill.root.innerHTML — parses real <h1>/<h2>/<h3> tags
     const el = document.getElementById('headings-findings');
     if (!el) return;
 
-    const html = pastedHTML || '';
-    if (!html || html === '<p><br></p>' || !html.trim()) {
-        el.innerHTML = '<p><em>No content detected — paste your content on the previous screen to get an analysis.</em></p>';
+    const html = pastedHTML;
+    if (!html || html.trim() === '<p><br></p>' || html.trim() === '') {
+        el.innerHTML = '<p><em>No content detected.</em></p>';
         return;
     }
 
-    // Parse the HTML string into a temporary DOM element
+    // Parse the HTML string
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    const doc    = parser.parseFromString(html, 'text/html');
 
     const h1s = doc.querySelectorAll('h1');
     const h2s = doc.querySelectorAll('h2');
@@ -539,14 +553,15 @@ function runHeadingAnalysis() {
     let findings = '';
 
     if (!hasAnyHeadings) {
-        findings = '<p>No headings detected in this content. If you used the H1, H2, or H3 buttons in the toolbar to mark up headings, they will appear here. For content longer than a few paragraphs, named sections make it easier to navigate for all readers — and give search engines a clearer picture of the page's structure.</p>';
+        findings = '<p>No headings detected in this content. For anything longer than a few paragraphs, that makes it harder to navigate — for all readers, not just those using assistive technology.</p>';
+        findings += '<p>To add headings, select text in the editor and use the H1, H2, or H3 buttons in the toolbar. Hover over each button for guidance on when to use it.</p>';
     } else {
         if (h1s.length === 0) {
-            findings += '<p>No H1 detected. Every piece of content should have exactly one H1 — the main title or subject of the page.</p>';
-        } else if (h1s.length === 1) {
-            findings += `<p>One H1 detected — good. "<em>${h1s[0].textContent.trim()}</em>"</p>`;
+            findings += '<p>No H1 detected. Every piece of web content should have exactly one H1 — typically the title or main headline.</p>';
+        } else if (h1s.length > 1) {
+            findings += `<p>${h1s.length} H1s detected. Every piece of content should have exactly one H1. Multiple H1s weaken the signal to both screen readers and search engines about what the page is primarily about.</p>`;
         } else {
-            findings += `<p>${h1s.length} H1 headings detected. Every page should have exactly one H1. Having multiple H1s weakens the signal to both screen readers and search engines about what the page is primarily about.</p>`;
+            findings += '<p>One H1 detected — good.</p>';
         }
 
         if (h2s.length > 0) {
@@ -556,7 +571,7 @@ function runHeadingAnalysis() {
         if (h3s.length > 0) {
             findings += `<p>${h3s.length} H3 heading${h3s.length > 1 ? 's' : ''} detected.</p>`;
             if (h2s.length === 0) {
-                findings += '<p>H3 headings are present but no H2 headings were detected. This may represent a skipped level — H3 implies it lives inside an H2 section. Screen readers and search engines expect levels to be nested, not skipped.</p>';
+                findings += '<p>H3 headings are present but no H2 headings were found. This represents a skipped level — H3 implies it lives inside an H2 section, but no H2 section exists to contain it.</p>';
             }
         }
     }
@@ -565,30 +580,35 @@ function runHeadingAnalysis() {
 }
 
 function runReadabilityAnalysis() {
-    // Uses plain text — sentence/paragraph analysis doesn't need HTML
+    // Uses plain text — Quill.getText()
     const text = pastedContent;
-    const el = document.getElementById('readability-findings');
+    const el   = document.getElementById('readability-findings');
     if (!el) return;
     if (!text || !text.trim()) {
         el.innerHTML = '<p><em>No content detected.</em></p>';
         return;
     }
-    const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+
+    const sentences  = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
     const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
 
     let findings = '';
+
     const longSentences = sentences.filter(s => s.split(/\s+/).length > 40);
     if (longSentences.length > 0) {
         const longest = longSentences.sort((a, b) => b.split(/\s+/).length - a.split(/\s+/).length)[0];
         findings += `<p><strong>Long sentences:</strong> ${longSentences.length} sentence${longSentences.length > 1 ? 's' : ''} over 40 words. Longest: <em>"${longest.substring(0, 120)}..."</em></p>`;
     }
+
     const denseParagraphs = paragraphs.filter(p => p.split(/\s+/).length > 100);
     if (denseParagraphs.length > 0) {
         findings += `<p><strong>Dense paragraphs:</strong> ${denseParagraphs.length} paragraph${denseParagraphs.length > 1 ? 's' : ''} that may run long for a screen-reading audience.</p>`;
     }
+
     if (!findings) {
         findings = '<p>No obvious readability issues detected based on sentence length and paragraph density.</p>';
     }
+
     el.innerHTML = findings;
 }
 
