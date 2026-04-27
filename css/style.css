@@ -67,11 +67,11 @@ h1 {
     padding-top: 8px;
 }
 
-.type-options {
-    margin-top: 32px;
+.ada-group {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .type-card {
@@ -357,7 +357,6 @@ textarea:focus {
     margin-bottom: 16px;
 }
 
-.type-options,
 .ada-group {
     display: flex;
     flex-direction: row;
@@ -365,10 +364,6 @@ textarea:focus {
     gap: 12px;
 }
 
-.ada-card {
-    flex: 1 1 calc(33% - 12px);
-    min-width: 180px;
-}
 
 .ada-orienting {
     font-family: Georgia, serif;
