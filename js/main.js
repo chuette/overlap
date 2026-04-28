@@ -175,9 +175,22 @@ document.getElementById('back-from-soon').addEventListener('click', () => {
 document.getElementById('back-from-input').addEventListener('click', () => {
     hide('content-input'); show('content-type');
 });
-document.getElementById('back-from-triage').addEventListener('click', () => {
-    hide('triage'); show('content-input');
+document.getElementById('back-from-actions').addEventListener('click', () => {
+    hide('actions-menu'); show('content-input');
 });
+document.getElementById('back-from-triage').addEventListener('click', () => {
+    hide('triage'); show('actions-menu');
+});
+
+// ─── Actions menu card routing ────────────────────────────────────────────────
+
+document.getElementById('card-accessibility').addEventListener('click', () => {
+    hide('actions-menu'); resetAdaSelection(); show('ada-selection');
+});
+document.getElementById('card-compliance').addEventListener('click', () => {
+    hide('actions-menu'); show('triage');
+});
+// Discoverability and Brainstorm are coming-soon — no routing needed
 document.getElementById('back-from-privacy').addEventListener('click', () => {
     hide('dive-privacy'); resetChoices('choices-privacy'); show('triage');
 });
@@ -188,7 +201,7 @@ document.getElementById('back-from-images').addEventListener('click', () => {
     hide('dive-images'); resetChoices('choices-images'); show('triage');
 });
 document.getElementById('back-from-ada-selection').addEventListener('click', () => {
-    hide('ada-selection'); show('triage');
+    hide('ada-selection'); show('actions-menu');
 });
 
 // ─── Submit content ───────────────────────────────────────────────────────────
@@ -200,7 +213,7 @@ document.getElementById('submit-content').addEventListener('click', () => {
     // Extract HTML (for heading analysis)
     pastedHTML = quill.root.innerHTML;
     hide('content-input');
-    show('triage');
+    show('actions-menu');
 });
 
 // ─── Flag selection ───────────────────────────────────────────────────────────
