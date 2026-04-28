@@ -67,6 +67,13 @@ h1 {
     padding-top: 8px;
 }
 
+.type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+}
+
 .type-card {
     display: flex;
     flex-direction: column;
@@ -285,15 +292,14 @@ h1 {
     margin-bottom: 24px;
 }
 
-.content-input p {
+.content-input > p {
     font-family: Georgia, serif;
     margin-bottom: 16px;
     color: #1a1a1a;
 }
 
-/* ─── Quill editor overrides ────────────────────────────────────────────────── */
+/* ─── Quill wrapper ─────────────────────────────────────────────────────────── */
 
-/* Outer wrapper — border, focus ring, scroll container */
 #quill-wrapper {
     border: 1px solid #0051ba;
     border-radius: 2px;
@@ -301,20 +307,200 @@ h1 {
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
+    overflow: visible;
 }
 
 #quill-wrapper:focus-within {
     box-shadow: 0 0 0 3px rgba(0, 81, 186, 0.1);
 }
 
-/* Remove Quill's own borders — wrapper handles them */
-#quill-toolbar.ql-toolbar.ql-snow {
+/* ─── Custom toolbar ────────────────────────────────────────────────────────── */
+
+#custom-toolbar.ql-toolbar.ql-snow {
     border: none;
     border-bottom: 1px solid #d0e0f0;
+    background: #f8fbff;
+    padding: 10px 14px;
+    border-radius: 2px 2px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    /* override Quill's default toolbar style */
     font-family: 'DM Sans', system-ui, sans-serif;
-    padding: 8px 12px;
+}
+
+/* Heading group — left cluster with label */
+.heading-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 8px;
+    padding-right: 8px;
+    border-right: 1px solid #d0e0f0;
+}
+
+.heading-group-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #949ca1;
+    margin-right: 2px;
+    user-select: none;
+}
+
+/* Body button */
+.normal-btn {
+    position: relative;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #444;
+    background: #fff;
+    border: 1px solid #d0e0f0;
+    border-radius: 3px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.normal-btn:hover {
+    background: #f4f4f4;
+    border-color: #bbb;
+}
+
+/* H1 / H2 / H3 buttons */
+.h-btn {
+    position: relative;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #444;
+    background: #fff;
+    border: 1px solid #d0e0f0;
+    border-radius: 3px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.h-btn:hover {
+    background: #0051ba;
+    color: #fff;
+    border-color: #0051ba;
+}
+
+.h-btn.active {
+    background: #0051ba;
+    color: #fff;
+    border-color: #0051ba;
+}
+
+/* ─── Tooltips — fully isolated from button hover state ─────────────────────── */
+/* The "all: initial" reset is critical — without it the tooltip inherits the    */
+/* button's deep-blue hover background and becomes invisible.                    */
+
+.h-btn .tooltip,
+.normal-btn .tooltip {
+    all: initial;
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 220px;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #d0e0f0;
+    border-top: 3px solid #0051ba;
+    border-radius: 3px;
+    padding: 12px 14px;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+    text-align: left;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+/* H2 and H3 tooltips anchor right to prevent viewport overflow */
+#btn-h2 .tooltip,
+#btn-h3 .tooltip {
+    left: auto;
+    right: 0;
+}
+
+.h-btn:hover .tooltip,
+.normal-btn:hover .tooltip {
+    display: block;
+}
+
+.tooltip .tooltip-heading {
+    display: block;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #0051ba;
+    margin-bottom: 6px;
+}
+
+.tooltip .tooltip-body {
+    display: block;
+    font-family: Georgia, serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+.tooltip .tooltip-example {
+    display: block;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    font-style: italic;
+    color: #949ca1;
+    border-top: 1px solid #d0e0f0;
+    padding-top: 7px;
+    line-height: 1.45;
+}
+
+/* Toolbar divider */
+.toolbar-divider {
+    width: 1px;
+    height: 20px;
+    background: #d0e0f0;
+    margin: 0 6px;
     flex-shrink: 0;
 }
+
+/* Standard Quill toolbar icon colors */
+#custom-toolbar .ql-stroke {
+    stroke: #0051ba;
+}
+
+#custom-toolbar .ql-fill {
+    fill: #0051ba;
+}
+
+#custom-toolbar button:hover .ql-stroke,
+#custom-toolbar button.ql-active .ql-stroke {
+    stroke: #003d8f;
+}
+
+#custom-toolbar button:hover .ql-fill,
+#custom-toolbar button.ql-active .ql-fill {
+    fill: #003d8f;
+}
+
+/* ─── Quill editor area ─────────────────────────────────────────────────────── */
 
 #quill-editor .ql-container.ql-snow {
     border: none;
@@ -324,10 +510,8 @@ h1 {
     color: #1a1a1a;
 }
 
-/* Fixed height scrolling editor */
 #quill-editor .ql-editor {
-    height: 240px;
-    overflow-y: auto;
+    min-height: 240px;
     padding: 16px;
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 0.95rem;
@@ -335,7 +519,6 @@ h1 {
     color: #1a1a1a;
 }
 
-/* Placeholder */
 #quill-editor .ql-editor.ql-blank::before {
     font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
@@ -343,40 +526,60 @@ h1 {
     font-size: 0.95rem;
 }
 
-/* Toolbar button text (H1/H2/H3 labels) */
-#quill-toolbar .ql-header {
+/* Heading styles inside editor */
+#quill-editor .ql-editor h1 {
     font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 700;
+    color: #000000;
+    margin: 16px 0 8px 0;
+    line-height: 1.2;
+}
+
+#quill-editor .ql-editor h2 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
     color: #0051ba;
-    width: auto;
-    padding: 2px 6px;
+    margin: 14px 0 6px 0;
+    line-height: 1.3;
 }
 
-#quill-toolbar .ql-header:hover,
-#quill-toolbar .ql-header.ql-active {
-    color: #003d8f;
-    background: #e1eef9;
-    border-radius: 2px;
+#quill-editor .ql-editor h3 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #949ca1;
+    margin: 12px 0 4px 0;
 }
 
-/* Toolbar icon colors */
-#quill-toolbar .ql-stroke {
-    stroke: #0051ba;
+/* ─── Editor footer ─────────────────────────────────────────────────────────── */
+
+.editor-footer {
+    border-top: 1px solid #d0e0f0;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fbff;
+    border-radius: 0 0 2px 2px;
 }
 
-#quill-toolbar .ql-fill {
-    fill: #0051ba;
+.editor-footer .word-count {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 9px;
+    color: #949ca1;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
 }
 
-#quill-toolbar button:hover .ql-stroke,
-#quill-toolbar button.ql-active .ql-stroke {
-    stroke: #003d8f;
-}
-
-#quill-toolbar button:hover .ql-fill,
-#quill-toolbar button.ql-active .ql-fill {
-    fill: #003d8f;
+.editor-footer .paste-note {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 9px;
+    color: #949ca1;
+    font-style: italic;
 }
 
 /* ─── Submit button ─────────────────────────────────────────────────────────── */
@@ -404,6 +607,76 @@ h1 {
     font-size: 0.82rem;
     color: #949ca1;
     font-style: italic;
+    margin-bottom: 32px;
+}
+
+/* ─── Heading quick reference card ─────────────────────────────────────────── */
+
+.reference-card {
+    margin-top: 32px;
+    background: #fff;
+    border: 1px solid #d0e0f0;
+    border-left: 4px solid #69caf0;
+    border-radius: 4px;
+    padding: 16px 20px;
+}
+
+.reference-card .ref-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #949ca1;
+    margin-bottom: 10px;
+}
+
+.reference-card .ref-title {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+.ref-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.ref-row:last-child {
+    margin-bottom: 0;
+}
+
+.ref-badge {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    background: #0051ba;
+    border-radius: 2px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.ref-text {
+    font-family: Georgia, serif;
+    font-size: 0.88rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+.ref-text strong {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+    color: #000;
 }
 
 /* ─── ADA selection screen ──────────────────────────────────────────────────── */
@@ -804,6 +1077,23 @@ h1 {
 
 .close-lightbox:hover {
     color: #ff3042;
+}
+
+/* ─── ADA conclusion ────────────────────────────────────────────────────────── */
+
+.ada-conclusion {
+    margin-top: 32px;
+    padding: 20px 24px;
+    background: #fff;
+    border-left: 3px solid #69caf0;
+    border-radius: 2px;
+}
+
+.ada-conclusion p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #1a1a1a;
+    margin: 0;
 }
 
 /* ─── Utility ───────────────────────────────────────────────────────────────── */

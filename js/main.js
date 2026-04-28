@@ -64,16 +64,56 @@ function initQuill() {
             placeholder: 'Paste your content here...',
             modules: {
                 toolbar: {
-                    container: '#quill-toolbar'
+                    container: '#custom-toolbar'
                 }
             }
         });
 
         // Pre-fill with OASIS sample article
         quill.setText(OASIS_SAMPLE);
+
+        // ── Word count (ported from Chat 1) ──
+        quill.on('text-change', function () {
+            var text = quill.getText().trim();
+            var words = text.length === 0 ? 0 : text.split(/\s+/).filter(Boolean).length;
+            var el = document.getElementById('word-count');
+            if (el) el.textContent = words + (words === 1 ? ' word' : ' words');
+        });
+
+        // ── Active heading state (ported from Chat 1) ──
+        quill.on('selection-change', function () {
+            updateActiveButtons();
+        });
+
     } catch(e) {
         console.error('Quill init failed:', e);
     }
+}
+
+// ─── Heading format helpers (ported from Chat 1) ──────────────────────────────
+
+// Called by onclick on the custom heading buttons in index.html
+function setFormat(level) {
+    if (!quill) return;
+    if (level === false) {
+        quill.format('header', false);
+    } else {
+        quill.format('header', level);
+    }
+    updateActiveButtons();
+}
+
+// Highlights the active heading button based on current cursor position
+function updateActiveButtons() {
+    if (!quill) return;
+    var format = quill.getFormat();
+    var currentHeader = format.header || false;
+    var h1 = document.getElementById('btn-h1');
+    var h2 = document.getElementById('btn-h2');
+    var h3 = document.getElementById('btn-h3');
+    if (h1) h1.classList.toggle('active', currentHeader === 1);
+    if (h2) h2.classList.toggle('active', currentHeader === 2);
+    if (h3) h3.classList.toggle('active', currentHeader === 3);
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

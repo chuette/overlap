@@ -8,39 +8,6 @@
     <!-- Quill snow theme -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-
-    <style>
-        /* ── Quill custom toolbar heading tooltips ── */
-        #quill-toolbar .ql-header {
-            position: relative;
-        }
-
-        #quill-toolbar .ql-header::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: calc(100% + 8px);
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            color: #fff;
-            font-family: 'DM Sans', system-ui, sans-serif;
-            font-size: 0.75rem;
-            line-height: 1.4;
-            padding: 6px 10px;
-            border-radius: 3px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-            z-index: 50;
-            width: 200px;
-            white-space: normal;
-            text-align: center;
-        }
-
-        #quill-toolbar .ql-header:hover::after {
-            opacity: 1;
-        }
-    </style>
 </head>
 
 <body>
@@ -122,25 +89,119 @@
 
             <!-- Quill: custom toolbar + editor -->
             <div id="quill-wrapper">
-                <div id="quill-toolbar">
-                    <span class="ql-formats">
-                        <button class="ql-header" value="1" data-tooltip="The main title of your content. Use only once per page.">H1</button>
-                        <button class="ql-header" value="2" data-tooltip="A major section heading. Use to divide your content into named sections.">H2</button>
-                        <button class="ql-header" value="3" data-tooltip="A subsection heading. Use inside an H2 section for finer divisions.">H3</button>
-                    </span>
+
+                <div id="custom-toolbar" class="ql-toolbar ql-snow">
+
+                    <!-- Heading group with tooltips -->
+                    <div class="heading-group">
+                        <span class="heading-group-label">Headings</span>
+
+                        <button class="normal-btn" id="btn-body" onclick="setFormat(false)">
+                            Body
+                            <div class="tooltip">
+                                <span class="tooltip-heading">Body text</span>
+                                <span class="tooltip-body">Regular paragraph text. Most of your content will be body text. Use this for the main sentences and paragraphs of your piece.</span>
+                                <span class="tooltip-example">Use for: paragraphs, explanations, evidence, context.</span>
+                            </div>
+                        </button>
+
+                        <button class="h-btn" id="btn-h1" onclick="setFormat(1)">
+                            H1
+                            <div class="tooltip">
+                                <span class="tooltip-heading">H1 — Your title</span>
+                                <span class="tooltip-body">The main title of your piece. There should only be one H1 per page. Search engines treat it as the clearest signal of what your content is about.</span>
+                                <span class="tooltip-example">Example: Five strategies that help young children communicate better</span>
+                            </div>
+                        </button>
+
+                        <button class="h-btn" id="btn-h2" onclick="setFormat(2)">
+                            H2
+                            <div class="tooltip">
+                                <span class="tooltip-heading">H2 — Major sections</span>
+                                <span class="tooltip-body">A section is the part of your piece that answers one question. When you shift to a different question, that's where the next section starts. Use H2 to mark those moments. Write them as things a reader might actually be thinking, not as labels for what's in the section.</span>
+                                <span class="tooltip-example">Instead of Background, try: Why this matters for your classroom</span>
+                            </div>
+                        </button>
+
+                        <button class="h-btn" id="btn-h3" onclick="setFormat(3)">
+                            H3
+                            <div class="tooltip">
+                                <span class="tooltip-heading">H3 — Subsections</span>
+                                <span class="tooltip-body">Use H3 for a detail or subtopic within an H2 section. H3s let readers navigate inside a section without having to read all of it. Use them when a section has more than one distinct idea.</span>
+                                <span class="tooltip-example">Example under an H2 about implementation: What to expect in week one</span>
+                            </div>
+                        </button>
+
+                    </div>
+
+                    <!-- Standard formatting -->
                     <span class="ql-formats">
                         <button class="ql-bold"></button>
                         <button class="ql-italic"></button>
-                        <button class="ql-link"></button>
+                        <button class="ql-underline"></button>
                     </span>
+
+                    <div class="toolbar-divider"></div>
+
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+
+                    <div class="toolbar-divider"></div>
+
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                        <button class="ql-clean"></button>
+                    </span>
+
                 </div>
+
                 <div id="quill-editor"></div>
+
+                <div class="editor-footer">
+                    <span class="word-count" id="word-count">0 words</span>
+                    <span class="paste-note">Paste from Word, Google Docs, or type directly.</span>
+                </div>
+
             </div>
 
             <button class="submit-content" id="submit-content">Review this content →</button>
             <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
                 saved, or used to train any model.</p>
             <button class="back-pink" id="back-from-input">← Back</button>
+
+            <!-- Heading quick reference card -->
+            <div class="reference-card">
+                <div class="ref-label">Quick reference</div>
+                <div class="ref-title">What heading levels do</div>
+
+                <div class="ref-row">
+                    <span class="ref-badge">H1</span>
+                    <div class="ref-text">
+                        <strong>Your title. One per page.</strong>
+                        The single most important signal to a search engine. It should name what the piece is about in language a reader would actually search for.
+                    </div>
+                </div>
+
+                <div class="ref-row">
+                    <span class="ref-badge">H2</span>
+                    <div class="ref-text">
+                        <strong>Major sections. What this part is about.</strong>
+                        Readers scan H2s to find the part they need. Write them as things a reader is thinking, not as labels for what you wrote.
+                    </div>
+                </div>
+
+                <div class="ref-row">
+                    <span class="ref-badge">H3</span>
+                    <div class="ref-text">
+                        <strong>Details within a section.</strong>
+                        Use H3 when a section has more than one distinct idea and a reader might want to navigate between them.
+                    </div>
+                </div>
+
+            </div>
+
         </section>
 
         <!-- Triage -->
