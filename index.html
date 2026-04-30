@@ -524,70 +524,96 @@
             <button class="back" id="back-from-images">← Back</button>
         </section>
 
-        <!-- Discoverability layer -->
+        <!-- Discoverability: selection screen -->
         <section class="discoverability hidden" id="discoverability-layer">
             <h2>Discoverability</h2>
-            <p class="ada-orienting" id="disc-orienting">When someone finds your content on the web, they weren't looking for it. They were looking for an answer. Your content appeared because something in it matched what they were searching for.</p>
-            <p class="tool-voice">Three questions. They won't take long. But they might change how you see what you've written.</p>
+            <p class="ada-orienting">When someone finds your content on the web, they weren't looking for it. They were looking for an answer. Your content appeared because something in it matched what they were searching for.</p>
+            <p class="tool-voice">Select the areas you want to work through, then continue.</p>
 
-            <!-- Card 1: Title -->
-            <div class="disc-card" id="disc-card-1">
-                <div class="disc-card-number">Question 1 of 3</div>
-                <h3 class="disc-card-question">Would someone recognize themselves in your headline?</h3>
-                <div class="disc-found-block">
-                    <div class="disc-found-label">From your text</div>
-                    <div class="disc-excerpt" id="disc-title-excerpt"><em style="color:#949ca1;">No title detected — if you've added an H1 heading in the editor, it will appear here.</em></div>
-                    <p class="disc-found-note">A headline that names a program, a topic, or a method describes content from the inside. A headline that names a situation, a goal, or a type of person invites a reader to recognize themselves. Those are different moves, and they reach different people.</p>
+            <p class="ada-group-label">Based on your text</p>
+            <div class="ada-group">
+
+                <div class="ada-card" id="disc-card-title" data-disc-key="title">
+                    <div class="ada-card-main">
+                        <div class="ada-card-text">
+                            <h3>Your title</h3>
+                            <p>Whether your headline invites a reader to recognize themselves, or describes the content from the institution's point of view.</p>
+                        </div>
+                        <div class="ada-card-toggles">
+                            <button class="ada-toggle work" data-disc-card="title" data-disc-choice="work">Work on this</button>
+                            <button class="ada-toggle skip" data-disc-card="title" data-disc-choice="skip">Skip for now</button>
+                        </div>
+                    </div>
                 </div>
-                <p class="disc-implication">Search engines match headlines to queries. Readers scan headlines to decide whether to click. Both of those things happen in about two seconds. A headline that starts from the reader's situation — what they're trying to do, what they're worried about — works harder in both directions than a headline that starts from the institution's name for something.</p>
-                <div class="disc-action">
-                    <div class="disc-action-label">Try this</div>
-                    <p>Write one alternative headline that starts from the reader's goal rather than the program's name. It doesn't have to be perfect. It just has to be oriented toward the person arriving, not the institution publishing. Keep both versions — you can decide later which one to use.</p>
+
+                <div class="ada-card" id="disc-card-opening" data-disc-key="opening">
+                    <div class="ada-card-main">
+                        <div class="ada-card-text">
+                            <h3>Opening sentence</h3>
+                            <p>Whether your first sentence leads with the point, or works up to it the way academic writing does.</p>
+                        </div>
+                        <div class="ada-card-toggles">
+                            <button class="ada-toggle work" data-disc-card="opening" data-disc-choice="work">Work on this</button>
+                            <button class="ada-toggle skip" data-disc-card="opening" data-disc-choice="skip">Skip for now</button>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="ada-card" id="disc-card-structure" data-disc-key="structure">
+                    <div class="ada-card-main">
+                        <div class="ada-card-text">
+                            <h3>Text structure</h3>
+                            <p>Whether your headings help a scanning reader navigate — not just whether they're technically valid, but whether they communicate.</p>
+                        </div>
+                        <div class="ada-card-toggles">
+                            <button class="ada-toggle work" data-disc-card="structure" data-disc-choice="work">Work on this</button>
+                            <button class="ada-toggle skip" data-disc-card="structure" data-disc-choice="skip">Skip for now</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Card 2: Opening sentence -->
-            <div class="disc-card hidden" id="disc-card-2">
-                <div class="disc-card-number">Question 2 of 3</div>
-                <h3 class="disc-card-question">Does your first sentence lead with the point, or work up to it?</h3>
-                <div class="disc-found-block">
-                    <div class="disc-found-label">From your text</div>
-                    <div class="disc-excerpt" id="disc-opening-excerpt"><em style="color:#949ca1;">Paste your content on the previous screen to see your opening here.</em></div>
-                    <p class="disc-found-note">Academic writing earns the right to work up to the point. It's written for readers who have already committed to the piece. Web readers haven't committed yet. They arrived from somewhere else, with something specific in mind, and they're deciding right now whether to stay.</p>
+            <p class="ada-group-label">Beyond your text</p>
+            <div class="ada-group">
+
+                <div class="ada-card" id="disc-card-reader" data-disc-key="reader">
+                    <div class="ada-card-main">
+                        <div class="ada-card-text">
+                            <h3>Reader intent</h3>
+                            <p>Who, specifically, this is for — and what they were trying to do when they found it. I can't see the reader, but you can picture them.</p>
+                        </div>
+                        <div class="ada-card-toggles">
+                            <button class="ada-toggle work" data-disc-card="reader" data-disc-choice="work">Work on this</button>
+                            <button class="ada-toggle skip" data-disc-card="reader" data-disc-choice="skip">Skip for now</button>
+                        </div>
+                    </div>
                 </div>
-                <p class="disc-implication">The opening sentence is the most-read sentence in any piece of web content. An opening that names the point — the finding, the strategy, the outcome — gives a reader a reason to stay. An opening that establishes context first asks them to wait. Most won't.</p>
-                <div class="disc-action">
-                    <div class="disc-action-label">Try this</div>
-                    <p>Find the sentence in this piece that most directly states what a reader will get from reading it. If that sentence isn't currently your first sentence, try moving it there. Read the opening again. Does it feel different?</p>
-                </div>
+
             </div>
 
-            <!-- Card 3: Reader intent -->
-            <div class="disc-card hidden" id="disc-card-3">
-                <div class="disc-card-number">Question 3 of 3</div>
-                <h3 class="disc-card-question">Who, specifically, is this for? And what were they trying to do when they found it?</h3>
-                <div class="disc-found-block">
-                    <div class="disc-found-label">From your text</div>
-                    <p class="disc-found-note" style="margin-top:0;">I can observe your text, but I can't see the person who will read it. That person is the most important variable in whether this content works. The observations above — about your headline and your opening — only matter in relation to someone specific arriving with something specific in mind.</p>
-                </div>
-                <p class="disc-implication">Content written for a general audience tends to reach no one in particular. Content written for a specific person with a specific goal tends to reach other people in a similar situation, because it sounds like it understands them. The more specifically you can picture the reader, the more clearly you can write for them. This isn't about narrowing your audience. It's about earning their attention.</p>
-                <div class="disc-action">
-                    <div class="disc-action-label">Try this</div>
-                    <p>Picture the specific person this piece is for. Not a category: a person. What is their job? What happened recently that made them search for this? What would make them feel that this content understood their situation? Write two sentences describing them. Then read your headline and opening again with that person in mind.</p>
-                </div>
-            </div>
-
-            <!-- Navigation footer -->
-            <div class="disc-footer">
+            <div class="ada-footer">
                 <button class="back-pink" id="back-from-disc">← Back</button>
-                <button class="disc-next" id="disc-next">Continue →</button>
+                <button class="lets-go hidden" id="disc-lets-go">Let's go →</button>
             </div>
 
-            <!-- Conclusion -->
             <div class="disc-conclusion hidden" id="disc-conclusion">
                 <p>You've thought about who arrives, how they're greeted, and who they are. That's most of what discoverability actually means.</p>
             </div>
         </section>
+
+        <!-- Discoverability: branch lightbox -->
+        <div class="branch-lightbox hidden" id="disc-branch-lightbox">
+            <div class="branch-lightbox-card">
+                <div id="disc-branch-content"></div>
+                <div class="branch-lightbox-actions ada-lightbox-actions">
+                    <div class="ada-btn-row-bottom">
+                        <button class="ada-btn ada-btn-bottom ada-btn-gray" id="return-to-disc-selection">← Return to discoverability</button>
+                        <button class="ada-btn ada-btn-bottom ada-btn-green" id="disc-continue">Continue →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- ADA: Selection screen -->
         <section class="ada-selection hidden" id="ada-selection">

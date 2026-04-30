@@ -193,7 +193,7 @@ document.getElementById('card-compliance').addEventListener('click', () => {
 // Discoverability and Brainstorm are coming-soon — no routing needed
 document.getElementById('card-discoverability').addEventListener('click', () => {
     hide('actions-menu');
-    initDiscoverability();
+    resetDiscSelection();
     show('discoverability-layer');
 });
 
@@ -803,95 +803,240 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 
 // ─── Discoverability layer ────────────────────────────────────────────────────
 
-let discCardIndex = 0;
-const DISC_CARDS = ['disc-card-1', 'disc-card-2', 'disc-card-3'];
+let discSelections = {};
+let discQueue      = [];
+let discQueueIndex = 0;
+let currentDiscKey = '';
 
-function initDiscoverability() {
-    discCardIndex = 0;
-    hide('disc-conclusion');
-    document.getElementById('disc-next').textContent = 'Continue →';
-    document.getElementById('disc-next').classList.remove('hidden');
+const DISC_ORDER = ['title', 'opening', 'structure', 'reader'];
 
-    // Show only card 1
-    DISC_CARDS.forEach((id, i) => {
+const discNextLabels = {
+    title:     'Your title',
+    opening:   'Opening sentence',
+    structure: 'Text structure',
+    reader:    'Reader intent'
+};
+
+function resetDiscSelection() {
+    discSelections = {};
+    discQueue      = [];
+    discQueueIndex = 0;
+    currentDiscKey = '';
+    document.querySelectorAll('[data-disc-card]').forEach(btn => btn.classList.remove('active'));
+    ['disc-card-title','disc-card-opening','disc-card-structure','disc-card-reader'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) i === 0 ? el.classList.remove('hidden') : el.classList.add('hidden');
+        if (el) el.classList.remove('selected-work', 'selected-skip');
     });
+    hide('disc-lets-go');
+    hide('disc-conclusion');
+}
 
-    // Populate title from H1 in pastedHTML
-    const titleEl = document.getElementById('disc-title-excerpt');
-    if (titleEl) {
+// Toggle logic — mirrors ada-toggle pattern exactly
+document.querySelectorAll('[data-disc-card]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const cardKey = btn.dataset.discCard;
+        const choice  = btn.dataset.discChoice;
+        discSelections[cardKey] = choice;
+
+        const card = document.getElementById('disc-card-' + cardKey);
+        if (card) {
+            card.classList.remove('selected-work', 'selected-skip');
+            card.classList.add(choice === 'work' ? 'selected-work' : 'selected-skip');
+        }
+
+        btn.closest('.ada-card-toggles').querySelectorAll('[data-disc-card]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const hasWork = Object.values(discSelections).some(v => v === 'work');
+        const letsGo = document.getElementById('disc-lets-go');
+        if (hasWork) letsGo.classList.remove('hidden');
+        else letsGo.classList.add('hidden');
+    });
+});
+
+document.getElementById('disc-lets-go').addEventListener('click', () => {
+    discQueue = DISC_ORDER.filter(key => discSelections[key] === 'work');
+    discQueueIndex = 0;
+    if (discQueue.length === 0) return;
+    openDiscLightbox(discQueue[0]);
+});
+
+// ─── Discoverability lightbox content ─────────────────────────────────────────
+
+function getDiscContent(key) {
+    if (key === 'title') {
+        // Extract H1 from pastedHTML
+        let titleExcerpt = '';
+        let titleNote    = '';
         if (pastedHTML && pastedHTML.trim() && pastedHTML.trim() !== '<p><br></p>') {
             const parser = new DOMParser();
-            const doc = parser.parseFromString(pastedHTML, 'text/html');
-            const h1 = doc.querySelector('h1');
+            const doc    = parser.parseFromString(pastedHTML, 'text/html');
+            const h1     = doc.querySelector('h1');
             if (h1 && h1.textContent.trim()) {
-                titleEl.innerHTML = '<strong>' + h1.textContent.trim() + '</strong>';
+                titleExcerpt = `<div class="disc-excerpt"><em>"${h1.textContent.trim()}"</em></div>`;
+                titleNote    = `<p class="disc-found-note">A headline that names a program, a topic, or a method describes content from the inside. A headline that names a situation, a goal, or a type of person invites a reader to recognize themselves. Those are different moves, and they reach different people.</p>`;
             } else {
-                titleEl.innerHTML = '<em style="color:#949ca1;">No H1 heading detected — select your title text in the editor and press the H1 button to mark it.</em>';
+                titleExcerpt = `<div class="disc-excerpt"><em style="color:#949ca1;">No H1 heading detected — select your title text in the editor and press H1 to mark it.</em></div>`;
+                titleNote    = `<p class="disc-found-note">Without an H1, search engines have no clear signal about what this page is about. It's worth marking your title before you publish.</p>`;
             }
         } else {
-            titleEl.innerHTML = '<em style="color:#949ca1;">No content detected — paste your content and click "Review this content" first.</em>';
+            titleExcerpt = `<div class="disc-excerpt"><em style="color:#949ca1;">No content detected.</em></div>`;
+            titleNote    = '';
         }
+        return `
+            <h3>Your title</h3>
+            <div class="disc-found-block">
+                <div class="disc-found-label">From your text</div>
+                ${titleExcerpt}
+                ${titleNote}
+            </div>
+            <p class="disc-implication">Search engines match headlines to queries. Readers scan headlines to decide whether to click. Both happen in about two seconds. A headline that starts from the reader's situation — what they're trying to do, what they're worried about — works harder in both directions than a headline that starts from the institution's name for something.</p>
+            <div class="disc-action">
+                <div class="disc-action-label">Try this</div>
+                <p>Write one alternative headline that starts from the reader's goal rather than the program's name. It doesn't have to be perfect. It just has to be oriented toward the person arriving, not the institution publishing. Keep both versions — you can decide later which one to use, or where each one belongs.</p>
+            </div>`;
     }
 
-    // Populate opening sentence from plain text
-    const openingEl = document.getElementById('disc-opening-excerpt');
-    if (openingEl) {
+    if (key === 'opening') {
+        let openingExcerpt = '';
+        let openingNote    = '';
         if (pastedContent && pastedContent.trim()) {
-            // Get first non-empty, non-heading line that looks like a sentence
             const lines = pastedContent.split(/\n/).map(l => l.trim()).filter(Boolean);
             let firstSentence = '';
             for (const line of lines) {
-                // Skip very short lines (likely headings in plain text)
                 if (line.length > 30) {
-                    // Take only the first sentence
-                    const sentenceEnd = line.search(/[.!?]/);
-                    firstSentence = sentenceEnd > -1 ? line.substring(0, sentenceEnd + 1) : line.substring(0, 200);
+                    const end = line.search(/[.!?]/);
+                    firstSentence = end > -1 ? line.substring(0, end + 1) : line.substring(0, 220);
                     break;
                 }
             }
-            openingEl.innerHTML = firstSentence
-                ? '<em>"' + firstSentence + '"</em>'
-                : '<em style="color:#949ca1;">Opening sentence not detected — check that your content is pasted in the editor.</em>';
+            if (firstSentence) {
+                openingExcerpt = `<div class="disc-excerpt"><em>"${firstSentence}"</em></div>`;
+                openingNote    = `<p class="disc-found-note">Academic writing earns the right to work up to the point — it's written for readers who've already committed. Web readers haven't committed yet. They arrived from somewhere else and they're deciding right now whether to stay.</p>`;
+            } else {
+                openingExcerpt = `<div class="disc-excerpt"><em style="color:#949ca1;">Opening sentence not detected.</em></div>`;
+                openingNote    = '';
+            }
         } else {
-            openingEl.innerHTML = '<em style="color:#949ca1;">No content detected.</em>';
+            openingExcerpt = `<div class="disc-excerpt"><em style="color:#949ca1;">No content detected.</em></div>`;
+            openingNote    = '';
         }
+        return `
+            <h3>Opening sentence</h3>
+            <div class="disc-found-block">
+                <div class="disc-found-label">From your text</div>
+                ${openingExcerpt}
+                ${openingNote}
+            </div>
+            <p class="disc-implication">The opening sentence is the most-read sentence in any piece of web content. An opening that names the point — the finding, the strategy, the outcome — gives a reader a reason to stay. An opening that establishes context first asks them to wait. Most won't.</p>
+            <div class="disc-action">
+                <div class="disc-action-label">Try this</div>
+                <p>Find the sentence in this piece that most directly states what a reader will get from reading it. If that sentence isn't your first sentence, try moving it there. Read the opening again. Does it feel different?</p>
+            </div>`;
     }
+
+    if (key === 'structure') {
+        // Live heading analysis — discoverability framing, not ADA framing
+        let findings = '';
+        if (pastedHTML && pastedHTML.trim() && pastedHTML.trim() !== '<p><br></p>') {
+            const parser = new DOMParser();
+            const doc    = parser.parseFromString(pastedHTML, 'text/html');
+            const h1s    = doc.querySelectorAll('h1');
+            const h2s    = doc.querySelectorAll('h2');
+            const h3s    = doc.querySelectorAll('h3');
+
+            if (h1s.length + h2s.length + h3s.length === 0) {
+                findings = `<p>No headings detected. A reader arriving at this content has no way to scan it — they have to start at the top and read through to find the part that's relevant to them. Most won't.</p>
+                            <p>Consider whether this piece has more than one idea in it. If it does, each idea is a candidate for an H2.</p>`;
+            } else {
+                // Report what's there
+                if (h2s.length > 0) {
+                    const h2texts = Array.from(h2s).map(h => `<em>"${h.textContent.trim()}"</em>`).join(', ');
+                    findings += `<p><strong>${h2s.length} section heading${h2s.length > 1 ? 's' : ''} detected:</strong> ${h2texts}.</p>`;
+                    findings += `<p>Read those headings in isolation — the way a scanning reader would. Do they sound like things a reader might be looking for? Or do they sound like labels for what you wrote?</p>`;
+                } else if (h1s.length > 0) {
+                    findings += `<p>One title detected but no section headings (H2s). If this piece covers more than one idea, a scanning reader has no way to find the part they need without reading everything.</p>`;
+                }
+                if (h3s.length > 0 && h2s.length === 0) {
+                    findings += `<p>H3 headings are present but no H2s — a skipped level that leaves subsections with no named section to belong to.</p>`;
+                }
+            }
+        } else {
+            findings = `<p><em style="color:#949ca1;">No content detected.</em></p>`;
+        }
+        return `
+            <h3>Text structure</h3>
+            <div class="disc-found-block">
+                <div class="disc-found-label">From your text</div>
+                ${findings}
+            </div>
+            <p class="disc-implication">Most web readers don't read — they scan. They look at the headline, then at the section headings, then decide whether to go deeper. A piece with no headings, or headings that function as internal labels rather than reader-facing signposts, is harder to enter. The question isn't whether the structure is technically valid. It's whether a reader arriving cold would know where to go.</p>
+            <div class="disc-action">
+                <div class="disc-action-label">Try this</div>
+                <p>Read your section headings in isolation, without the surrounding paragraphs. Do they communicate? Would a reader scanning from the top know what each section is about and whether it's the part they need? If not, try rewriting one heading as something the reader might actually be thinking when they arrive.</p>
+            </div>`;
+    }
+
+    if (key === 'reader') {
+        return `
+            <h3>Reader intent</h3>
+            <div class="disc-found-block">
+                <div class="disc-found-label">What I can't see</div>
+                <p class="disc-found-note">I can observe your text, but I can't see the person who will read it. That person is the most important variable in whether this content works. The observations above — about your title, your opening, your structure — only matter in relation to someone specific arriving with something specific in mind.</p>
+            </div>
+            <p class="disc-implication">Content written for a general audience tends to reach no one in particular. Content written for a specific person with a specific goal tends to reach other people in a similar situation, because it sounds like it understands them. The more specifically you can picture the reader, the more clearly you can write for them. This isn't about narrowing your audience. It's about earning their attention.</p>
+            <div class="disc-action">
+                <div class="disc-action-label">Try this</div>
+                <p>Picture the specific person this piece is for. Not a category: a person. What is their job? What happened recently that made them search for this? What would make them feel that this content understood their situation? Write two sentences describing them. Then read your title and opening again with that person in mind.</p>
+            </div>`;
+    }
+
+    return '';
 }
 
-function advanceDiscCard() {
-    const currentCard = document.getElementById(DISC_CARDS[discCardIndex]);
-    if (currentCard) currentCard.classList.add('hidden');
-    discCardIndex++;
+function openDiscLightbox(key) {
+    currentDiscKey = key;
+    const content  = getDiscContent(key);
+    if (!content) return;
 
-    if (discCardIndex < DISC_CARDS.length) {
-        const nextCard = document.getElementById(DISC_CARDS[discCardIndex]);
-        if (nextCard) nextCard.classList.remove('hidden');
+    document.getElementById('disc-branch-content').innerHTML = content;
 
-        // Update button label
-        const nextBtn = document.getElementById('disc-next');
-        if (discCardIndex === DISC_CARDS.length - 1) {
-            nextBtn.textContent = 'Done →';
-        } else {
-            nextBtn.textContent = 'Continue →';
-        }
+    const continueBtn = document.getElementById('disc-continue');
+    const isLast      = (discQueueIndex === discQueue.length - 1);
+    if (isLast) {
+        continueBtn.textContent = 'Done →';
     } else {
-        // All done
-        document.getElementById('disc-next').classList.add('hidden');
-        document.getElementById('disc-conclusion').classList.remove('hidden');
+        const nextKey = discQueue[discQueueIndex + 1];
+        continueBtn.textContent = 'Continue: ' + (discNextLabels[nextKey] || 'Next') + ' →';
     }
+
+    show('disc-branch-lightbox');
     scroll();
 }
 
-document.getElementById('disc-next').addEventListener('click', () => {
-    advanceDiscCard();
+document.getElementById('disc-continue').addEventListener('click', () => {
+    discQueueIndex++;
+    if (discQueueIndex < discQueue.length) {
+        openDiscLightbox(discQueue[discQueueIndex]);
+    } else {
+        hide('disc-branch-lightbox');
+        document.getElementById('disc-conclusion').classList.remove('hidden');
+        show('discoverability-layer');
+        scroll();
+    }
+});
+
+document.getElementById('return-to-disc-selection').addEventListener('click', () => {
+    hide('disc-branch-lightbox');
+    show('discoverability-layer');
+    scroll();
 });
 
 document.getElementById('back-from-disc').addEventListener('click', () => {
     hide('discoverability-layer');
     show('actions-menu');
 });
+
 
 // ─── Home link ────────────────────────────────────────────────────────────────
 
@@ -903,6 +1048,6 @@ document.getElementById('home-link').addEventListener('click', (e) => {
     hide('lightbox');
     resetAllChoices();
     resetAdaSelection();
-    discCardIndex = 0;
+    resetDiscSelection();
     show('content-type');
 });
