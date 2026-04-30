@@ -191,6 +191,12 @@ document.getElementById('card-compliance').addEventListener('click', () => {
     hide('actions-menu'); show('triage');
 });
 // Discoverability and Brainstorm are coming-soon — no routing needed
+document.getElementById('card-discoverability').addEventListener('click', () => {
+    hide('actions-menu');
+    initDiscoverability();
+    show('discoverability-layer');
+});
+
 document.getElementById('back-from-privacy').addEventListener('click', () => {
     hide('dive-privacy'); resetChoices('choices-privacy'); show('triage');
 });
@@ -795,6 +801,98 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target === document.getElementById('lightbox')) hide('lightbox');
 });
 
+// ─── Discoverability layer ────────────────────────────────────────────────────
+
+let discCardIndex = 0;
+const DISC_CARDS = ['disc-card-1', 'disc-card-2', 'disc-card-3'];
+
+function initDiscoverability() {
+    discCardIndex = 0;
+    hide('disc-conclusion');
+    document.getElementById('disc-next').textContent = 'Continue →';
+    document.getElementById('disc-next').classList.remove('hidden');
+
+    // Show only card 1
+    DISC_CARDS.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) i === 0 ? el.classList.remove('hidden') : el.classList.add('hidden');
+    });
+
+    // Populate title from H1 in pastedHTML
+    const titleEl = document.getElementById('disc-title-excerpt');
+    if (titleEl) {
+        if (pastedHTML && pastedHTML.trim() && pastedHTML.trim() !== '<p><br></p>') {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(pastedHTML, 'text/html');
+            const h1 = doc.querySelector('h1');
+            if (h1 && h1.textContent.trim()) {
+                titleEl.innerHTML = '<strong>' + h1.textContent.trim() + '</strong>';
+            } else {
+                titleEl.innerHTML = '<em style="color:#949ca1;">No H1 heading detected — select your title text in the editor and press the H1 button to mark it.</em>';
+            }
+        } else {
+            titleEl.innerHTML = '<em style="color:#949ca1;">No content detected — paste your content and click "Review this content" first.</em>';
+        }
+    }
+
+    // Populate opening sentence from plain text
+    const openingEl = document.getElementById('disc-opening-excerpt');
+    if (openingEl) {
+        if (pastedContent && pastedContent.trim()) {
+            // Get first non-empty, non-heading line that looks like a sentence
+            const lines = pastedContent.split(/\n/).map(l => l.trim()).filter(Boolean);
+            let firstSentence = '';
+            for (const line of lines) {
+                // Skip very short lines (likely headings in plain text)
+                if (line.length > 30) {
+                    // Take only the first sentence
+                    const sentenceEnd = line.search(/[.!?]/);
+                    firstSentence = sentenceEnd > -1 ? line.substring(0, sentenceEnd + 1) : line.substring(0, 200);
+                    break;
+                }
+            }
+            openingEl.innerHTML = firstSentence
+                ? '<em>"' + firstSentence + '"</em>'
+                : '<em style="color:#949ca1;">Opening sentence not detected — check that your content is pasted in the editor.</em>';
+        } else {
+            openingEl.innerHTML = '<em style="color:#949ca1;">No content detected.</em>';
+        }
+    }
+}
+
+function advanceDiscCard() {
+    const currentCard = document.getElementById(DISC_CARDS[discCardIndex]);
+    if (currentCard) currentCard.classList.add('hidden');
+    discCardIndex++;
+
+    if (discCardIndex < DISC_CARDS.length) {
+        const nextCard = document.getElementById(DISC_CARDS[discCardIndex]);
+        if (nextCard) nextCard.classList.remove('hidden');
+
+        // Update button label
+        const nextBtn = document.getElementById('disc-next');
+        if (discCardIndex === DISC_CARDS.length - 1) {
+            nextBtn.textContent = 'Done →';
+        } else {
+            nextBtn.textContent = 'Continue →';
+        }
+    } else {
+        // All done
+        document.getElementById('disc-next').classList.add('hidden');
+        document.getElementById('disc-conclusion').classList.remove('hidden');
+    }
+    scroll();
+}
+
+document.getElementById('disc-next').addEventListener('click', () => {
+    advanceDiscCard();
+});
+
+document.getElementById('back-from-disc').addEventListener('click', () => {
+    hide('discoverability-layer');
+    show('actions-menu');
+});
+
 // ─── Home link ────────────────────────────────────────────────────────────────
 
 document.getElementById('home-link').addEventListener('click', (e) => {
@@ -805,5 +903,6 @@ document.getElementById('home-link').addEventListener('click', (e) => {
     hide('lightbox');
     resetAllChoices();
     resetAdaSelection();
+    discCardIndex = 0;
     show('content-type');
 });
