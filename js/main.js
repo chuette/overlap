@@ -642,13 +642,13 @@ function openImagesCard() {
 
         <button class="img-policy-btn" id="img-policy-btn">Explore relevant policy ↗</button>`;
 
-    // Wire ℹ button → ada-images resource lightbox
+    // Wire ℹ button → images second register (explanatory prose)
     document.getElementById('img-why-btn').addEventListener('click', () => {
-        document.getElementById('lightbox-content').innerHTML = lightboxContent['ada-images'] || '';
+        document.getElementById('lightbox-content').innerHTML = adaSecondRegister['images-ada'] || '';
         show('lightbox');
     });
 
-    // Wire Explore relevant policy → same ada-images resource lightbox
+    // Wire Explore relevant policy → ada-images resource lightbox (WCAG citations)
     document.getElementById('img-policy-btn').addEventListener('click', () => {
         document.getElementById('lightbox-content').innerHTML = lightboxContent['ada-images'] || '';
         show('lightbox');
