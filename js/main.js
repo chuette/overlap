@@ -409,6 +409,10 @@ document.getElementById('ada-branch-resources-link').addEventListener('click', (
 });
 
 document.getElementById('ada-continue').addEventListener('click', () => {
+    // Restore standard top-row buttons in case we just left the images card
+    document.getElementById('why-matters-toggle').classList.remove('hidden');
+    document.getElementById('ada-branch-resources-link').classList.remove('hidden');
+
     adaQueueIndex++;
     if (adaQueueIndex < adaQueue.length) {
         openAdaLightbox(adaQueue[adaQueueIndex]);
@@ -421,6 +425,9 @@ document.getElementById('ada-continue').addEventListener('click', () => {
 });
 
 document.getElementById('return-to-ada-selection').addEventListener('click', () => {
+    // Restore standard top-row buttons in case we're leaving the images card
+    document.getElementById('why-matters-toggle').classList.remove('hidden');
+    document.getElementById('ada-branch-resources-link').classList.remove('hidden');
     hide('ada-branch-lightbox');
     hide('lightbox');
     show('ada-selection');
@@ -447,14 +454,7 @@ const adaFirstRegister = {
                <div id="readability-findings"></div>
                <p>Each one is a decision, not a problem. Use "Why this matters" to think through the tradeoffs.</p>`
     },
-    'images-ada': {
-        title: 'Images',
-        html: `<p>I can't see your images, but I need you to check three things before publishing:</p>
-               <p><strong>Does every image have alt text?</strong></p>
-               <p><strong>Does any image contain information that doesn't appear in the text?</strong></p>
-               <p><strong>Do any images show identifiable people?</strong></p>
-               <p>If you're unsure about any of these, use "Why this matters" before you publish.</p>`
-    },
+    'images-ada': { title: 'Image Check', html: '' },
     video: {
         title: 'Video and audio',
         html: `<p>I can't see or hear your media, but check these before publishing:</p>
@@ -531,6 +531,11 @@ function openAdaLightbox(key) {
     const first = adaFirstRegister[key];
     if (!first) return;
 
+    if (key === 'images-ada') {
+        openImagesCard();
+        return;
+    }
+
     document.getElementById('ada-branch-content').innerHTML = `<h3>${first.title}</h3>${first.html}`;
 
     if (key === 'links')       runLinkAnalysis();
@@ -541,6 +546,10 @@ function openAdaLightbox(key) {
     document.getElementById('ada-second-register-content').innerHTML = adaSecondRegister[key] || '';
     document.getElementById('why-matters-toggle').textContent = 'Why this matters ↓';
 
+    // Standard cards: show both top-row buttons
+    document.getElementById('why-matters-toggle').classList.remove('hidden');
+    document.getElementById('ada-branch-resources-link').classList.remove('hidden');
+
     const continueBtn = document.getElementById('ada-continue');
     const isLast = (adaQueueIndex === adaQueue.length - 1);
     if (isLast) {
@@ -549,6 +558,130 @@ function openAdaLightbox(key) {
         const nextKey = adaQueue[adaQueueIndex + 1];
         continueBtn.textContent = 'Continue: ' + (nextLabels[nextKey] || 'Next') + ' →';
     }
+
+    show('ada-branch-lightbox');
+}
+
+function openImagesCard() {
+    const isLast  = (adaQueueIndex === adaQueue.length - 1);
+    const contLabel = isLast ? 'Done with Images →' : 'Continue: ' + (nextLabels[adaQueue[adaQueueIndex + 1]] || 'Next') + ' →';
+
+    document.getElementById('ada-branch-content').innerHTML = `
+        <div class="img-card-header">
+            <div class="img-card-header-text">
+                <h3 class="img-card-title">Image Check</h3>
+                <p class="img-card-subtitle">I can't check your images, but you can. Here's what to look for.</p>
+            </div>
+            <button class="img-why-btn" id="img-why-btn" aria-label="Why this matters">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="15" fill="#0f2d5e" stroke="#0f2d5e" stroke-width="1"/>
+                    <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-style="italic" font-weight="bold" fill="white">i</text>
+                </svg>
+                <span class="img-why-label">Why this matters</span>
+            </button>
+        </div>
+
+        <div class="img-question-block">
+            <p class="img-question-text">1. Does any image contain information that does not appear in the text?</p>
+            <p class="img-question-micro">Ask yourself: if this image disappeared, would a reader miss any information that isn't already in the text? Charts, graphs, and infographics are possible examples.</p>
+            <div class="img-choices" id="img-q1-choices">
+                <button class="img-choice-btn" data-q="q1" data-val="yes">
+                    <span class="img-choice-icon img-choice-check">✓</span> Yes
+                </button>
+                <button class="img-choice-btn" data-q="q1" data-val="no">
+                    <span class="img-choice-icon img-choice-x">✕</span> No
+                </button>
+                <button class="img-choice-btn" data-q="q1" data-val="some">
+                    <span class="img-choice-icon img-choice-check">✓</span> Some do, some don't
+                </button>
+            </div>
+            <div class="img-response hidden" id="img-q1-yes">
+                <p>Those images need <strong>alt text</strong> that conveys the informational content from the image, not just a description.</p>
+                <p>Go to the next question when you're ready to work on that.</p>
+            </div>
+            <div class="img-response hidden" id="img-q1-no">
+                <p>Then you're good. Move on to the next question.</p>
+            </div>
+            <div class="img-response hidden" id="img-q1-some">
+                <p>Make a note of which images carry information. Those are the ones that need substantive <strong>alt text</strong>.</p>
+                <p>Go to the next question when you're ready to get started with that.</p>
+            </div>
+        </div>
+
+        <div class="img-question-block">
+            <p class="img-question-text">2. Does every image have alt text?</p>
+            <p class="img-question-micro">Alt text is a written description of an image. Without alt text, a reader using assistive technology hears a file name (or silence) when they encounter images online.</p>
+            <div class="img-choices" id="img-q2-choices">
+                <button class="img-choice-btn" data-q="q2" data-val="yes">
+                    <span class="img-choice-icon img-choice-check">✓</span> Yes
+                </button>
+                <button class="img-choice-btn" data-q="q2" data-val="no">
+                    <span class="img-choice-icon img-choice-x">✕</span> No
+                </button>
+                <button class="img-choice-btn" data-q="q2" data-val="check">
+                    <span class="img-choice-icon img-choice-check">✓</span> I need to check
+                </button>
+            </div>
+            <div class="img-response hidden" id="img-q2-yes">
+                <p>Good!</p>
+                <p>Alt text is one of the most commonly missing accessibility requirements on research websites. Having it in place matters.</p>
+            </div>
+            <div class="img-response hidden" id="img-q2-no">
+                <p>Here's where to add it.</p>
+                <p><strong>In a Word document:</strong> Add a comment to the image using our standard alt text comment format: [ALT: your description here]. This flags it for whoever builds the page.</p>
+                <p><strong>In WordPress:</strong> Select your image block. In the right-hand settings panel, look for the Image settings section. You'll see an Alt Text field near the top. Write a description of what the image shows: not what it means, but what a person would see if they could see it.</p>
+                <p><a href="#" class="img-walk-link">Walk me through this</a></p>
+            </div>
+            <div class="img-response hidden" id="img-q2-check">
+                <p>Here's where to look.</p>
+                <p><strong>In a Word document:</strong> Add a comment to the image using our standard alt text comment format: [ALT: your description here]. This flags it for whoever builds the page.</p>
+                <p><strong>In WordPress:</strong> Select your image block. In the right-hand settings panel, look for the Image Settings section. You'll see an Alt Text field near the top. Write a description of what the image shows: not what it means, but what a person would see if they could see it.</p>
+                <p><a href="#" class="img-walk-link">Walk me through this</a></p>
+            </div>
+        </div>
+
+        <button class="img-policy-btn" id="img-policy-btn">Explore relevant policy ↗</button>`;
+
+    // Wire ℹ button → ada-images resource lightbox
+    document.getElementById('img-why-btn').addEventListener('click', () => {
+        document.getElementById('lightbox-content').innerHTML = lightboxContent['ada-images'] || '';
+        show('lightbox');
+    });
+
+    // Wire Explore relevant policy → same ada-images resource lightbox
+    document.getElementById('img-policy-btn').addEventListener('click', () => {
+        document.getElementById('lightbox-content').innerHTML = lightboxContent['ada-images'] || '';
+        show('lightbox');
+    });
+
+    // Wire disclosure choice buttons
+    document.querySelectorAll('.img-choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const q   = btn.dataset.q;
+            const val = btn.dataset.val;
+
+            // Mark active state on buttons in this question
+            document.querySelectorAll(`.img-choice-btn[data-q="${q}"]`).forEach(b => b.classList.remove('img-choice-active'));
+            btn.classList.add('img-choice-active');
+
+            // Hide all responses for this question, show selected
+            const responseIds = {
+                q1: ['img-q1-yes', 'img-q1-no', 'img-q1-some'],
+                q2: ['img-q2-yes', 'img-q2-no', 'img-q2-check']
+            };
+            responseIds[q].forEach(id => hide(id));
+            const responseMap = { q1: { yes: 'img-q1-yes', no: 'img-q1-no', some: 'img-q1-some' },
+                                   q2: { yes: 'img-q2-yes', no: 'img-q2-no', check: 'img-q2-check' } };
+            show(responseMap[q][val]);
+        });
+    });
+
+    // Hide standard top-row buttons (why this matters + see relevant guidance) — images has its own
+    document.getElementById('why-matters-toggle').classList.add('hidden');
+    document.getElementById('ada-branch-resources-link').classList.add('hidden');
+
+    // Update continue button
+    document.getElementById('ada-continue').textContent = contLabel;
 
     show('ada-branch-lightbox');
 }
