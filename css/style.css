@@ -206,26 +206,59 @@ h1 {
     margin: 24px 0;
 }
 
-.choice {
-    padding: 12px 24px;
-    border-radius: 2px;
-    border: 1px solid #0051ba;
-    background: #fff;
+/* ─── Button system ─────────────────────────────────────────────────────────── */
+/*
+  Four roles:
+  .btn-primary   — deep blue fill, white text — Submit, Continue, Let's go
+  .btn-secondary — white fill, blue border, blue text — choice branches, Work on this
+  .btn-tertiary  — no fill, no border, grey text — ← Back
+  .btn-return    — crimson-tinted — ← Back on selection screens
+*/
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #0051ba;
+    color: #fff;
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.95rem;
-    color: #0051ba;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease;
+    text-align: center;
 }
 
-.choice:hover {
+.btn-primary:hover {
+    background: #003d8f;
+}
+
+.btn-primary.hidden {
+    display: none;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 11px 22px;
+    background: #fff;
+    color: #0051ba;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    border: 1.5px solid #0051ba;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    text-align: center;
+}
+
+.btn-secondary:hover {
     background: #0051ba;
     color: #fff;
 }
 
-/* ─── Back buttons ──────────────────────────────────────────────────────────── */
-
-.back {
+.btn-tertiary {
     background: none;
     border: none;
     color: #949ca1;
@@ -233,28 +266,31 @@ h1 {
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0;
-    margin-top: 48px;
+    margin-top: 40px;
     display: block;
+    transition: color 0.15s ease;
 }
 
-.back:hover {
+.btn-tertiary:hover {
     color: #000000;
 }
 
-.back-pink {
+.btn-return {
     display: inline-block;
     padding: 10px 22px;
     background: #ffe4e8;
     color: #c0002a;
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.9rem;
+    font-weight: 500;
     border: none;
-    border-radius: 20px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s ease;
+    text-align: center;
 }
 
-.back-pink:hover {
+.btn-return:hover {
     background: #ffd0d6;
 }
 
@@ -585,23 +621,7 @@ h1 {
 
 /* ─── Submit button ─────────────────────────────────────────────────────────── */
 
-.submit-content {
-    display: block;
-    padding: 12px 28px;
-    background: #0051ba;
-    color: #fff;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.95rem;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    margin-bottom: 16px;
-}
-
-.submit-content:hover {
-    background: #003d8f;
-}
+/* submit-content — handled by .btn-primary */
 
 .input-note {
     font-family: Georgia, serif;
@@ -822,21 +842,7 @@ h1 {
     border-top: 1px solid #d0e0f0;
 }
 
-.lets-go {
-    padding: 12px 28px;
-    background: #0051ba;
-    color: #fff;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.95rem;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.lets-go:hover {
-    background: #003d8f;
-}
+/* lets-go — handled by .btn-primary */
 
 /* ─── Branch lightbox (non-ADA) ─────────────────────────────────────────────── */
 
@@ -1289,10 +1295,69 @@ h1 {
     align-items: center;
     justify-content: space-between;
     margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #d0e0f0;
 }
 
-.planning-continue {
-    margin-top: 0;
+/* planning-continue handled by .btn-primary */
+
+.planning-textarea-sm {
+    min-height: 60px;
+}
+
+/* ─── Audience Planning form options ─────────────────────────────────────────── */
+
+.planning-form-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.form-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1.5px solid #d0e0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.form-option:hover {
+    border-color: #0051ba;
+    background: #f4f8ff;
+}
+
+.form-option input[type="radio"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: #0051ba;
+}
+
+.form-option-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #000;
+    display: block;
+    line-height: 1.3;
+    margin-bottom: 2px;
+}
+
+.form-option-note {
+    font-family: Georgia, serif;
+    font-size: 0.84rem;
+    color: #949ca1;
+    display: block;
+    line-height: 1.5;
+}
+
+.form-option-text {
+    display: flex;
+    flex-direction: column;
 }
 
 /* ─── Institutional note (triage) ────────────────────────────────────────────── */
