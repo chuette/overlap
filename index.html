@@ -16,7 +16,7 @@
 
         <header>
             <h1><a href="#" id="home-link">Overlap</a></h1>
-            <p class="subtitle">A research translation tool</p>
+            <p class="subtitle">Research translation for KU/JGCP communicators</p>
         </header>
 
         <!-- Content type selection -->
@@ -141,41 +141,72 @@
                         <button class="ql-underline"></button>
                     </span>
 
-                    <div class="toolbar-divider"></div>
+                    <span class="toolbar-divider"></span>
 
                     <span class="ql-formats">
                         <button class="ql-list" value="ordered"></button>
                         <button class="ql-list" value="bullet"></button>
                     </span>
 
-                    <div class="toolbar-divider"></div>
+                    <span class="toolbar-divider"></span>
 
                     <span class="ql-formats">
-                        <button class="ql-link"></button>
+                        <button class="ql-link" id="ql-link-btn"></button>
                         <button class="ql-clean"></button>
                     </span>
 
                 </div>
 
+                <!-- Link tooltip (shown on link button click) -->
+                <div id="link-tooltip" class="link-tooltip hidden">
+                    Link text should describe the destination. "Early literacy strategies" works better than "click here."
+                </div>
+
+                <!-- Quill editor area -->
                 <div id="quill-editor"></div>
 
-                <div class="editor-footer">
-                    <span class="word-count" id="word-count">0 words</span>
-                    <span class="paste-note">Paste from Word, Google Docs, or type directly.</span>
+                <!-- Editor footer: word count + privacy note -->
+                <div id="editor-footer">
+                    <span id="word-count">0 words</span>
+                    <span class="editor-privacy">Your text is not stored, saved, or used to train any model.</span>
                 </div>
 
             </div>
 
-            <button class="submit-content" id="submit-content">Review this content →</button>
-            <p class="input-note">Overlap reads your content to identify potential issues. Your text is not stored,
-                saved, or used to train any model.</p>
-            <button class="back-pink" id="back-from-input">← Back</button>
+            <!-- Live formatting checklist -->
+            <div id="formatting-checklist">
+                <div class="checklist-item" id="check-h1">
+                    <span class="check-dot" id="dot-h1"></span>
+                    <div class="check-text">
+                        <span class="check-label">Your title (H1)</span>
+                        <span class="check-note">Search engines and screen readers use the H1 to decide what your writing is about. You only need one.</span>
+                    </div>
+                </div>
+                <div class="checklist-item" id="check-h2">
+                    <span class="check-dot" id="dot-h2"></span>
+                    <div class="check-text">
+                        <span class="check-label">Section headings (H2)</span>
+                        <span class="check-note">H2s help people more effectively scan your writing. Think of each H2 answering a single question.</span>
+                    </div>
+                </div>
+                <div class="checklist-item" id="check-links">
+                    <span class="check-dot" id="dot-links"></span>
+                    <div class="check-text">
+                        <span class="check-label">Link text</span>
+                        <span class="check-note">Links should describe their destination, not the action. "Five strategies" works better than "click here."</span>
+                    </div>
+                </div>
+                <div class="checklist-item" id="check-sentences">
+                    <span class="check-dot" id="dot-sentences"></span>
+                    <div class="check-text">
+                        <span class="check-label">Sentence length</span>
+                        <span class="check-note">Sentences over 40 words are harder to read online, especially on small screens. Where you can, break up long sentences.</span>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Heading quick reference card -->
-            <div class="reference-card">
-                <div class="ref-label">Quick reference</div>
-                <div class="ref-title">What heading levels do</div>
-
+            <!-- Quick reference card -->
+            <div id="quick-ref">
                 <div class="ref-row">
                     <span class="ref-badge">H1</span>
                     <div class="ref-text">
@@ -202,16 +233,75 @@
 
             </div>
 
+            <button class="submit-btn" id="submit-content">Continue →</button>
+            <button class="back" id="back-from-input">← Back</button>
+
         </section>
 
         <!-- Actions menu -->
         <section class="actions-menu hidden" id="actions-menu">
-            <p class="tool-voice">Your content is ready to review. What would you like to work on?</p>
+            <p class="tool-voice">Your content is ready to review. Work through these stages in order, or jump to the one you need.</p>
 
             <div class="actions-grid">
 
-                <div class="action-card" id="card-accessibility">
-                    <div class="card-title">Accessibility</div>
+                <!-- 1: Audience Planning -->
+                <div class="action-card" id="card-audience">
+                    <span class="stage-badge">1</span>
+                    <div class="card-title">Audience Planning</div>
+                    <div class="icon-grid">
+
+                        <div class="icon-item">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="10" cy="9" r="3" fill="none" stroke="white" stroke-width="1.75"/>
+                                    <circle cx="19" cy="9" r="3" fill="none" stroke="white" stroke-width="1.75"/>
+                                    <path d="M3 22C3 18.5 6 16 10 16C14 16 17 18.5 17 22" stroke="white" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                                    <path d="M19 16C21.5 16 24 17.5 24 20" stroke="white" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                                </svg>
+                            </div>
+                            <span class="icon-label">Who needs this?</span>
+                        </div>
+
+                        <div class="icon-item">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="9" height="9" rx="1" fill="none" stroke="white" stroke-width="1.75"/>
+                                    <circle cx="20" cy="8.5" r="4.5" fill="none" stroke="white" stroke-width="1.75"/>
+                                    <path d="M8 18L4 25H12L8 18Z" fill="none" stroke="white" stroke-width="1.75" stroke-linejoin="round"/>
+                                    <rect x="15" y="17" width="9" height="7" rx="1" fill="none" stroke="white" stroke-width="1.75"/>
+                                </svg>
+                            </div>
+                            <span class="icon-label">What forms could it take?</span>
+                        </div>
+
+                        <div class="icon-item">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 22C14 22 4 16 4 9.5C4 6.5 6.5 4 9.5 4C11.5 4 13 5 14 6.5C15 5 16.5 4 18.5 4C21.5 4 24 6.5 24 9.5C24 16 14 22 14 22Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="icon-label">Whose life could it change?</span>
+                        </div>
+
+                        <div class="icon-item">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="14" cy="14" r="10" fill="none" stroke="white" stroke-width="1.75"/>
+                                    <path d="M14 4V7M14 21V24M4 14H7M21 14H24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M17 11L13 15" stroke="white" stroke-width="1.75" stroke-linecap="round"/>
+                                    <circle cx="14" cy="14" r="1.5" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="icon-label">Who else is asking this?</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2: Writing for Readers -->
+                <div class="action-card" id="card-writing-readers">
+                    <span class="stage-badge">2</span>
+                    <div class="card-title">Writing for Readers</div>
                     <div class="icon-grid">
 
                         <div class="icon-item">
@@ -259,8 +349,10 @@
                     </div>
                 </div>
 
+                <!-- 3: Compliance & Policy -->
                 <div class="action-card" id="card-compliance">
-                    <div class="card-title">Compliance &amp; Privacy</div>
+                    <span class="stage-badge">3</span>
+                    <div class="card-title">Compliance &amp; Policy</div>
                     <div class="icon-grid">
 
                         <div class="icon-item">
@@ -312,8 +404,10 @@
                     </div>
                 </div>
 
-                <div class="action-card" id="card-discoverability">
-                    <div class="card-title">Discoverability</div>
+                <!-- 4: Writing for Search -->
+                <div class="action-card" id="card-writing-search">
+                    <span class="stage-badge">4</span>
+                    <div class="card-title">Writing for Search</div>
                     <div class="icon-grid">
 
                         <div class="icon-item">
@@ -365,62 +459,42 @@
                     </div>
                 </div>
 
-                <div class="action-card action-card-soon" id="card-brainstorm">
-                    <span class="soon-badge">Coming soon</span>
-                    <div class="card-title">Brainstorm</div>
-                    <div class="icon-grid">
+            </div>
 
-                        <div class="icon-item">
-                            <div class="icon-circle">
-                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="10" cy="9" r="3" fill="none" stroke="white" stroke-width="1.75"/>
-                                    <circle cx="19" cy="9" r="3" fill="none" stroke="white" stroke-width="1.75"/>
-                                    <path d="M3 22C3 18.5 6 16 10 16C14 16 17 18.5 17 22" stroke="white" stroke-width="1.75" stroke-linecap="round" fill="none"/>
-                                    <path d="M19 16C21.5 16 24 17.5 24 20" stroke="white" stroke-width="1.75" stroke-linecap="round" fill="none"/>
-                                </svg>
-                            </div>
-                            <span class="icon-label">Who needs this?</span>
-                        </div>
+            <button class="back" id="back-from-actions">← Back</button>
+        </section>
 
-                        <div class="icon-item">
-                            <div class="icon-circle">
-                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="4" y="4" width="9" height="9" rx="1" fill="none" stroke="white" stroke-width="1.75"/>
-                                    <circle cx="20" cy="8.5" r="4.5" fill="none" stroke="white" stroke-width="1.75"/>
-                                    <path d="M8 18L4 25H12L8 18Z" fill="none" stroke="white" stroke-width="1.75" stroke-linejoin="round"/>
-                                    <rect x="15" y="17" width="9" height="7" rx="1" fill="none" stroke="white" stroke-width="1.75"/>
-                                </svg>
-                            </div>
-                            <span class="icon-label">What forms could it take?</span>
-                        </div>
+        <!-- Audience Planning: placeholder layer -->
+        <section class="audience-planning hidden" id="audience-planning">
+            <h2>Audience Planning</h2>
+            <p class="ada-orienting">Before you draft, it helps to think clearly about who this is for and what form it should take. These aren't questions with single right answers — they're prompts to think with. Jot down whatever comes to mind.</p>
 
-                        <div class="icon-item">
-                            <div class="icon-circle">
-                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14 22C14 22 4 16 4 9.5C4 6.5 6.5 4 9.5 4C11.5 4 13 5 14 6.5C15 5 16.5 4 18.5 4C21.5 4 24 6.5 24 9.5C24 16 14 22 14 22Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <span class="icon-label">Whose life could it change?</span>
-                        </div>
+            <div class="planning-questions">
 
-                        <div class="icon-item">
-                            <div class="icon-circle">
-                                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="14" cy="14" r="10" fill="none" stroke="white" stroke-width="1.75"/>
-                                    <path d="M14 4V7M14 21V24M4 14H7M21 14H24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M17 11L13 15" stroke="white" stroke-width="1.75" stroke-linecap="round"/>
-                                    <circle cx="14" cy="14" r="1.5" fill="white"/>
-                                </svg>
-                            </div>
-                            <span class="icon-label">Who else is asking this?</span>
-                        </div>
+                <div class="planning-q">
+                    <p class="planning-prompt">Who needs this?</p>
+                    <p class="planning-subprompt">Picture a specific person — their job, their situation, what made them go looking for this kind of information.</p>
+                    <textarea class="planning-textarea" placeholder="Write here..."></textarea>
+                </div>
 
-                    </div>
+                <div class="planning-q">
+                    <p class="planning-prompt">What forms could it take?</p>
+                    <p class="planning-subprompt">An article? A downloadable tool? A short video? A FAQ? Consider what format would actually be useful to the person you pictured above.</p>
+                    <textarea class="planning-textarea" placeholder="Write here..."></textarea>
+                </div>
+
+                <div class="planning-q">
+                    <p class="planning-prompt">Who else is asking this?</p>
+                    <p class="planning-subprompt">What would someone type into a search bar to find this? Use their words, not yours — practitioners often describe the same thing very differently than researchers do.</p>
+                    <textarea class="planning-textarea" placeholder="Write here..."></textarea>
                 </div>
 
             </div>
 
-            <button class="back" id="back-from-actions">← Back</button>
+            <div class="planning-footer">
+                <button class="back-pink" id="back-from-audience">← Back</button>
+                <button class="submit-btn planning-continue" id="continue-from-audience">Continue →</button>
+            </div>
         </section>
 
         <!-- Triage -->
@@ -429,6 +503,7 @@
                 you publish or adapt it. None of these are necessarily problems — but each involves a decision worth
                 making intentionally.</p>
             <p class="tool-voice">Where would you like to start?</p>
+            <p class="institutional-note">Overlap is configured for KU/JGCP — it reflects the specific policies, IRB conditions, and communication norms that apply here, not just general legal guidance.</p>
             <div class="flags">
 
                 <div class="flag high" id="flag-privacy">
@@ -524,10 +599,10 @@
             <button class="back" id="back-from-images">← Back</button>
         </section>
 
-        <!-- Discoverability: selection screen -->
+        <!-- Writing for Search: selection screen -->
         <section class="discoverability hidden" id="discoverability-layer">
-            <h2>Discoverability</h2>
-            <p class="ada-orienting">When someone finds your content on the web, they weren't looking for it. They were looking for an answer. Your content appeared because something in it matched what they were searching for.</p>
+            <h2>Writing for Search</h2>
+            <p class="ada-orienting">When someone finds your content on the web, they weren't looking for it specifically — they were looking for an answer. This stage helps you write in a way that helps the right readers find your work.</p>
             <p class="tool-voice">Select the areas you want to work through, then continue.</p>
 
             <p class="ada-group-label">Based on your text</p>
@@ -608,19 +683,17 @@
                 <div id="disc-branch-content"></div>
                 <div class="branch-lightbox-actions ada-lightbox-actions">
                     <div class="ada-btn-row-bottom">
-                        <button class="ada-btn ada-btn-bottom ada-btn-gray" id="return-to-disc-selection">← Return to discoverability</button>
+                        <button class="ada-btn ada-btn-bottom ada-btn-gray" id="return-to-disc-selection">← Return to writing for search</button>
                         <button class="ada-btn ada-btn-bottom ada-btn-green" id="disc-continue">Continue →</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ADA: Selection screen -->
+        <!-- Writing for Readers: Selection screen -->
         <section class="ada-selection hidden" id="ada-selection">
-            <h2>Accessibility</h2>
-            <p class="ada-orienting">When you write for real readers, including readers using assistive technology,
-                you also tend to write in ways that search engines can understand. Accessible content and findable
-                content are usually the same content.</p>
+            <h2>Writing for Readers</h2>
+            <p class="ada-orienting">Writing for real readers — including readers using assistive technology — and writing for search engines turns out to be mostly the same work. Clear structure, plain links, and readable sentences help everyone navigate your content more effectively.</p>
             <p class="tool-voice">Select the areas you want to work through, then continue.</p>
 
             <p class="ada-group-label">Based on your text</p>
@@ -749,7 +822,7 @@
                     <button class="ada-btn ada-btn-top ada-btn-blue" id="ada-branch-resources-link">See relevant guidance §</button>
                 </div>
                 <div class="ada-btn-row-bottom">
-                    <button class="ada-btn ada-btn-bottom ada-btn-gray" id="return-to-ada-selection">← Return to accessibility checklist</button>
+                    <button class="ada-btn ada-btn-bottom ada-btn-gray" id="return-to-ada-selection">← Return to writing for readers</button>
                     <button class="ada-btn ada-btn-bottom ada-btn-green" id="ada-continue">Continue →</button>
                 </div>
             </div>

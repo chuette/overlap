@@ -184,17 +184,28 @@ document.getElementById('back-from-triage').addEventListener('click', () => {
 
 // ─── Actions menu card routing ────────────────────────────────────────────────
 
-document.getElementById('card-accessibility').addEventListener('click', () => {
+document.getElementById('card-audience').addEventListener('click', () => {
+    hide('actions-menu'); show('audience-planning');
+});
+document.getElementById('card-writing-readers').addEventListener('click', () => {
     hide('actions-menu'); resetAdaSelection(); show('ada-selection');
 });
 document.getElementById('card-compliance').addEventListener('click', () => {
     hide('actions-menu'); show('triage');
 });
-// Discoverability and Brainstorm are coming-soon — no routing needed
-document.getElementById('card-discoverability').addEventListener('click', () => {
+document.getElementById('card-writing-search').addEventListener('click', () => {
     hide('actions-menu');
     resetDiscSelection();
     show('discoverability-layer');
+});
+
+// ─── Audience Planning routing ────────────────────────────────────────────────
+
+document.getElementById('back-from-audience').addEventListener('click', () => {
+    hide('audience-planning'); show('actions-menu');
+});
+document.getElementById('continue-from-audience').addEventListener('click', () => {
+    hide('audience-planning'); show('actions-menu');
 });
 
 document.getElementById('back-from-privacy').addEventListener('click', () => {
