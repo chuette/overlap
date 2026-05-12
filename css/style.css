@@ -599,11 +599,60 @@ h1 {
     letter-spacing: 0.07em;
 }
 
-.editor-footer .paste-note {
+.editor-footer .editor-privacy {
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 9px;
     color: #949ca1;
     font-style: italic;
+}
+
+/* ─── Live formatting checklist ─────────────────────────────────────────────── */
+
+#formatting-checklist {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.check-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #949ca1;
+    flex-shrink: 0;
+    margin-top: 4px;
+    transition: background 0.2s ease;
+}
+
+.check-dot.active {
+    background: #4a9e4a;
+}
+
+.check-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.check-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.check-note {
+    font-family: Georgia, serif;
+    font-size: 0.84rem;
+    color: #949ca1;
+    line-height: 1.5;
 }
 
 /* ─── Submit button ─────────────────────────────────────────────────────────── */
@@ -616,75 +665,6 @@ h1 {
     color: #949ca1;
     font-style: italic;
     margin-bottom: 32px;
-}
-
-/* ─── Heading quick reference card ─────────────────────────────────────────── */
-
-.reference-card {
-    margin-top: 32px;
-    background: #fff;
-    border: 1px solid #d0e0f0;
-    border-left: 4px solid #69caf0;
-    border-radius: 4px;
-    padding: 16px 20px;
-}
-
-.reference-card .ref-label {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #949ca1;
-    margin-bottom: 10px;
-}
-
-.reference-card .ref-title {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: #000000;
-    margin-bottom: 12px;
-}
-
-.ref-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 10px;
-    align-items: flex-start;
-}
-
-.ref-row:last-child {
-    margin-bottom: 0;
-}
-
-.ref-badge {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-    background: #0051ba;
-    border-radius: 2px;
-    padding: 2px 7px;
-    white-space: nowrap;
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-.ref-text {
-    font-family: Georgia, serif;
-    font-size: 0.88rem;
-    color: #333;
-    line-height: 1.5;
-}
-
-.ref-text strong {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    display: block;
-    margin-bottom: 2px;
-    color: #000;
 }
 
 /* ─── ADA selection screen ──────────────────────────────────────────────────── */

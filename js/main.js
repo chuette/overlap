@@ -78,6 +78,7 @@ function initQuill() {
             var words = text.length === 0 ? 0 : text.split(/\s+/).filter(Boolean).length;
             var el = document.getElementById('word-count');
             if (el) el.textContent = words + (words === 1 ? ' word' : ' words');
+            updateChecklist();
         });
 
         // ── Active heading state (ported from Chat 1) ──
@@ -116,7 +117,37 @@ function updateActiveButtons() {
     if (h3) h3.classList.toggle('active', currentHeader === 3);
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// Updates live formatting checklist dots below the editor
+function updateChecklist() {
+    if (!quill) return;
+    var html = quill.root.innerHTML;
+    var text = quill.getText();
+
+    // H1: at least one <h1> tag
+    var hasH1 = /<h1>/i.test(html);
+    setDot('dot-h1', hasH1);
+
+    // H2: at least one <h2> tag
+    var hasH2 = /<h2>/i.test(html);
+    setDot('dot-h2', hasH2);
+
+    // Link text: no non-descriptive phrases
+    var badLinks = /\b(click here|read more|learn more|here|this link|more info)\b/i.test(text);
+    setDot('dot-links', !badLinks);
+
+    // Sentence length: no sentences over 40 words
+    var sentences = text.split(/[.!?]+/).filter(function(s) { return s.trim().length > 0; });
+    var hasLongSentence = sentences.some(function(s) {
+        return s.trim().split(/\s+/).filter(Boolean).length > 40;
+    });
+    setDot('dot-sentences', !hasLongSentence);
+}
+
+function setDot(id, active) {
+    var dot = document.getElementById(id);
+    if (!dot) return;
+    dot.classList.toggle('active', active);
+}
 
 function show(id) {
     const el = document.getElementById(id);
