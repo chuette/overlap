@@ -146,13 +146,38 @@ function resetAllChoices() {
     document.querySelectorAll('.choices').forEach(c => c.style.opacity = '1');
 }
 
-function returnToTriage() {
+// ─── Compliance map state ─────────────────────────────────────────────────────
+
+let visitedDomains = new Set();
+
+function markVisited(domain) {
+    visitedDomains.add(domain);
+    const card = document.querySelector(`[data-domain="${domain}"]`);
+    if (card) card.classList.add('compliance-card-visited');
+}
+
+function resetComplianceMap() {
+    visitedDomains.clear();
+    document.querySelectorAll('.compliance-card').forEach(c => {
+        c.classList.remove('compliance-card-visited');
+    });
+    // Reset named-individuals sequential state
+    const sub1 = document.getElementById('named-sub-privacy');
+    const sub2 = document.getElementById('named-sub-quotes');
+    const step1 = document.getElementById('seq-step-1');
+    const step2 = document.getElementById('seq-step-2');
+    if (sub1) sub1.classList.remove('hidden');
+    if (sub2) sub2.classList.add('hidden');
+    if (step1) { step1.classList.add('seq-step-active'); step1.classList.remove('seq-step-done'); }
+    if (step2) step2.classList.remove('seq-step-active');
+}
+
+function returnToComplianceMap() {
     hide('branch-lightbox');
     hide('lightbox');
     document.querySelectorAll('.deep-dive').forEach(d => d.classList.add('hidden'));
-    hide('ada-selection');
     resetAllChoices();
-    show('triage');
+    show('compliance-map');
 }
 
 // ─── Content type ─────────────────────────────────────────────────────────────
@@ -178,10 +203,6 @@ document.getElementById('back-from-input').addEventListener('click', () => {
 document.getElementById('back-from-actions').addEventListener('click', () => {
     hide('actions-menu'); show('content-input');
 });
-document.getElementById('back-from-triage').addEventListener('click', () => {
-    hide('triage'); show('actions-menu');
-});
-
 // ─── Actions menu card routing ────────────────────────────────────────────────
 
 document.getElementById('card-audience').addEventListener('click', () => {
@@ -191,7 +212,7 @@ document.getElementById('card-writing-readers').addEventListener('click', () => 
     hide('actions-menu'); resetAdaSelection(); show('ada-selection');
 });
 document.getElementById('card-compliance').addEventListener('click', () => {
-    hide('actions-menu'); show('triage');
+    hide('actions-menu'); show('compliance-map');
 });
 document.getElementById('card-writing-search').addEventListener('click', () => {
     hide('actions-menu');
@@ -208,15 +229,69 @@ document.getElementById('continue-from-audience').addEventListener('click', () =
     hide('audience-planning'); show('actions-menu');
 });
 
-document.getElementById('back-from-privacy').addEventListener('click', () => {
-    hide('dive-privacy'); resetChoices('choices-privacy'); show('triage');
+// ─── Compliance map back ──────────────────────────────────────────────────────
+
+document.getElementById('back-from-compliance-map').addEventListener('click', () => {
+    hide('compliance-map'); show('actions-menu');
 });
-document.getElementById('back-from-quotes').addEventListener('click', () => {
-    hide('dive-quotes'); resetChoices('choices-quotes'); show('triage');
+
+// ─── Compliance domain card routing ──────────────────────────────────────────
+
+document.getElementById('cmap-named').addEventListener('click', () => {
+    markVisited('named');
+    // Reset sequential state on each entry
+    document.getElementById('named-sub-privacy').classList.remove('hidden');
+    document.getElementById('named-sub-quotes').classList.add('hidden');
+    document.getElementById('seq-step-1').classList.add('seq-step-active');
+    document.getElementById('seq-step-1').classList.remove('seq-step-done');
+    document.getElementById('seq-step-2').classList.remove('seq-step-active');
+    resetChoices('choices-privacy');
+    resetChoices('choices-quotes');
+    hide('compliance-map'); show('dive-named');
+});
+document.getElementById('cmap-sensitive').addEventListener('click', () => {
+    markVisited('sensitive');
+    hide('compliance-map'); show('dive-sensitive');
+});
+document.getElementById('cmap-images').addEventListener('click', () => {
+    markVisited('images');
+    resetChoices('choices-images');
+    hide('compliance-map'); show('dive-images');
+});
+document.getElementById('cmap-copyright').addEventListener('click', () => {
+    markVisited('copyright');
+    hide('compliance-map'); show('dive-copyright');
+});
+document.getElementById('cmap-irb').addEventListener('click', () => {
+    markVisited('irb');
+    hide('compliance-map'); show('dive-irb');
+});
+document.getElementById('cmap-endorsement').addEventListener('click', () => {
+    markVisited('endorsement');
+    hide('compliance-map'); show('dive-endorsement');
+});
+
+// ─── Deep dive back buttons → compliance map ──────────────────────────────────
+
+document.getElementById('back-from-named').addEventListener('click', () => {
+    hide('dive-named'); resetChoices('choices-privacy'); resetChoices('choices-quotes'); show('compliance-map');
+});
+document.getElementById('back-from-sensitive').addEventListener('click', () => {
+    hide('dive-sensitive'); show('compliance-map');
 });
 document.getElementById('back-from-images').addEventListener('click', () => {
-    hide('dive-images'); resetChoices('choices-images'); show('triage');
+    hide('dive-images'); resetChoices('choices-images'); show('compliance-map');
 });
+document.getElementById('back-from-copyright').addEventListener('click', () => {
+    hide('dive-copyright'); show('compliance-map');
+});
+document.getElementById('back-from-irb').addEventListener('click', () => {
+    hide('dive-irb'); show('compliance-map');
+});
+document.getElementById('back-from-endorsement').addEventListener('click', () => {
+    hide('dive-endorsement'); show('compliance-map');
+});
+
 document.getElementById('back-from-ada-selection').addEventListener('click', () => {
     hide('ada-selection'); show('actions-menu');
 });
@@ -233,30 +308,31 @@ document.getElementById('submit-content').addEventListener('click', () => {
     show('actions-menu');
 });
 
-// ─── Flag selection ───────────────────────────────────────────────────────────
-
-document.querySelectorAll('.flag').forEach(flag => {
-    flag.addEventListener('click', () => {
-        const id = flag.id;
-        hide('triage');
-        if (id === 'flag-privacy') show('dive-privacy');
-        if (id === 'flag-quotes')  show('dive-quotes');
-        if (id === 'flag-images')  show('dive-images');
-        if (id === 'flag-ada')     { resetAdaSelection(); show('ada-selection'); }
-    });
-});
-
-// ─── Privacy choices ──────────────────────────────────────────────────────────
+// ─── Named individuals: sequential privacy → quotes flow ──────────────────────
 
 document.getElementById('yes-consent').addEventListener('click', () => {
     dimChoices('choices-privacy'); openBranchLightbox('privacy-yes');
+    // After branch resolves, advance to quotes sub-section
+    advanceToQuotes();
 });
 document.getElementById('no-consent').addEventListener('click', () => {
     dimChoices('choices-privacy'); openBranchLightbox('privacy-no');
+    advanceToQuotes();
 });
 document.getElementById('unsure-consent').addEventListener('click', () => {
     dimChoices('choices-privacy'); openBranchLightbox('privacy-unsure');
+    advanceToQuotes();
 });
+
+function advanceToQuotes() {
+    // Mark step 1 done, activate step 2, show quotes sub-section
+    const step1 = document.getElementById('seq-step-1');
+    const step2 = document.getElementById('seq-step-2');
+    if (step1) { step1.classList.remove('seq-step-active'); step1.classList.add('seq-step-done'); }
+    if (step2) step2.classList.add('seq-step-active');
+    const sub2 = document.getElementById('named-sub-quotes');
+    if (sub2) sub2.classList.remove('hidden');
+}
 
 // ─── Quotes choices ───────────────────────────────────────────────────────────
 
@@ -276,7 +352,7 @@ document.getElementById('yes-images').addEventListener('click', () => {
     dimChoices('choices-images'); openBranchLightbox('images-yes');
 });
 document.getElementById('no-images').addEventListener('click', () => {
-    dimChoices('choices-images'); returnToTriage();
+    dimChoices('choices-images'); returnToComplianceMap();
 });
 document.getElementById('later-images').addEventListener('click', () => {
     dimChoices('choices-images'); openBranchLightbox('images-later');
@@ -355,7 +431,7 @@ document.getElementById('branch-resources-link').addEventListener('click', () =>
     show('lightbox');
 });
 
-document.getElementById('return-to-flags').addEventListener('click', () => { returnToTriage(); });
+document.getElementById('return-to-flags').addEventListener('click', () => { returnToComplianceMap(); });
 
 // ─── ADA selection logic ──────────────────────────────────────────────────────
 
@@ -1193,5 +1269,6 @@ document.getElementById('home-link').addEventListener('click', (e) => {
     resetAllChoices();
     resetAdaSelection();
     resetDiscSelection();
+    resetComplianceMap();
     show('content-type');
 });

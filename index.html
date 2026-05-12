@@ -515,106 +515,167 @@
             </div>
         </section>
 
-        <!-- Triage -->
-        <section class="triage hidden" id="triage">
-            <p class="tool-voice">I reviewed the content you shared. I found a few areas worth a closer look before
-                you publish or adapt it. None of these are necessarily problems — but each involves a decision worth
-                making intentionally.</p>
-            <p class="tool-voice">Where would you like to start?</p>
+        <!-- Compliance map -->
+        <section class="compliance-map hidden" id="compliance-map">
+            <h2>Compliance &amp; Policy</h2>
+            <p class="ada-orienting">Here is the full landscape of compliance and privacy considerations for this content. The tool has made an initial assessment based on what it can see. Work through the areas that are flagged — and explore any others before you publish.</p>
             <p class="institutional-note">Overlap is configured for KU/JGCP — it reflects the specific policies, IRB conditions, and communication norms that apply here, not just general legal guidance.</p>
-            <div class="flags">
 
-                <div class="flag high" id="flag-privacy">
-                    <div class="flag-content">
-                        <h2>A child is named and identified</h2>
-                        <p>This content includes a child's full name, her diagnosis, and personal development details.</p>
+            <div class="compliance-grid">
+
+                <!-- Card 1: Named individuals & consent — HIGH -->
+                <div class="compliance-card" id="cmap-named" data-domain="named">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-high">High</span>
+                        <h3 class="compliance-card-title">Named individuals &amp; consent</h3>
+                        <p class="compliance-card-desc">A child is named and identified alongside her diagnosis. A parent is quoted extensively. Both raise consent scope questions before republication.</p>
+                        <span class="compliance-chevron">›</span>
                     </div>
-                    <span class="chevron">›</span>
                 </div>
 
-                <div class="flag high" id="flag-quotes">
-                    <div class="flag-content">
-                        <h2>A parent is quoted extensively</h2>
-                        <p>The content includes detailed personal quotes from a private individual, not a public figure.</p>
+                <!-- Card 2: Sensitive disclosures — HIGH -->
+                <div class="compliance-card" id="cmap-sensitive" data-domain="sensitive">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-high">High</span>
+                        <h3 class="compliance-card-title">Sensitive disclosures</h3>
+                        <p class="compliance-card-desc">This content names a child's autism diagnosis alongside her full name — a combination that can identify and stigmatize beyond what either detail does alone.</p>
+                        <span class="compliance-chevron">›</span>
                     </div>
-                    <span class="chevron">›</span>
                 </div>
 
-                <div class="flag medium" id="flag-images">
-                    <div class="flag-content">
-                        <h2>This content may include images or visual media</h2>
-                        <p>I can't see images from pasted text — but most web content includes visuals. If yours
-                            does, licensing is worth a look before you publish.</p>
+                <!-- Card 3: Image licensing — MEDIUM -->
+                <div class="compliance-card" id="cmap-images" data-domain="images">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-medium">Medium</span>
+                        <h3 class="compliance-card-title">Image licensing</h3>
+                        <p class="compliance-card-desc">The original article includes an image. Licensing status for republication on a new site is worth confirming before you go live.</p>
+                        <span class="compliance-chevron">›</span>
                     </div>
-                    <span class="chevron">›</span>
+                </div>
+
+                <!-- Card 4: Copyright & fair use — CLEAR -->
+                <div class="compliance-card compliance-card-clear" id="cmap-copyright" data-domain="copyright">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-clear">Clear</span>
+                        <h3 class="compliance-card-title">Copyright &amp; fair use</h3>
+                        <p class="compliance-card-desc">No quoted text from published sources detected in this content. Copyright questions are unlikely to apply here — but worth understanding if you adapt this work.</p>
+                        <span class="compliance-chevron">›</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: IRB & republication scope — MEDIUM -->
+                <div class="compliance-card" id="cmap-irb" data-domain="irb">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-medium">Medium</span>
+                        <h3 class="compliance-card-title">IRB &amp; republication scope</h3>
+                        <p class="compliance-card-desc">This research is federally funded and originated in an IRB-governed context. Whether the original consent covers public-facing republication is worth checking.</p>
+                        <span class="compliance-chevron">›</span>
+                    </div>
+                </div>
+
+                <!-- Card 6: Endorsement & accuracy claims — CLEAR -->
+                <div class="compliance-card compliance-card-clear" id="cmap-endorsement" data-domain="endorsement">
+                    <div class="compliance-card-inner">
+                        <span class="priority-badge priority-clear">Clear</span>
+                        <h3 class="compliance-card-title">Endorsement &amp; accuracy claims</h3>
+                        <p class="compliance-card-desc">No overstated findings or FTC-relevant testimonial framing detected. Effect sizes and claims appear appropriately qualified in this content.</p>
+                        <span class="compliance-chevron">›</span>
+                    </div>
                 </div>
 
             </div>
-            <button class="btn-tertiary" id="back-from-triage">← Back</button>
+
+            <button class="btn-tertiary" id="back-from-compliance-map">← Back</button>
         </section>
 
-        <!-- Deep dive: Privacy -->
-        <section class="deep-dive hidden" id="dive-privacy">
-            <h2>A child is named and identified</h2>
-            <p>This content names a child, describes her autism diagnosis, and includes outcome details about her
-                development. Before this content is republished or adapted, there are a few things worth considering.</p>
-            <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two federal laws.</p>
-            <p><strong>FERPA</strong> protects educational records of students. If this child's information
-                originated in any educational or early intervention context, republishing it — even in a news
-                story — may require documented consent that covers this specific use.</p>
-            <p><strong>COPPA</strong> applies when content about children under 13 is published online. If this
-                article is republished on a new site, the site operator takes on responsibility for that content.</p>
-            <p class="question">Before we go further — do you know whether written consent was obtained from this
-                family, and whether that consent specifically covers republication on a new website?</p>
-            <div class="choices" id="choices-privacy">
-                <button class="btn-secondary" id="yes-consent">Yes, consent exists</button>
-                <button class="btn-secondary" id="no-consent">No</button>
-                <button class="btn-secondary" id="unsure-consent">I don't know</button>
+        <!-- Deep dive: Named individuals (sequential — privacy first, then quotes) -->
+        <section class="deep-dive hidden" id="dive-named">
+            <h2>Named individuals &amp; consent</h2>
+            <p>This card covers two related questions that both require a careful answer before this content is republished. Work through them in sequence — the second builds on the first.</p>
+
+            <div class="named-seq-indicator">
+                <span class="seq-step seq-step-active" id="seq-step-1">1 — Child identification</span>
+                <span class="seq-divider">→</span>
+                <span class="seq-step" id="seq-step-2">2 — Parent quotes</span>
             </div>
-            <button class="btn-tertiary" id="back-from-privacy">← Back</button>
-        </section>
 
-        <!-- Deep dive: Quotes -->
-        <section class="deep-dive hidden" id="dive-quotes">
-            <h2>A parent is quoted extensively</h2>
-            <p>This content includes detailed personal quotes from a private individual — a parent describing her
-                family's experience with a research program. The original article was produced by an institutional
-                communications team and almost certainly went through an appropriate editorial and consent process
-                for that publication.</p>
-            <p>But that's not the question worth asking here.</p>
-            <p>The more useful question is: <strong>does the consent obtained for the original publication extend
-                    to this new context?</strong> When content is republished on a different site, adapted into a new
-                format, or shared with a different audience, the original consent may not automatically cover that new use.</p>
-            <p>This matters because Veronica Fernandez is a private individual, not a public figure. Private
-                individuals have stronger legal protections around how their words and image are used — and
-                those protections don't disappear because the content was already published somewhere else.</p>
-            <p class="question">Do you know whether the original consent specifically covers republication on
-                a new website or in a new context?</p>
-            <div class="choices" id="choices-quotes">
-                <button class="btn-secondary" id="yes-quotes">Yes, it does</button>
-                <button class="btn-secondary" id="no-quotes">No</button>
-                <button class="btn-secondary" id="unsure-quotes">I don't know</button>
+            <!-- Sub-section 1: child identification -->
+            <div id="named-sub-privacy">
+                <h3 class="dive-subhead">A child is named and identified</h3>
+                <p>This content names a child, describes her autism diagnosis, and includes outcome details about her development. Before this content is republished or adapted, there are a few things worth considering.</p>
+                <p>Content that identifies a minor alongside a disability diagnosis can trigger protections under two federal laws.</p>
+                <p><strong>FERPA</strong> protects educational records of students. If this child's information originated in any educational or early intervention context, republishing it — even in a news story — may require documented consent that covers this specific use.</p>
+                <p><strong>COPPA</strong> applies when content about children under 13 is published online. If this article is republished on a new site, the site operator takes on responsibility for that content.</p>
+                <p class="question">Before we go further — do you know whether written consent was obtained from this family, and whether that consent specifically covers republication on a new website?</p>
+                <div class="choices" id="choices-privacy">
+                    <button class="btn-secondary" id="yes-consent">Yes, consent exists</button>
+                    <button class="btn-secondary" id="no-consent">No</button>
+                    <button class="btn-secondary" id="unsure-consent">I don't know</button>
+                </div>
             </div>
-            <button class="btn-tertiary" id="back-from-quotes">← Back</button>
+
+            <!-- Sub-section 2: parent quotes (shown after privacy branch is resolved) -->
+            <div id="named-sub-quotes" class="hidden">
+                <h3 class="dive-subhead">A parent is quoted extensively</h3>
+                <p>This content includes detailed personal quotes from a private individual — a parent describing her family's experience with a research program. The original article was produced by an institutional communications team and almost certainly went through an appropriate editorial and consent process for that publication.</p>
+                <p>But that's not the question worth asking here.</p>
+                <p>The more useful question is: <strong>does the consent obtained for the original publication extend to this new context?</strong> When content is republished on a different site, adapted into a new format, or shared with a different audience, the original consent may not automatically cover that new use.</p>
+                <p>This matters because Veronica Fernandez is a private individual, not a public figure. Private individuals have stronger legal protections around how their words and image are used — and those protections don't disappear because the content was already published somewhere else.</p>
+                <p class="question">Do you know whether the original consent specifically covers republication on a new website or in a new context?</p>
+                <div class="choices" id="choices-quotes">
+                    <button class="btn-secondary" id="yes-quotes">Yes, it does</button>
+                    <button class="btn-secondary" id="no-quotes">No</button>
+                    <button class="btn-secondary" id="unsure-quotes">I don't know</button>
+                </div>
+            </div>
+
+            <button class="btn-tertiary" id="back-from-named">← Back to compliance map</button>
         </section>
 
-        <!-- Deep dive: Images (licensing) -->
+        <!-- Deep dive: Sensitive disclosures — coming soon -->
+        <section class="deep-dive hidden" id="dive-sensitive">
+            <h2>Sensitive disclosures</h2>
+            <p class="ada-orienting">This area is under active development. Guidance on disability status, medical diagnoses, and protected characteristics in public-facing research content is coming in a future build.</p>
+            <button class="btn-tertiary" id="back-from-sensitive">← Back to compliance map</button>
+        </section>
+
+        <!-- Deep dive: Image licensing -->
         <section class="deep-dive hidden" id="dive-images">
-            <h2>Images and visual media</h2>
-            <p>I can't see images from pasted text — but if your content includes photos, illustrations,
-                charts, or other visuals, licensing is one of the most commonly overlooked compliance
-                questions in web publishing.</p>
-            <p>The most important thing to understand: <strong>the absence of copyright information on an
-                    image does not mean it is free to use.</strong> In the U.S., copyright attaches automatically
-                at the moment of creation. No copyright notice is required. An image without visible
-                attribution is not an unprotected one.</p>
+            <h2>Image licensing</h2>
+            <p>I can't see images from pasted text — but if your content includes photos, illustrations, charts, or other visuals, licensing is one of the most commonly overlooked compliance questions in web publishing.</p>
+            <p>The most important thing to understand: <strong>the absence of copyright information on an image does not mean it is free to use.</strong> In the U.S., copyright attaches automatically at the moment of creation. No copyright notice is required. An image without visible attribution is not an unprotected one.</p>
             <p class="question">Does this content include images, photos, charts, or other visual media?</p>
             <div class="choices" id="choices-images">
                 <button class="btn-secondary" id="yes-images">Yes</button>
                 <button class="btn-secondary" id="no-images">No</button>
                 <button class="btn-secondary" id="later-images">Not finalized yet</button>
             </div>
-            <button class="btn-tertiary" id="back-from-images">← Back</button>
+            <button class="btn-tertiary" id="back-from-images">← Back to compliance map</button>
+        </section>
+
+        <!-- Deep dive: Copyright & fair use — clear, brief explanation -->
+        <section class="deep-dive hidden" id="dive-copyright">
+            <h2>Copyright &amp; fair use</h2>
+            <p class="ada-orienting">No quoted text from published sources was detected in this content, so copyright questions are unlikely to apply here as it stands.</p>
+            <p>If you adapt this content to include text quoted from journal articles, reports, or other published sources — even brief passages — copyright and fair use become relevant. The question isn't just whether you cite the source, but whether the extent and purpose of the quotation falls within fair use doctrine.</p>
+            <p>This card will become active guidance if and when you bring in quoted material from external sources.</p>
+            <button class="btn-tertiary" id="back-from-copyright">← Back to compliance map</button>
+        </section>
+
+        <!-- Deep dive: IRB & republication scope — coming soon -->
+        <section class="deep-dive hidden" id="dive-irb">
+            <h2>IRB &amp; republication scope</h2>
+            <p class="ada-orienting">This area is under active development. Guidance on IRB constraints, embargo obligations, and whether original consent covers public-facing republication is coming in a future build.</p>
+            <button class="btn-tertiary" id="back-from-irb">← Back to compliance map</button>
+        </section>
+
+        <!-- Deep dive: Endorsement & accuracy claims — clear, brief explanation -->
+        <section class="deep-dive hidden" id="dive-endorsement">
+            <h2>Endorsement &amp; accuracy claims</h2>
+            <p class="ada-orienting">No overstated findings or FTC-relevant testimonial framing was detected in this content.</p>
+            <p>The quotes in this article are attributed to named individuals describing personal experience — not presented as universal endorsements or guaranteed outcomes. Effect sizes and claims appear appropriately qualified.</p>
+            <p>If you adapt this content into promotional formats — particularly anything that presents participant outcomes as typical results — FTC endorsement guidelines and accuracy standards become directly relevant.</p>
+            <button class="btn-tertiary" id="back-from-endorsement">← Back to compliance map</button>
         </section>
 
         <!-- Writing for Search: selection screen -->
@@ -815,7 +876,7 @@
             <div id="branch-lightbox-content"></div>
             <div class="branch-lightbox-actions">
                 <button class="resources-link" id="branch-resources-link">See relevant legal guidance →</button>
-                <button class="return-to-flags" id="return-to-flags">Return to flags</button>
+                <button class="return-to-flags" id="return-to-flags">← Back to compliance map</button>
             </div>
         </div>
     </div>
