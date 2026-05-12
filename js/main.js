@@ -180,34 +180,25 @@ function returnToComplianceMap() {
     show('compliance-map');
 }
 
-// ─── Content type ─────────────────────────────────────────────────────────────
+// ─── Home card routing ────────────────────────────────────────────────────────
 
-document.getElementById('type-web').addEventListener('click', () => {
-    hide('content-type'); show('content-input'); initQuill();
+document.getElementById('home-audience').addEventListener('click', () => {
+    hide('home-screen'); show('audience-planning');
 });
-document.getElementById('type-social').addEventListener('click', () => {
-    hide('content-type'); show('coming-soon');
-});
-document.getElementById('type-both').addEventListener('click', () => {
-    hide('content-type'); show('content-input'); initQuill();
+document.getElementById('home-draft').addEventListener('click', () => {
+    hide('home-screen'); show('content-input'); initQuill();
 });
 
 // ─── Back buttons ─────────────────────────────────────────────────────────────
 
-document.getElementById('back-from-soon').addEventListener('click', () => {
-    hide('coming-soon'); show('content-type');
-});
 document.getElementById('back-from-input').addEventListener('click', () => {
-    hide('content-input'); show('content-type');
+    hide('content-input'); show('home-screen');
 });
 document.getElementById('back-from-actions').addEventListener('click', () => {
     hide('actions-menu'); show('content-input');
 });
 // ─── Actions menu card routing ────────────────────────────────────────────────
 
-document.getElementById('card-audience').addEventListener('click', () => {
-    hide('actions-menu'); show('audience-planning');
-});
 document.getElementById('card-writing-readers').addEventListener('click', () => {
     hide('actions-menu'); resetAdaSelection(); show('ada-selection');
 });
@@ -223,10 +214,10 @@ document.getElementById('card-writing-search').addEventListener('click', () => {
 // ─── Audience Planning routing ────────────────────────────────────────────────
 
 document.getElementById('back-from-audience').addEventListener('click', () => {
-    hide('audience-planning'); show('actions-menu');
+    hide('audience-planning'); show('home-screen');
 });
 document.getElementById('continue-from-audience').addEventListener('click', () => {
-    hide('audience-planning'); show('actions-menu');
+    hide('audience-planning'); show('home-screen');
 });
 
 // ─── Compliance map back ──────────────────────────────────────────────────────
@@ -1270,5 +1261,5 @@ document.getElementById('home-link').addEventListener('click', (e) => {
     resetAdaSelection();
     resetDiscSelection();
     resetComplianceMap();
-    show('content-type');
+    show('home-screen');
 });
