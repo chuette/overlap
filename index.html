@@ -266,75 +266,47 @@
             <button class="btn-tertiary" id="back-from-actions">← Back</button>
         </section>
 
-        <!-- Audience Planning: placeholder layer -->
+        <!-- Audience Planning -->
         <section class="audience-planning hidden" id="audience-planning">
             <h2>Audience Planning</h2>
-            <p class="ada-orienting">Before you draft, think through who this is actually for and what situation they're
-                in when they need it. These aren't questions with single right answers — they're prompts to think with.
-                A sentence or two per question is enough.</p>
+            <p class="ada-orienting">Someone, somewhere is searching for an answer your research could provide.</p>
+            <p class="ada-orienting">These questions help you think through who that person is, and how to show up in that moment.</p>
 
             <div class="planning-questions">
 
-                <!-- Q1: The moment -->
+                <!-- Q1: The reader -->
                 <div class="planning-q">
-                    <p class="planning-prompt">What's happening when this becomes useful?</p>
-                    <p class="planning-subprompt">Start with a real situation, not the research. What's going wrong in
-                        their classroom or caseload? What decision are they facing? What would they type into Google
-                        right now?</p>
-                    <textarea class="planning-textarea"
-                        placeholder="Describe the moment — what's the trigger?"></textarea>
+                    <p class="planning-prompt">Who specifically is this for?</p>
+                    <p class="planning-subprompt">Picture one specific person, not an audience category. Their words, not yours.</p>
+                    <textarea class="planning-textarea" placeholder="Describe the person..."></textarea>
                 </div>
 
-                <!-- Q2: The job -->
+                <!-- Q2: The moment -->
                 <div class="planning-q">
-                    <p class="planning-prompt">What should someone be able to do after this?</p>
-                    <p class="planning-subprompt">Aim for one concrete outcome — not a list of things they might learn.
-                        One thing they can try, decide, or do differently. If this works, what do they do next?</p>
+                    <p class="planning-prompt">What's happening when this becomes useful?</p>
+                    <p class="planning-subprompt">Start with a situation, not a finding. What's going on, and what are they typing into their search bar?</p>
+                    <textarea class="planning-textarea" placeholder="Describe the situation and the search..."></textarea>
+                </div>
+
+                <!-- Q3: The job -->
+                <div class="planning-q">
+                    <p class="planning-prompt">What should they be able to do after this?</p>
+                    <p class="planning-subprompt">One concrete thing they can try, decide, or do differently.</p>
                     <textarea class="planning-textarea" placeholder="State the job in one sentence..."></textarea>
                 </div>
 
-                <!-- Q3: The form -->
+                <!-- Q4: The form -->
                 <div class="planning-q">
                     <p class="planning-prompt">What kind of thing should this be?</p>
-                    <p class="planning-subprompt">Pick the one that best fits the moment and job above. You can build a
-                        companion piece later.</p>
+                    <p class="planning-subprompt">Pick the one that best fits their moment and their situation. You can always build a companion piece later.</p>
                     <div class="planning-form-options">
-                        <label class="form-option"><input type="radio" name="content-form" value="article"> <span
-                                class="form-option-label">Practice-focused article</span> <span
-                                class="form-option-note">For someone navigating an ongoing challenge who needs more than
-                                a quick answer</span></label>
-                        <label class="form-option"><input type="radio" name="content-form" value="faq"> <span
-                                class="form-option-label">FAQ / Question page</span> <span class="form-option-note">For
-                                someone who needs quick clarification or orientation before acting</span></label>
-                        <label class="form-option"><input type="radio" name="content-form" value="download"> <span
-                                class="form-option-label">Download companion page</span> <span
-                                class="form-option-note">For someone looking for a usable tool connected to a specific
-                                task</span></label>
-                        <label class="form-option"><input type="radio" name="content-form" value="guide"> <span
-                                class="form-option-label">Implementation guide</span> <span class="form-option-note">For
-                                someone actively preparing to put something into practice</span></label>
-                        <label class="form-option"><input type="radio" name="content-form" value="toolkit"> <span
-                                class="form-option-label">Toolkit page</span> <span class="form-option-note">For someone
-                                exploring a broader area and needing help finding where to start</span></label>
-                        <label class="form-option"><input type="radio" name="content-form" value="explainer"> <span
-                                class="form-option-label">Explainer / Research primer</span> <span
-                                class="form-option-note">For someone who needs to understand a concept before they can
-                                use it</span></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="article"> <div class="form-option-text"><span class="form-option-label">Practice-focused article</span> <span class="form-option-note">For someone navigating an ongoing challenge who needs more than a quick answer</span></div></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="faq"> <div class="form-option-text"><span class="form-option-label">FAQ / Question page</span> <span class="form-option-note">For someone who needs quick clarification or orientation before acting</span></div></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="download"> <div class="form-option-text"><span class="form-option-label">Download companion page</span> <span class="form-option-note">For someone looking for a usable tool connected to a specific task</span></div></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="guide"> <div class="form-option-text"><span class="form-option-label">Implementation guide</span> <span class="form-option-note">For someone actively preparing to put something into practice</span></div></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="toolkit"> <div class="form-option-text"><span class="form-option-label">Toolkit page</span> <span class="form-option-note">For someone exploring a broader area and needing help finding where to start</span></div></label>
+                        <label class="form-option"><input type="radio" name="content-form" value="explainer"> <div class="form-option-text"><span class="form-option-label">Explainer / Research primer</span> <span class="form-option-note">For someone who needs to understand a concept before they can use it</span></div></label>
                     </div>
-                    <textarea class="planning-textarea planning-textarea-sm" id="download-job-field"
-                        placeholder="If there's a downloadable: what specific job is it doing?"
-                        style="margin-top: 14px;"></textarea>
-                </div>
-
-                <!-- Q4: The reader's words -->
-                <div class="planning-q">
-                    <p class="planning-prompt">Who specifically is this for, and what would they search?</p>
-                    <p class="planning-subprompt">Avoid audience categories — picture one specific person. What's their
-                        job? What's been happening lately that made this relevant? Write two or three phrases they'd
-                        actually type into a search bar. Their words, not yours — practitioners often name the same
-                        thing very differently than researchers do.</p>
-                    <textarea class="planning-textarea"
-                        placeholder="Describe the person, then list 2–3 search phrases they'd actually use..."></textarea>
                 </div>
 
             </div>
@@ -344,6 +316,7 @@
                 <button class="btn-primary" id="continue-from-audience">Continue →</button>
             </div>
         </section>
+
 
         <!-- Compliance map -->
         <section class="compliance-map hidden" id="compliance-map">
