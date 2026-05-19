@@ -1953,3 +1953,14 @@ h1 {
 @media (max-width: 520px) {
     .compliance-map .compliance-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Home tagline ───────────────────────────────────────────────────────────── */
+
+.home-tagline {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0051ba;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
