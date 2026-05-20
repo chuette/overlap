@@ -72,6 +72,16 @@ function initQuill() {
         // Pre-fill with OASIS sample article
         quill.setText(OASIS_SAMPLE);
 
+        // Manually update word count and checklist on load
+        // (setText doesn't reliably fire text-change in Quill 1.3.7)
+        setTimeout(function() {
+            var text = quill.getText().trim();
+            var words = text.length === 0 ? 0 : text.split(/\s+/).filter(Boolean).length;
+            var el = document.getElementById('word-count');
+            if (el) el.textContent = words + (words === 1 ? ' word' : ' words');
+            updateChecklist();
+        }, 50);
+
         // ── Word count (ported from Chat 1) ──
         quill.on('text-change', function () {
             var text = quill.getText().trim();
