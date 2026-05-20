@@ -258,7 +258,10 @@ document.getElementById('back-from-audience').addEventListener('click', () => {
     hide('audience-planning'); show('home-screen');
 });
 document.getElementById('continue-from-audience').addEventListener('click', () => {
-    hide('audience-planning'); show('home-screen');
+    hide('audience-planning'); show('audience-next');
+});
+document.getElementById('back-from-audience-next').addEventListener('click', () => {
+    hide('audience-next'); show('home-screen');
 });
 
 // ─── Compliance map back ──────────────────────────────────────────────────────

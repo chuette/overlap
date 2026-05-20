@@ -23,11 +23,9 @@
         <section class="home-screen" id="home-screen">
             <p class="home-tagline">Research with reach.</p>
             <p class="home-intro">Somewhere, a teacher is searching for something your research could provide. Or maybe
-                they're
-                a parent. Or a school leader. They are someone making a consequential decision that impacts the life of
-                a child.
+                it's a parent. Or a school leader. It is a person making a consequential decision that impacts a child.
             </p>
-            <p class="home-intro">You want to meet them in that moment. So let's think it through: Who is this
+            <p class="home-intro">You want to meet them in that moment. So let's think it through together. Who is this
                 person, how are they searching, and what policy or law applies here?</p>
             <p class="tool-voice">Where would you like to start?</p>
             <div class="home-cards">
@@ -68,8 +66,8 @@
         <section class="content-input hidden" id="content-input">
             <h2>Mark up your draft</h2>
             <p>A few minutes here makes everything that follows more useful. Mark up your title, your section headings,
-                and your links before you continue, and you'll have already made some of the decisions that come next.
-            </p>
+                and your links before you continue, and you'll have already made some of the decisions the tool is about
+                to ask you about.</p>
             <p>The heading buttons in the toolbar are markup in the technical sense too: they tag your content in a way
                 that screen readers, search engines, and WordPress all understand. Think of it the way you'd mark up a
                 manuscript. Same instinct, different pen.</p>
@@ -281,41 +279,38 @@
         <section class="audience-planning hidden" id="audience-planning">
             <h2>Audience Planning</h2>
             <p class="ada-orienting">Someone, somewhere is searching for an answer your research could provide.</p>
-            <p class="ada-orienting">The prompts on this page will help you think through who that person is, and how to
-                show up in
+            <p class="ada-orienting">These questions help you think through who that person is, and how to show up in
                 that moment.</p>
 
             <div class="planning-questions">
 
                 <!-- Q1: The reader -->
                 <div class="planning-q">
-                    <p class="planning-prompt">Who is this person? Who are you writing for?</p>
-                    <p class="planning-subprompt">Picture one specific person, not an audience category. Describe this
-                        person's life. See if you can use their words,
+                    <p class="planning-prompt">Who specifically is this for?</p>
+                    <p class="planning-subprompt">Picture one specific person, not an audience category. Their words,
                         not yours.</p>
                     <textarea class="planning-textarea" placeholder="Describe the person..."></textarea>
                 </div>
 
                 <!-- Q2: The moment -->
                 <div class="planning-q">
-                    <p class="planning-prompt">What's happening in this person's life when your work becomes useful to
-                        them?</p>
+                    <p class="planning-prompt">What's happening when this becomes useful?</p>
                     <p class="planning-subprompt">Start with a situation, not a finding. What's going on, and what are
-                        they typing into the search bar?</p>
+                        they typing into their search bar?</p>
                     <textarea class="planning-textarea"
                         placeholder="Describe the situation and the search..."></textarea>
                 </div>
 
                 <!-- Q3: The job -->
                 <div class="planning-q">
-                    <p class="planning-prompt">What should they be able to do with your help?</p>
-                    <p class="planning-subprompt">Write one concrete thing they can try, decide, or do differently.</p>
+                    <p class="planning-prompt">What should they be able to do after this?</p>
+                    <p class="planning-subprompt">One concrete thing they can try, decide, or do differently.</p>
                     <textarea class="planning-textarea" placeholder="State the job in one sentence..."></textarea>
                 </div>
 
                 <!-- Q4: The form -->
                 <div class="planning-q">
-                    <p class="planning-prompt">What kind of thing should it be?</p>
+                    <p class="planning-prompt">What kind of thing should this be?</p>
                     <p class="planning-subprompt">Pick the one that best fits their moment and their situation. You can
                         always build a companion piece later.</p>
                     <div class="planning-form-options">
@@ -327,20 +322,17 @@
                         <label class="form-option"><input type="radio" name="content-form" value="faq">
                             <div class="form-option-text"><span class="form-option-label">FAQ / Question page</span>
                                 <span class="form-option-note">For someone who needs quick clarification or orientation
-                                    before acting</span>
-                            </div>
+                                    before acting</span></div>
                         </label>
                         <label class="form-option"><input type="radio" name="content-form" value="download">
                             <div class="form-option-text"><span class="form-option-label">Download companion page</span>
                                 <span class="form-option-note">For someone looking for a usable tool connected to a
-                                    specific task</span>
-                            </div>
+                                    specific task</span></div>
                         </label>
                         <label class="form-option"><input type="radio" name="content-form" value="guide">
                             <div class="form-option-text"><span class="form-option-label">Implementation guide</span>
                                 <span class="form-option-note">For someone actively preparing to put something into
-                                    practice</span>
-                            </div>
+                                    practice</span></div>
                         </label>
                         <label class="form-option"><input type="radio" name="content-form" value="toolkit">
                             <div class="form-option-text"><span class="form-option-label">Toolkit page</span> <span
@@ -363,6 +355,17 @@
             </div>
         </section>
 
+
+        <!-- Audience Planning: next screen placeholder -->
+        <section class="audience-next hidden" id="audience-next">
+            <h2>This path under construction.</h2>
+            <p>In a future version of this tool, your responses here will travel with you into the draft review, helping
+                configure the feedback you receive on your title, your opening, and your structure. For now, this is a
+                space to think — and the thinking still counts.</p>
+            <p class="audience-next-note">When you're ready to review a draft, return to the home screen and choose
+                Draft Review.</p>
+            <button class="btn-primary" id="back-from-audience-next">← Return to home</button>
+        </section>
 
         <!-- Compliance map -->
         <section class="compliance-map hidden" id="compliance-map">
